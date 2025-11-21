@@ -1195,12 +1195,12 @@ export default function HomePage() {
               </div>
 
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                   {/* Happy Riders */}
-                  <Card className="text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white border-2 border-primary/20 relative overflow-hidden group w-full">
+                  <Card className="text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white border-2 border-primary/20 relative overflow-hidden group w-full max-w-full">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="relative z-10 w-full">
-                      <div className="w-full h-48 sm:h-56 md:h-48 mx-auto mb-4 rounded-2xl overflow-hidden border-2 border-primary/20 shadow-xl group-hover:border-primary transition-all duration-300 transform group-hover:scale-105">
+                      <div className="w-full h-56 sm:h-64 md:h-48 mx-auto mb-4 rounded-2xl overflow-hidden border-2 border-primary/20 shadow-xl group-hover:border-primary transition-all duration-300 transform group-hover:scale-105">
                         <img
                           src="https://poloandtweed.com/wp-content/uploads/2021/04/Aafkes-Blog-Photos-47.png"
                           alt="Happy Rider"
@@ -1216,10 +1216,10 @@ export default function HomePage() {
                   </Card>
 
                   {/* Professional Drivers */}
-                  <Card className="text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white border-2 border-primary/20 relative overflow-hidden group w-full">
+                  <Card className="text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white border-2 border-primary/20 relative overflow-hidden group w-full max-w-full">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="relative z-10 w-full">
-                      <div className="w-full h-48 sm:h-56 md:h-48 mx-auto mb-4 rounded-3xl overflow-hidden border-2 border-primary/20 shadow-xl group-hover:border-primary transition-all duration-300 transform group-hover:scale-105">
+                      <div className="w-full h-56 sm:h-64 md:h-48 mx-auto mb-4 rounded-3xl overflow-hidden border-2 border-primary/20 shadow-xl group-hover:border-primary transition-all duration-300 transform group-hover:scale-105">
                         <img
                           src="https://www.staffingattiffanies.com/wp-content/uploads/2021/01/happy-male-chauffeur-driving-car.png"
                           alt="Professional Driver"
@@ -1235,10 +1235,10 @@ export default function HomePage() {
                   </Card>
 
                   {/* Completed Rides */}
-                  <Card className="text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white border-2 border-primary/20 relative overflow-hidden group w-full">
+                  <Card className="text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white border-2 border-primary/20 relative overflow-hidden group w-full max-w-full">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="relative z-10 w-full">
-                      <div className="w-full h-48 sm:h-56 md:h-48 mx-auto mb-4 rounded-xl overflow-hidden border-2 border-primary/20 shadow-xl group-hover:border-primary transition-all duration-300 transform group-hover:scale-105">
+                      <div className="w-full h-56 sm:h-64 md:h-48 mx-auto mb-4 rounded-xl overflow-hidden border-2 border-primary/20 shadow-xl group-hover:border-primary transition-all duration-300 transform group-hover:scale-105">
                         <img
                           src="https://cdn.bookingkit.de/vendor_images/976872a4e8c7ab01720767b270d92968/detail/TRANSFERT564.jpg"
                           alt="Completed Rides"
@@ -1254,9 +1254,9 @@ export default function HomePage() {
                   </Card>
 
                   {/* Rating */}
-                  <Card className="text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white border-2 border-primary/20 relative overflow-hidden group">
+                  <Card className="text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white border-2 border-primary/20 relative overflow-hidden group w-full max-w-full">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <div className="relative z-10">
+                    <div className="relative z-10 w-full">
                       <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-4 border-primary/20 shadow-lg group-hover:border-primary transition-all duration-300 flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary-dark/10">
                         <Star className="w-10 h-10 fill-primary text-primary" />
                       </div>
