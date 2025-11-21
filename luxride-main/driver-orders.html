@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a1a">
+    <link rel="manifest" href="/manifest.json">
+    <title>Luxride Driver - Order Management</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@capacitor/core@latest/dist/capacitor.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #2d2d2d;
+            --accent-color: #d4af37;
+            --accent-hover: #b8972e;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: var(--text-primary);
+            overscroll-behavior: none;
+            overflow-x: hidden;
+            line-height: 1.6;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            max-height: 100vh;
+            overflow-y: auto;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #f4d03f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .order-stats {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .nav-bar {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-link:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-link.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .orders-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .orders-card {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .order-count {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .order-item {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .order-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .order-item.pending {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .order-item.accepted {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .order-item.in-progress {
+            border-left: 4px solid var(--info-color);
+        }
+
+        .order-item.completed {
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .order-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .order-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning-color); }
+        .status-accepted { background: rgba(16, 185, 129, 0.1); color: var(--success-color); }
+        .status-in-progress { background: rgba(59, 130, 246, 0.1); color: var(--info-color); }
+        .status-completed { background: rgba(212, 175, 55, 0.1); color: var(--accent-color); }
+
+        .order-details {
+            margin-bottom: 1rem;
+        }
+
+        .order-route {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .route-point {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .route-point.pickup {
+            color: var(--success-color);
+        }
+
+        .route-point.destination {
+            color: var(--danger-color);
+        }
+
+        .route-arrow {
+            color: var(--text-muted);
+        }
+
+        .order-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.875rem;
+        }
+
+        .btn-accept {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-accept:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-reject {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .btn-start {
+            background: var(--info-color);
+            color: white;
+        }
+
+        .btn-start:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .btn-complete {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-complete:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-view {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-view:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .order-priority {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .priority-high {
+            color: var(--danger-color);
+        }
+
+        .priority-medium {
+            color: var(--warning-color);
+        }
+
+        .priority-low {
+            color: var(--success-color);
+        }
+
+        .order-timer {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .timer-urgent {
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        .order-notes {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+
+        .order-filters {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 1200px) {
+            .orders-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .orders-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .order-info {
+                grid-template-columns: 1fr;
+            }
+            
+        }
+
+        @media (max-width: 480px) {
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header fade-in">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>Order Management</h1>
+                    <p>Manage multiple orders and deliveries efficiently</p>
+                </div>
+                <div class="header-right">
+                    <div class="order-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="total-orders">0</div>
+                            <div class="stat-label">Total Orders</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="active-orders">0</div>
+                            <div class="stat-label">Active</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="completed-orders">0</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                    </div>
+                    <button id="logout-btn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Bar -->
+        <div class="nav-bar fade-in">
+            <div class="nav-links">
+                <a href="/driver-index" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+                <a href="/driver-dashboard" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    Analytics
+                </a>
+                <a href="/driver-rides" class="nav-link">
+                    <i class="fas fa-car"></i>
+                    Ride Management
+                </a>
+                <a href="/driver-orders" class="nav-link active">
+                    <i class="fas fa-clipboard-list"></i>
+                    Order Management
+                </a>
+                <a href="/driver-schedule" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    Schedule
+                </a>
+                <a href="/driver-earnings" class="nav-link">
+                    <i class="fas fa-dollar-sign"></i>
+                    Earnings
+                </a>
+                <a href="/driver-profile" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    Profile
+                </a>
+            </div>
+        </div>
+
+        <!-- Order Filters -->
+        <div class="order-filters fade-in">
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Status</label>
+                    <select id="status-filter" class="filter-select">
+                        <option value="all">All Statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="accepted">Accepted</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Priority</label>
+                    <select id="priority-filter" class="filter-select">
+                        <option value="all">All Priorities</option>
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Date Range</label>
+                    <select id="date-filter" class="filter-select">
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="all">All Time</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Order Type</label>
+                    <select id="type-filter" class="filter-select">
+                        <option value="all">All Types</option>
+                        <option value="ride">Ride</option>
+                        <option value="delivery">Delivery</option>
+                        <option value="pickup">Pickup</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Orders Grid -->
+        <div class="orders-grid fade-in">
+            <!-- Pending Orders -->
+            <div class="orders-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-clock"></i>
+                        Pending Orders
+                    </h2>
+                    <div class="order-count" id="pending-count">0</div>
+                </div>
+                <div id="pending-orders-list">
+                    <!-- Pending orders will be populated here -->
+                </div>
+            </div>
+
+            <!-- Active Orders -->
+            <div class="orders-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-play"></i>
+                        Active Orders
+                    </h2>
+                    <div class="order-count" id="active-count">0</div>
+                </div>
+                <div id="active-orders-list">
+                    <!-- Active orders will be populated here -->
+                </div>
+            </div>
+
+            <!-- Completed Orders -->
+            <div class="orders-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-check-circle"></i>
+                        Completed Orders
+                    </h2>
+                    <div class="order-count" id="completed-count">0</div>
+                </div>
+                <div id="completed-orders-list">
+                    <!-- Completed orders will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Advanced Driver Orders Management System
+        class DriverOrders {
+            constructor() {
+                this.user = null;
+                this.orders = [];
+                this.filteredOrders = [];
+                this.selectedOrders = new Set();
+                this.filters = {
+                    status: 'all',
+                    priority: 'all',
+                    date: 'all',
+                    type: 'all'
+                };
+                this.updateInterval = null;
+                this.init();
+            }
+
+            async init() {
+                await this.checkUserAccess();
+                await this.loadOrderData();
+                this.setupEventListeners();
+                this.startRealTimeUpdates();
+                this.setupNotifications();
+            }
+
+            async checkUserAccess() {
+                this.user = JSON.parse(localStorage.getItem('user') || '{}');
+                
+                if (!this.user.email) {
+                    this.showNotification('Please login to access this page.', 'error');
+                    setTimeout(() => {
+                window.location.href = 'login.html';
+                    }, 2000);
+                    return false;
+            }
+                return true;
+        }
+
+            async loadOrderData() {
+                try {
+                    // Safely get bookings from localStorage
+                    let bookings = [];
+                    try {
+                        const bookingsData = localStorage.getItem('bookings');
+                        if (bookingsData) {
+                            bookings = JSON.parse(bookingsData);
+                        }
+                    } catch (parseError) {
+                        console.warn('Failed to parse bookings from localStorage:', parseError);
+                        bookings = [];
+                    }
+                    
+                    // Convert bookings to orders format with enhanced data
+                    this.orders = bookings.filter(booking => booking && booking.id).map(booking => ({
+                        id: booking.id,
+                        type: this.determineOrderType(booking),
+                        status: booking.status,
+                        priority: this.getOrderPriority(booking),
+                        pickup: booking.pickup,
+                        destination: booking.destination,
+                        price: booking.price,
+                        date: booking.date,
+                        time: booking.time,
+                        notes: booking.notes || '',
+                        acceptedBy: booking.acceptedBy,
+                        acceptedAt: booking.acceptedAt,
+                        startedAt: booking.startedAt,
+                        completedAt: booking.completedAt,
+                        timestamp: booking.timestamp,
+                        distance: booking.distance || Math.random() * 20,
+                        estimatedDuration: booking.estimatedDuration || Math.random() * 60,
+                        customerRating: booking.customerRating || (4 + Math.random()),
+                        specialInstructions: booking.specialInstructions || '',
+                        vehicleType: booking.vehicleType || 'standard'
+                    }));
+
+                    // Apply filters
+                    this.applyFilters();
+            
+                    // Update stats
+                    this.updateOrderStats();
+            
+                    // Load order lists
+                    this.loadOrderLists();
+                } catch (error) {
+                    console.error('Error loading order data:', error);
+                    // Don't show error notification to avoid spam, just log it
+                    console.log('Order data loading failed, will retry on next update');
+                }
+            }
+
+            determineOrderType(booking) {
+                // Determine order type based on various factors
+                if (booking.vehicleType === 'premium') return 'premium';
+                if (booking.vehicleType === 'xl') return 'xl';
+                if (booking.specialInstructions && booking.specialInstructions.includes('delivery')) return 'delivery';
+                return 'standard';
+            }
+
+            getOrderPriority(booking) {
+            const now = new Date();
+                const orderTime = new Date(booking.timestamp);
+            const timeDiff = (now - orderTime) / (1000 * 60); // minutes
+            
+                // Enhanced priority calculation
+                let priority = 'low';
+                
+                if (timeDiff > 30) priority = 'high';
+                else if (timeDiff > 15) priority = 'medium';
+                
+                // Adjust based on order type
+                if (booking.vehicleType === 'premium') priority = 'high';
+                if (booking.specialInstructions && booking.specialInstructions.includes('urgent')) priority = 'high';
+                
+                return priority;
+            }
+
+            applyFilters() {
+                let filtered = [...this.orders];
+                
+                if (this.filters.status !== 'all') {
+                    filtered = filtered.filter(order => order.status === this.filters.status);
+                }
+                
+                if (this.filters.priority !== 'all') {
+                    filtered = filtered.filter(order => order.priority === this.filters.priority);
+                }
+                
+                if (this.filters.date !== 'all') {
+                const now = new Date();
+                    filtered = filtered.filter(order => {
+                    const orderDate = new Date(order.timestamp);
+                        switch (this.filters.date) {
+                        case 'today':
+                            return orderDate.toDateString() === now.toDateString();
+                        case 'week':
+                            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            return orderDate >= weekAgo;
+                        case 'month':
+                            const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                            return orderDate >= monthAgo;
+                        default:
+                            return true;
+                    }
+                });
+            }
+            
+                if (this.filters.type !== 'all') {
+                    filtered = filtered.filter(order => order.type === this.filters.type);
+                }
+                
+                this.filteredOrders = filtered;
+            }
+
+            updateOrderStats() {
+                const totalOrders = this.filteredOrders.length;
+                const activeOrders = this.filteredOrders.filter(o => o.status === 'accepted' || o.status === 'in-progress').length;
+                const completedOrders = this.filteredOrders.filter(o => o.status === 'completed').length;
+                const pendingOrders = this.filteredOrders.filter(o => o.status === 'pending' || o.status === 'requested' || o.status === 'booked').length;
+            
+            document.getElementById('total-orders').textContent = totalOrders;
+            document.getElementById('active-orders').textContent = activeOrders;
+            document.getElementById('completed-orders').textContent = completedOrders;
+                
+                // Update additional stats if elements exist
+                const pendingElement = document.getElementById('pending-orders');
+                if (pendingElement) {
+                    pendingElement.textContent = pendingOrders;
+                }
+            }
+
+            loadOrderLists() {
+                try {
+                    const pendingOrders = this.filteredOrders.filter(o => o.status === 'pending' || o.status === 'requested' || o.status === 'booked');
+                    const activeOrders = this.filteredOrders.filter(o => o.status === 'accepted' || o.status === 'in-progress');
+                    const completedOrders = this.filteredOrders.filter(o => o.status === 'completed');
+                
+                    // Safely update counts
+                    const pendingCountElement = document.getElementById('pending-count');
+                    const activeCountElement = document.getElementById('active-count');
+                    const completedCountElement = document.getElementById('completed-count');
+                    
+                    if (pendingCountElement) pendingCountElement.textContent = pendingOrders.length;
+                    if (activeCountElement) activeCountElement.textContent = activeOrders.length;
+                    if (completedCountElement) completedCountElement.textContent = completedOrders.length;
+                    
+                    // Load lists
+                    this.loadPendingOrders(pendingOrders);
+                    this.loadActiveOrders(activeOrders);
+                    this.loadCompletedOrders(completedOrders);
+                } catch (error) {
+                    console.error('Error loading order lists:', error);
+                    console.log('Order lists loading failed, will retry on next update');
+                }
+            }
+
+            loadPendingOrders(orders) {
+                try {
+                    const ordersList = document.getElementById('pending-orders-list');
+                    if (!ordersList) {
+                        console.warn('Pending orders list element not found');
+                        return;
+                    }
+                    
+                    if (orders.length === 0) {
+                        ordersList.innerHTML = `
+                            <div class="text-center py-8 text-gray-500">
+                                <i class="fas fa-inbox text-4xl mb-4"></i>
+                                <p>No pending orders</p>
+                            </div>
+                        `;
+                        return;
+                    }
+            
+            ordersList.innerHTML = orders.map(order => `
+                    <div class="order-item pending" data-order-id="${order.id}">
+                    <div class="order-header">
+                        <div class="order-id">Order #${order.id.slice(-6)}</div>
+                        <div class="order-status status-pending">${order.status}</div>
+                    </div>
+                    <div class="order-priority">
+                        <i class="fas fa-flag priority-${order.priority}"></i>
+                        <span class="priority-${order.priority}">${order.priority.toUpperCase()} Priority</span>
+                    </div>
+                    <div class="order-details">
+                        <div class="order-route">
+                            <div class="route-point pickup">
+                                <i class="fas fa-map-marker-alt"></i>
+                                ${order.pickup}
+                            </div>
+                            <div class="route-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="route-point destination">
+                                <i class="fas fa-flag"></i>
+                                ${order.destination}
+                            </div>
+                        </div>
+                        <div class="order-info">
+                            <div class="info-item">
+                                <i class="fas fa-dollar-sign"></i>
+                                $${order.price.toFixed(2)}
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                ${order.time}
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-calendar"></i>
+                                ${order.date}
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-tag"></i>
+                                ${order.type}
+                            </div>
+                        </div>
+                        ${order.notes ? `<div class="order-notes">${order.notes}</div>` : ''}
+                            ${order.specialInstructions ? `<div class="order-notes special">Special: ${order.specialInstructions}</div>` : ''}
+                    </div>
+                    <div class="order-actions">
+                            <button onclick="driverOrders.acceptOrder('${order.id}')" class="btn btn-accept">
+                            <i class="fas fa-check"></i>
+                            Accept
+                        </button>
+                            <button onclick="driverOrders.rejectOrder('${order.id}')" class="btn btn-reject">
+                            <i class="fas fa-times"></i>
+                            Reject
+                        </button>
+                            <button onclick="driverOrders.viewOrderDetails('${order.id}')" class="btn btn-secondary">
+                            <i class="fas fa-eye"></i>
+                            View
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+                } catch (error) {
+                    console.error('Error loading pending orders:', error);
+                    console.log('Pending orders loading failed, will retry on next update');
+                }
+            }
+
+            loadActiveOrders(orders) {
+            const ordersList = document.getElementById('active-orders-list');
+            
+            if (orders.length === 0) {
+                ordersList.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                            <i class="fas fa-car text-4xl mb-4"></i>
+                        <p>No active orders</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            ordersList.innerHTML = orders.map(order => `
+                    <div class="order-item active" data-order-id="${order.id}">
+                    <div class="order-header">
+                        <div class="order-id">Order #${order.id.slice(-6)}</div>
+                            <div class="order-status status-${order.status}">${order.status}</div>
+                    </div>
+                    <div class="order-details">
+                        <div class="order-route">
+                            <div class="route-point pickup">
+                                <i class="fas fa-map-marker-alt"></i>
+                                ${order.pickup}
+                            </div>
+                            <div class="route-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="route-point destination">
+                                <i class="fas fa-flag"></i>
+                                ${order.destination}
+                            </div>
+                        </div>
+                        <div class="order-info">
+                            <div class="info-item">
+                                <i class="fas fa-dollar-sign"></i>
+                                $${order.price.toFixed(2)}
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                ${order.time}
+                            </div>
+                            <div class="info-item">
+                                    <i class="fas fa-user"></i>
+                                    ${order.acceptedBy || 'N/A'}
+                            </div>
+                            <div class="info-item">
+                                    <i class="fas fa-route"></i>
+                                    ${order.distance.toFixed(1)} mi
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-actions">
+                        ${order.status === 'accepted' ? `
+                                <button onclick="driverOrders.startOrder('${order.id}')" class="btn btn-primary">
+                                <i class="fas fa-play"></i>
+                                Start
+                            </button>
+                        ` : `
+                                <button onclick="driverOrders.completeOrder('${order.id}')" class="btn btn-success">
+                                    <i class="fas fa-check"></i>
+                                Complete
+                            </button>
+                        `}
+                            <button onclick="driverOrders.viewOrderDetails('${order.id}')" class="btn btn-secondary">
+                            <i class="fas fa-eye"></i>
+                            View
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+            loadCompletedOrders(orders) {
+            const ordersList = document.getElementById('completed-orders-list');
+            
+            if (orders.length === 0) {
+                ordersList.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-check-circle text-4xl mb-4"></i>
+                        <p>No completed orders</p>
+                    </div>
+                `;
+                return;
+            }
+            
+                ordersList.innerHTML = orders.map(order => `
+                    <div class="order-item completed" data-order-id="${order.id}">
+                    <div class="order-header">
+                        <div class="order-id">Order #${order.id.slice(-6)}</div>
+                            <div class="order-status status-completed">${order.status}</div>
+                    </div>
+                    <div class="order-details">
+                        <div class="order-route">
+                            <div class="route-point pickup">
+                                <i class="fas fa-map-marker-alt"></i>
+                                ${order.pickup}
+                            </div>
+                            <div class="route-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="route-point destination">
+                                <i class="fas fa-flag"></i>
+                                ${order.destination}
+                            </div>
+                        </div>
+                        <div class="order-info">
+                            <div class="info-item">
+                                <i class="fas fa-dollar-sign"></i>
+                                $${order.price.toFixed(2)}
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                ${order.time}
+                            </div>
+                            <div class="info-item">
+                                    <i class="fas fa-star"></i>
+                                    ${order.customerRating.toFixed(1)}/5
+                            </div>
+                            <div class="info-item">
+                                    <i class="fas fa-check"></i>
+                                    Completed
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-actions">
+                            <button onclick="driverOrders.viewOrderDetails('${order.id}')" class="btn btn-secondary">
+                            <i class="fas fa-eye"></i>
+                                View
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+            acceptOrder(orderId) {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const booking = bookings.find(b => b.id === orderId);
+            
+            if (!booking) {
+                    this.showNotification('Order not found!', 'error');
+                    return;
+                }
+                
+                // Check if order is still available
+                if (booking.acceptedBy && booking.acceptedBy !== 'John Smith') {
+                    this.showNotification('This order was already accepted by another driver!', 'error');
+                    this.loadOrderData();
+                return;
+            }
+            
+            // Update booking status
+            booking.status = 'accepted';
+            booking.acceptedBy = 'John Smith';
+            booking.acceptedAt = new Date().toISOString();
+            
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+            
+                this.showNotification('Order accepted successfully!', 'success');
+                this.loadOrderData();
+        }
+
+            rejectOrder(orderId) {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const booking = bookings.find(b => b.id === orderId);
+            
+            if (!booking) return;
+            
+            // Update booking status
+            booking.status = 'cancelled';
+            booking.cancelledAt = new Date().toISOString();
+            
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+            
+                this.showNotification('Order rejected', 'info');
+                this.loadOrderData();
+        }
+
+            startOrder(orderId) {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const booking = bookings.find(b => b.id === orderId);
+            
+            if (!booking) return;
+            
+            // Update booking status
+            booking.status = 'in-progress';
+            booking.startedAt = new Date().toISOString();
+            
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+            
+                this.showNotification('Order started!', 'success');
+                this.loadOrderData();
+        }
+
+            completeOrder(orderId) {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const booking = bookings.find(b => b.id === orderId);
+            
+            if (!booking) return;
+            
+            // Update booking status
+            booking.status = 'completed';
+            booking.completedAt = new Date().toISOString();
+                booking.completionDate = new Date().toISOString();
+            
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+            
+                this.showNotification('Order completed successfully!', 'success');
+                this.loadOrderData();
+        }
+
+            viewOrderDetails(orderId) {
+                const order = this.orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            const details = `
+Order ID: #${order.id.slice(-6)}
+Type: ${order.type}
+Status: ${order.status}
+Priority: ${order.priority}
+Route: ${order.pickup} → ${order.destination}
+Price: $${order.price.toFixed(2)}
+Date: ${order.date}
+Time: ${order.time}
+Distance: ${order.distance.toFixed(1)} miles
+Estimated Duration: ${order.estimatedDuration.toFixed(0)} minutes
+Customer Rating: ${order.customerRating.toFixed(1)}/5
+Vehicle Type: ${order.vehicleType}
+${order.notes ? `Notes: ${order.notes}` : ''}
+${order.specialInstructions ? `Special Instructions: ${order.specialInstructions}` : ''}
+${order.acceptedBy ? `Accepted By: ${order.acceptedBy}` : ''}
+${order.acceptedAt ? `Accepted At: ${new Date(order.acceptedAt).toLocaleString()}` : ''}
+${order.startedAt ? `Started At: ${new Date(order.startedAt).toLocaleString()}` : ''}
+${order.completedAt ? `Completed At: ${new Date(order.completedAt).toLocaleString()}` : ''}
+                `;
+                
+                this.showModal('Order Details', details);
+            }
+
+
+            setupEventListeners() {
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', () => this.logoutDriver());
+                }
+                
+                // Add event listeners for filters
+                const statusFilter = document.getElementById('status-filter');
+                const priorityFilter = document.getElementById('priority-filter');
+                const dateFilter = document.getElementById('date-filter');
+                const typeFilter = document.getElementById('type-filter');
+                
+                if (statusFilter) {
+                    statusFilter.addEventListener('change', (e) => {
+                        this.filters.status = e.target.value;
+                        this.loadOrderData();
+                    });
+                }
+                
+                if (priorityFilter) {
+                    priorityFilter.addEventListener('change', (e) => {
+                        this.filters.priority = e.target.value;
+                        this.loadOrderData();
+                    });
+                }
+                
+                if (dateFilter) {
+                    dateFilter.addEventListener('change', (e) => {
+                        this.filters.date = e.target.value;
+                        this.loadOrderData();
+                    });
+                }
+                
+                if (typeFilter) {
+                    typeFilter.addEventListener('change', (e) => {
+                        this.filters.type = e.target.value;
+                        this.loadOrderData();
+                    });
+                }
+
+                // Add refresh button
+                const refreshBtn = document.createElement('button');
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+                refreshBtn.className = 'btn btn-secondary';
+                refreshBtn.onclick = () => this.loadOrderData();
+                
+                const headerRight = document.querySelector('.header-right');
+                if (headerRight) {
+                    headerRight.insertBefore(refreshBtn, headerRight.firstChild);
+                }
+            }
+
+            setupNotifications() {
+                // Check for new orders
+                this.checkNewOrders();
+                
+                // Set up notification polling
+                setInterval(() => {
+                    this.checkNewOrders();
+                }, 10000); // Check every 10 seconds
+            }
+
+            checkNewOrders() {
+                const newOrders = this.orders.filter(o => 
+                    (o.status === 'pending' || o.status === 'requested') && 
+                    new Date(o.timestamp) > new Date(Date.now() - 60000) // Last minute
+                );
+                
+                if (newOrders.length > 0) {
+                    this.showNotification(`You have ${newOrders.length} new order requests!`, 'info');
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg text-white font-medium max-w-sm transform transition-all duration-300 translate-x-full`;
+                
+                switch (type) {
+                    case 'success':
+                        notification.className += ' bg-green-500';
+                        break;
+                    case 'error':
+                        notification.className += ' bg-red-500';
+                        break;
+                    case 'warning':
+                        notification.className += ' bg-yellow-500';
+                        break;
+                    default:
+                        notification.className += ' bg-blue-500';
+                }
+                
+                notification.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'info'} mr-2"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Animate in
+                setTimeout(() => {
+                    notification.classList.remove('translate-x-full');
+                }, 100);
+                
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    notification.classList.add('translate-x-full');
+                    setTimeout(() => {
+                        if (document.body.contains(notification)) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+
+            showModal(title, content) {
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                modal.innerHTML = `
+                    <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                        <h3 class="text-lg font-semibold mb-4">${title}</h3>
+                        <div class="text-sm text-gray-600 whitespace-pre-line">${content}</div>
+                        <div class="mt-6 flex justify-end">
+                            <button class="btn btn-primary" onclick="this.closest('.fixed').remove()">Close</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+            }
+
+            logoutDriver() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('user');
+                localStorage.removeItem('userType');
+                    this.showNotification('Logged out successfully!', 'success');
+                    setTimeout(() => {
+                window.location.href = 'login.html';
+                    }, 1000);
+                }
+            }
+
+            startRealTimeUpdates() {
+                this.updateInterval = setInterval(() => {
+                    this.loadOrderData();
+            }, 5000); // Update every 5 seconds
+        }
+
+            destroy() {
+                if (this.updateInterval) {
+                    clearInterval(this.updateInterval);
+                }
+            }
+        }
+
+        // Initialize orders system when page loads
+        let driverOrders;
+        document.addEventListener('DOMContentLoaded', function() {
+            driverOrders = new DriverOrders();
+        });
+
+        // Cleanup when page unloads
+        window.addEventListener('beforeunload', function() {
+            if (driverOrders) {
+                driverOrders.destroy();
+            }
+        });
+    </script>
+</body>
+</html>

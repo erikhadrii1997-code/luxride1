@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/cli": "^7.4.4",
+    "@capacitor/core": "^7.4.4",
+    "@capacitor/ios": "^7.4.4",
+    "express": "^5.1.0"
+  },
+  "name": "luxride-driver",
+  "version": "1.0.0",
+  "description": "LuxRide - Professional Driver Management Mobile Application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "echo 'No build step required'",
+    "cap:sync": "npx cap sync",
+    "cap:ios": "npx cap open ios",
+    "cap:android": "npx cap open android",
+    "cap:add:ios": "npx cap add ios",
+    "cap:add:android": "npx cap add android"
+  },
+  "keywords": ["taxi", "driver", "mobile", "capacitor"],
+  "author": "LuxRide Team",
+  "license": "ISC"
+}

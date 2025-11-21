@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a1a">
+    <link rel="manifest" href="/manifest.json">
+    <title>Luxride Driver - Schedule Management</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@capacitor/core@latest/dist/capacitor.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #2d2d2d;
+            --accent-color: #d4af37;
+            --accent-hover: #b8972e;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: var(--text-primary);
+            overscroll-behavior: none;
+            overflow-x: hidden;
+            line-height: 1.6;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            max-height: 100vh;
+            overflow-y: auto;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #f4d03f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .schedule-stats {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .nav-bar {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-link:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-link.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .schedule-card {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .calendar-header {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.75rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .calendar-day {
+            background: var(--bg-primary);
+            padding: 0.75rem;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            background: var(--bg-secondary);
+        }
+
+        .calendar-day.other-month {
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+        }
+
+        .calendar-day.today {
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid var(--accent-color);
+        }
+
+        .calendar-day.selected {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .day-number {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .day-events {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .event-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--success-color);
+        }
+
+        .event-dot.available {
+            background: var(--success-color);
+        }
+
+        .event-dot.busy {
+            background: var(--warning-color);
+        }
+
+        .event-dot.offline {
+            background: var(--danger-color);
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .time-slot {
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .time-slot.available {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .time-slot.busy {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+            border-color: var(--warning-color);
+        }
+
+        .time-slot.offline {
+            background: rgba(107, 114, 128, 0.1);
+            color: var(--text-muted);
+            border-color: var(--text-muted);
+        }
+
+        .time-slot.selected {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .schedule-form {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .availability-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .availability-status.available {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .availability-status.busy {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .availability-status.offline {
+            background: rgba(107, 114, 128, 0.1);
+            color: var(--text-secondary);
+            border: 1px solid rgba(107, 114, 128, 0.3);
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .recurring-schedule {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .recurring-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .recurring-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .recurring-day {
+            font-weight: 600;
+            color: var(--text-primary);
+            min-width: 80px;
+        }
+
+        .recurring-time {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .recurring-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-inactive {
+            background: rgba(107, 114, 128, 0.1);
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .schedule-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header fade-in">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>Schedule Management</h1>
+                    <p>Manage your availability and working hours</p>
+                </div>
+                <div class="header-right">
+                    <div class="schedule-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="hours-week">0</div>
+                            <div class="stat-label">Hours This Week</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="days-active">0</div>
+                            <div class="stat-label">Active Days</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="availability">0%</div>
+                            <div class="stat-label">Availability</div>
+                        </div>
+                    </div>
+                    <button id="logout-btn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Bar -->
+        <div class="nav-bar fade-in">
+            <div class="nav-links">
+                <a href="/driver-index" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+                <a href="/driver-dashboard" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    Analytics
+                </a>
+                <a href="/driver-rides" class="nav-link">
+                    <i class="fas fa-car"></i>
+                    Ride Management
+                </a>
+                <a href="/driver-orders" class="nav-link">
+                    <i class="fas fa-clipboard-list"></i>
+                    Order Management
+                </a>
+                <a href="/driver-schedule" class="nav-link active">
+                    <i class="fas fa-calendar-alt"></i>
+                    Schedule
+                </a>
+                <a href="/driver-earnings" class="nav-link">
+                    <i class="fas fa-dollar-sign"></i>
+                    Earnings
+                </a>
+                <a href="/driver-profile" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    Profile
+                </a>
+            </div>
+        </div>
+
+        <!-- Current Status -->
+        <div class="availability-status available fade-in">
+            <div class="status-indicator"></div>
+            <span>Currently Available - Ready to accept rides</span>
+            <button class="btn btn-danger" onclick="toggleAvailability()">
+                <i class="fas fa-power-off"></i>
+                Go Offline
+            </button>
+        </div>
+
+        <!-- Schedule Form -->
+        <div class="schedule-form fade-in">
+            <h2 class="card-title">
+                <i class="fas fa-plus"></i>
+                Add Schedule
+            </h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="date" id="schedule-date" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Start Time</label>
+                    <input type="time" id="start-time" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">End Time</label>
+                    <input type="time" id="end-time" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select id="schedule-status" class="form-input">
+                        <option value="available">Available</option>
+                        <option value="busy">Busy</option>
+                        <option value="offline">Offline</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+                <button class="btn btn-primary" onclick="addSchedule()">Add Schedule</button>
+            </div>
+        </div>
+
+        <!-- Schedule Grid -->
+        <div class="schedule-grid fade-in">
+            <!-- Calendar -->
+            <div class="schedule-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-calendar"></i>
+                        Calendar View
+                    </h2>
+                    <div>
+                        <button class="btn btn-secondary" onclick="previousMonth()">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="btn btn-secondary" onclick="nextMonth()">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="calendar-container">
+                    <!-- Calendar will be generated here -->
+                </div>
+            </div>
+
+            <!-- Time Slots -->
+            <div class="schedule-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-clock"></i>
+                        Today's Schedule
+                    </h2>
+                    <button class="btn btn-primary" onclick="refreshSchedule()">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh
+                    </button>
+                </div>
+                <div class="time-slots" id="time-slots-container">
+                    <!-- Time slots will be generated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Recurring Schedule -->
+        <div class="recurring-schedule fade-in">
+            <h2 class="card-title">
+                <i class="fas fa-repeat"></i>
+                Recurring Schedule
+            </h2>
+            <div id="recurring-schedule-list">
+                <!-- Recurring schedule items will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Advanced Driver Schedule Management System
+        class DriverSchedule {
+            constructor() {
+                this.user = null;
+                this.currentDate = new Date();
+                this.selectedDate = new Date();
+                this.schedules = [];
+                this.isAvailable = true;
+                this.selectedTimeSlots = new Set();
+                this.updateInterval = null;
+                this.init();
+            }
+
+            async init() {
+                await this.checkUserAccess();
+                await this.loadScheduleData();
+                this.setupEventListeners();
+                this.generateCalendar();
+                this.generateTimeSlots();
+                this.loadRecurringSchedule();
+                this.updateStats();
+                this.setupNotifications();
+                this.startRealTimeUpdates();
+            }
+
+            async checkUserAccess() {
+                this.user = JSON.parse(localStorage.getItem('user') || '{}');
+                
+                if (!this.user.email) {
+                    this.showNotification('Please login to access this page.', 'error');
+                    setTimeout(() => {
+                window.location.href = 'login.html';
+                    }, 2000);
+                    return false;
+                }
+                return true;
+            }
+
+            async loadScheduleData() {
+                try {
+                    this.schedules = JSON.parse(localStorage.getItem('driverSchedules') || '[]');
+                    
+                    // Load saved availability status
+                    const savedStatus = localStorage.getItem('driverAvailability');
+                    if (savedStatus !== null) {
+                        this.isAvailable = savedStatus === 'true';
+                    }
+                    
+                    // Create default schedule if none exists
+                    if (this.schedules.length === 0) {
+                        this.createDefaultSchedule();
+                    }
+                    
+                    this.updateAvailabilityUI();
+                } catch (error) {
+                    console.error('Error loading schedule data:', error);
+                    this.showNotification('Error loading schedule data', 'error');
+                }
+            }
+
+            createDefaultSchedule() {
+                const today = new Date();
+                const defaultSchedules = [
+                    {
+                        id: '1',
+                        date: today.toISOString().split('T')[0],
+                        startTime: '08:00',
+                        endTime: '17:00',
+                        status: 'available',
+                        type: 'single',
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: '2',
+                        dayOfWeek: 1, // Monday
+                        startTime: '08:00',
+                        endTime: '17:00',
+                        status: 'available',
+                        type: 'recurring',
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: '3',
+                        dayOfWeek: 2, // Tuesday
+                        startTime: '08:00',
+                        endTime: '17:00',
+                        status: 'available',
+                        type: 'recurring',
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: '4',
+                        dayOfWeek: 3, // Wednesday
+                        startTime: '08:00',
+                        endTime: '17:00',
+                        status: 'available',
+                        type: 'recurring',
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: '5',
+                        dayOfWeek: 4, // Thursday
+                        startTime: '08:00',
+                        endTime: '17:00',
+                        status: 'available',
+                        type: 'recurring',
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: '6',
+                        dayOfWeek: 5, // Friday
+                        startTime: '08:00',
+                        endTime: '17:00',
+                        status: 'available',
+                        type: 'recurring',
+                        createdAt: new Date().toISOString()
+                    }
+                ];
+                
+                this.schedules = defaultSchedules;
+                localStorage.setItem('driverSchedules', JSON.stringify(this.schedules));
+            }
+
+            generateCalendar() {
+                const year = this.currentDate.getFullYear();
+                const month = this.currentDate.getMonth();
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+            
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                          'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            let calendarHTML = `
+                <div class="calendar-header">${months[month]} ${year}</div>
+            `;
+            
+            // Add day headers
+            days.forEach(day => {
+                calendarHTML += `<div class="calendar-header">${day}</div>`;
+            });
+            
+            // Add calendar days
+            const current = new Date(startDate);
+            for (let i = 0; i < 42; i++) {
+                const isCurrentMonth = current.getMonth() === month;
+                const isToday = current.toDateString() === new Date().toDateString();
+                    const isSelected = current.toDateString() === this.selectedDate.toDateString();
+                    
+                    const daySchedules = this.getDaySchedules(current);
+                    const hasSchedule = daySchedules.length > 0;
+                    const isAvailable = daySchedules.some(s => s.status === 'available');
+                
+                calendarHTML += `
+                        <div class="calendar-day ${!isCurrentMonth ? 'other-month' : ''} ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${hasSchedule ? 'has-schedule' : ''} ${isAvailable ? 'available' : 'unavailable'}" 
+                             onclick="driverSchedule.selectDate('${current.toISOString()}')">
+                        <div class="day-number">${current.getDate()}</div>
+                        <div class="day-events">
+                            ${daySchedules.map(schedule => `
+                                    <div class="event-dot ${schedule.status}" title="${schedule.startTime} - ${schedule.endTime}"></div>
+                            `).join('')}
+                        </div>
+                            ${hasSchedule ? `<div class="day-status ${isAvailable ? 'available' : 'unavailable'}"></div>` : ''}
+                    </div>
+                `;
+                
+                current.setDate(current.getDate() + 1);
+            }
+            
+            document.getElementById('calendar-container').innerHTML = calendarHTML;
+        }
+
+            getDaySchedules(date) {
+                const dateStr = date.toISOString().split('T')[0];
+                const dayOfWeek = date.getDay();
+                
+                // Get single-day schedules
+                const singleSchedules = this.schedules.filter(s => 
+                    s.type === 'single' && s.date === dateStr
+                );
+                
+                // Get recurring schedules for this day of week
+                const recurringSchedules = this.schedules.filter(s => 
+                    s.type === 'recurring' && s.dayOfWeek === dayOfWeek
+                );
+                
+                return [...singleSchedules, ...recurringSchedules];
+            }
+
+            generateTimeSlots() {
+                const selectedDateStr = this.selectedDate.toISOString().split('T')[0];
+                const daySchedules = this.getDaySchedules(this.selectedDate);
+            
+            const timeSlots = [];
+            for (let hour = 0; hour < 24; hour++) {
+                const timeStr = `${hour.toString().padStart(2, '0')}:00`;
+                const schedule = daySchedules.find(s => 
+                    s.startTime <= timeStr && s.endTime > timeStr
+                );
+                
+                const status = schedule ? schedule.status : 'offline';
+                    const isSelected = this.selectedTimeSlots.has(timeStr);
+                    const isCurrentHour = hour === new Date().getHours() && 
+                        this.selectedDate.toDateString() === new Date().toDateString();
+                
+                timeSlots.push(`
+                        <div class="time-slot ${status} ${isSelected ? 'selected' : ''} ${isCurrentHour ? 'current' : ''}" 
+                             onclick="driverSchedule.selectTimeSlot('${timeStr}')" 
+                             title="${this.getTimeSlotTooltip(timeStr, schedule)}">
+                            <div class="time-label">${timeStr}</div>
+                            <div class="time-status">${this.getTimeSlotStatus(status)}</div>
+                    </div>
+                `);
+            }
+            
+            document.getElementById('time-slots-container').innerHTML = timeSlots.join('');
+        }
+
+            getTimeSlotTooltip(time, schedule) {
+                if (schedule) {
+                    return `${schedule.status} - ${schedule.startTime} to ${schedule.endTime}`;
+                }
+                return 'No schedule set';
+            }
+
+            getTimeSlotStatus(status) {
+                const statusMap = {
+                    'available': '✓',
+                    'busy': '✗',
+                    'break': '☕',
+                    'offline': '○'
+                };
+                return statusMap[status] || '○';
+            }
+
+            loadRecurringSchedule() {
+                const recurringSchedules = this.schedules.filter(s => s.type === 'recurring');
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            
+            if (recurringSchedules.length === 0) {
+                document.getElementById('recurring-schedule-list').innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-calendar-plus text-4xl mb-4"></i>
+                        <p>No recurring schedule set</p>
+                        <p class="text-sm">Add a recurring schedule to maintain consistent availability</p>
+                            <button onclick="driverSchedule.showAddRecurringModal()" class="btn btn-primary mt-4">
+                                <i class="fas fa-plus"></i>
+                                Add Recurring Schedule
+                            </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            const recurringHTML = recurringSchedules.map(schedule => `
+                    <div class="recurring-item" data-schedule-id="${schedule.id}">
+                    <div class="recurring-info">
+                        <div class="recurring-day">${days[schedule.dayOfWeek]}</div>
+                        <div class="recurring-time">${schedule.startTime} - ${schedule.endTime}</div>
+                            <div class="recurring-type">Recurring</div>
+                    </div>
+                        <div class="recurring-actions">
+                    <div class="recurring-status ${schedule.status === 'available' ? 'status-active' : 'status-inactive'}">
+                        ${schedule.status}
+                            </div>
+                            <button onclick="driverSchedule.editSchedule('${schedule.id}')" class="btn btn-sm btn-secondary">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="driverSchedule.deleteSchedule('${schedule.id}')" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('recurring-schedule-list').innerHTML = recurringHTML;
+        }
+
+            updateStats() {
+            const today = new Date();
+            const weekStart = new Date(today);
+            weekStart.setDate(today.getDate() - today.getDay());
+            
+                const weekSchedules = this.schedules.filter(s => {
+                if (s.type === 'single') {
+                    const scheduleDate = new Date(s.date);
+                    return scheduleDate >= weekStart && scheduleDate <= today;
+                }
+                return s.type === 'recurring' && s.status === 'available';
+            });
+            
+            const totalHours = weekSchedules.reduce((sum, s) => {
+                const start = new Date(`2000-01-01T${s.startTime}`);
+                const end = new Date(`2000-01-01T${s.endTime}`);
+                const hours = (end - start) / (1000 * 60 * 60);
+                return sum + hours;
+            }, 0);
+            
+            const activeDays = new Set(weekSchedules.map(s => s.dayOfWeek || new Date(s.date).getDay())).size;
+            const availability = Math.round((activeDays / 7) * 100);
+                
+                // Calculate monthly stats
+                const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+                const monthSchedules = this.schedules.filter(s => {
+                    if (s.type === 'single') {
+                        const scheduleDate = new Date(s.date);
+                        return scheduleDate >= monthStart && scheduleDate <= today;
+                    }
+                    return s.type === 'recurring' && s.status === 'available';
+                });
+                
+                const monthlyHours = monthSchedules.reduce((sum, s) => {
+                    const start = new Date(`2000-01-01T${s.startTime}`);
+                    const end = new Date(`2000-01-01T${s.endTime}`);
+                    const hours = (end - start) / (1000 * 60 * 60);
+                    return sum + hours;
+                }, 0);
+            
+            document.getElementById('hours-week').textContent = Math.round(totalHours);
+            document.getElementById('days-active').textContent = activeDays;
+            document.getElementById('availability').textContent = `${availability}%`;
+                
+                // Update additional stats if elements exist
+                const monthlyHoursElement = document.getElementById('hours-month');
+                if (monthlyHoursElement) {
+                    monthlyHoursElement.textContent = Math.round(monthlyHours);
+                }
+                
+                const totalSchedulesElement = document.getElementById('total-schedules');
+                if (totalSchedulesElement) {
+                    totalSchedulesElement.textContent = this.schedules.length;
+                }
+            }
+
+            selectDate(dateString) {
+                this.selectedDate = new Date(dateString);
+                this.selectedTimeSlots.clear();
+                this.generateCalendar();
+                this.generateTimeSlots();
+                this.updateSelectedDateInfo();
+            }
+
+            selectTimeSlot(time) {
+                if (this.selectedTimeSlots.has(time)) {
+                    this.selectedTimeSlots.delete(time);
+                } else {
+                    this.selectedTimeSlots.add(time);
+                }
+                
+                this.generateTimeSlots();
+                this.updateSelectedTimeInfo();
+            }
+
+            updateSelectedDateInfo() {
+                const dateInfo = document.getElementById('selected-date-info');
+                if (dateInfo) {
+                    const daySchedules = this.getDaySchedules(this.selectedDate);
+                    const hasSchedule = daySchedules.length > 0;
+                    const isAvailable = daySchedules.some(s => s.status === 'available');
+                    
+                    dateInfo.innerHTML = `
+                        <div class="date-info">
+                            <h3>${this.selectedDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</h3>
+                            <div class="date-status ${isAvailable ? 'available' : 'unavailable'}">
+                                <i class="fas fa-${isAvailable ? 'check-circle' : 'times-circle'}"></i>
+                                ${isAvailable ? 'Available' : 'Unavailable'}
+                            </div>
+                            ${hasSchedule ? `
+                                <div class="schedule-summary">
+                                    ${daySchedules.map(s => `${s.startTime} - ${s.endTime} (${s.status})`).join(', ')}
+                                </div>
+                            ` : '<div class="no-schedule">No schedule set</div>'}
+                        </div>
+                    `;
+                }
+            }
+
+            updateSelectedTimeInfo() {
+                const timeInfo = document.getElementById('selected-time-info');
+                if (timeInfo && this.selectedTimeSlots.size > 0) {
+                    const sortedTimes = Array.from(this.selectedTimeSlots).sort();
+                    timeInfo.innerHTML = `
+                        <div class="time-info">
+                            <h4>Selected Times (${this.selectedTimeSlots.size})</h4>
+                            <div class="selected-times">
+                                ${sortedTimes.map(time => `<span class="time-tag">${time}</span>`).join('')}
+                            </div>
+                            <button onclick="driverSchedule.bulkUpdateTimeSlots()" class="btn btn-primary btn-sm">
+                                <i class="fas fa-edit"></i>
+                                Update Selected
+                            </button>
+                        </div>
+                    `;
+                } else if (timeInfo) {
+                    timeInfo.innerHTML = '';
+                }
+            }
+
+            previousMonth() {
+                this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+                this.generateCalendar();
+            }
+
+            nextMonth() {
+                this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+                this.generateCalendar();
+            }
+
+            addSchedule() {
+            const date = document.getElementById('schedule-date').value;
+            const startTime = document.getElementById('start-time').value;
+            const endTime = document.getElementById('end-time').value;
+            const status = document.getElementById('schedule-status').value;
+            
+            if (!date || !startTime || !endTime) {
+                    this.showNotification('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                // Validate time range
+                if (startTime >= endTime) {
+                    this.showNotification('End time must be after start time', 'error');
+                return;
+            }
+            
+            const newSchedule = {
+                id: Date.now().toString(),
+                date: date,
+                startTime: startTime,
+                endTime: endTime,
+                status: status,
+                    type: 'single',
+                    createdAt: new Date().toISOString()
+                };
+                
+                this.schedules.push(newSchedule);
+                localStorage.setItem('driverSchedules', JSON.stringify(this.schedules));
+                
+                this.showNotification('Schedule added successfully!', 'success');
+                this.generateCalendar();
+                this.generateTimeSlots();
+                this.updateStats();
+                this.clearForm();
+            }
+
+            addRecurringSchedule(dayOfWeek, startTime, endTime, status) {
+                const newSchedule = {
+                    id: Date.now().toString(),
+                    dayOfWeek: dayOfWeek,
+                    startTime: startTime,
+                    endTime: endTime,
+                    status: status,
+                    type: 'recurring',
+                    createdAt: new Date().toISOString()
+                };
+                
+                this.schedules.push(newSchedule);
+                localStorage.setItem('driverSchedules', JSON.stringify(this.schedules));
+                
+                this.showNotification('Recurring schedule added successfully!', 'success');
+                this.loadRecurringSchedule();
+                this.generateCalendar();
+                this.updateStats();
+            }
+
+            editSchedule(scheduleId) {
+                const schedule = this.schedules.find(s => s.id === scheduleId);
+                if (!schedule) return;
+                
+                this.showEditScheduleModal(schedule);
+            }
+
+            deleteSchedule(scheduleId) {
+                if (confirm('Are you sure you want to delete this schedule?')) {
+                    this.schedules = this.schedules.filter(s => s.id !== scheduleId);
+                    localStorage.setItem('driverSchedules', JSON.stringify(this.schedules));
+                    
+                    this.showNotification('Schedule deleted successfully!', 'success');
+                    this.loadRecurringSchedule();
+                    this.generateCalendar();
+                    this.updateStats();
+                }
+            }
+
+            bulkUpdateTimeSlots() {
+                if (this.selectedTimeSlots.size === 0) {
+                    this.showNotification('Please select time slots to update', 'warning');
+                    return;
+                }
+                
+                this.showBulkUpdateModal();
+            }
+
+            showAddRecurringModal() {
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                modal.innerHTML = `
+                    <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                        <h3 class="text-lg font-semibold mb-4">Add Recurring Schedule</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Day of Week</label>
+                                <select id="recurring-day" class="form-input w-full">
+                                    <option value="0">Sunday</option>
+                                    <option value="1">Monday</option>
+                                    <option value="2">Tuesday</option>
+                                    <option value="3">Wednesday</option>
+                                    <option value="4">Thursday</option>
+                                    <option value="5">Friday</option>
+                                    <option value="6">Saturday</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Start Time</label>
+                                <input type="time" id="recurring-start-time" class="form-input w-full" value="08:00">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">End Time</label>
+                                <input type="time" id="recurring-end-time" class="form-input w-full" value="17:00">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Status</label>
+                                <select id="recurring-status" class="form-input w-full">
+                                    <option value="available">Available</option>
+                                    <option value="busy">Busy</option>
+                                    <option value="break">Break</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-end space-x-2">
+                            <button class="btn btn-secondary" onclick="this.closest('.fixed').remove()">Cancel</button>
+                            <button class="btn btn-primary" onclick="driverSchedule.saveRecurringSchedule()">Save</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+            }
+
+            saveRecurringSchedule() {
+                const dayOfWeek = parseInt(document.getElementById('recurring-day').value);
+                const startTime = document.getElementById('recurring-start-time').value;
+                const endTime = document.getElementById('recurring-end-time').value;
+                const status = document.getElementById('recurring-status').value;
+                
+                if (startTime >= endTime) {
+                    this.showNotification('End time must be after start time', 'error');
+                    return;
+                }
+                
+                this.addRecurringSchedule(dayOfWeek, startTime, endTime, status);
+                document.querySelector('.fixed').remove();
+            }
+
+            showBulkUpdateModal() {
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                modal.innerHTML = `
+                    <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                        <h3 class="text-lg font-semibold mb-4">Update Selected Time Slots</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Status</label>
+                                <select id="bulk-status" class="form-input w-full">
+                                    <option value="available">Available</option>
+                                    <option value="busy">Busy</option>
+                                    <option value="break">Break</option>
+                                    <option value="offline">Offline</option>
+                                </select>
+                            </div>
+                            <div class="text-sm text-gray-600">
+                                This will update ${this.selectedTimeSlots.size} time slots for ${this.selectedDate.toLocaleDateString()}
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-end space-x-2">
+                            <button class="btn btn-secondary" onclick="this.closest('.fixed').remove()">Cancel</button>
+                            <button class="btn btn-primary" onclick="driverSchedule.saveBulkUpdate()">Update</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+            }
+
+            saveBulkUpdate() {
+                const status = document.getElementById('bulk-status').value;
+                const dateStr = this.selectedDate.toISOString().split('T')[0];
+                
+                // Remove existing schedules for this date
+                this.schedules = this.schedules.filter(s => !(s.type === 'single' && s.date === dateStr));
+                
+                // Add new schedule covering all selected time slots
+                const sortedTimes = Array.from(this.selectedTimeSlots).sort();
+                const startTime = sortedTimes[0];
+                const endTime = this.addMinutesToTime(sortedTimes[sortedTimes.length - 1], 60);
+                
+                const newSchedule = {
+                    id: Date.now().toString(),
+                    date: dateStr,
+                    startTime: startTime,
+                    endTime: endTime,
+                    status: status,
+                    type: 'single',
+                    createdAt: new Date().toISOString()
+                };
+                
+                this.schedules.push(newSchedule);
+                localStorage.setItem('driverSchedules', JSON.stringify(this.schedules));
+                
+                this.showNotification('Time slots updated successfully!', 'success');
+                this.selectedTimeSlots.clear();
+                this.generateCalendar();
+                this.generateTimeSlots();
+                this.updateStats();
+                document.querySelector('.fixed').remove();
+            }
+
+            addMinutesToTime(timeStr, minutes) {
+                const [hours, mins] = timeStr.split(':').map(Number);
+                const totalMinutes = hours * 60 + mins + minutes;
+                const newHours = Math.floor(totalMinutes / 60) % 24;
+                const newMins = totalMinutes % 60;
+                return `${newHours.toString().padStart(2, '0')}:${newMins.toString().padStart(2, '0')}`;
+            }
+
+            clearForm() {
+            document.getElementById('schedule-date').value = '';
+            document.getElementById('start-time').value = '';
+            document.getElementById('end-time').value = '';
+            document.getElementById('schedule-status').value = 'available';
+        }
+
+            toggleAvailability() {
+                this.isAvailable = !this.isAvailable;
+                localStorage.setItem('driverAvailability', this.isAvailable.toString());
+                this.updateAvailabilityUI();
+                
+                if (this.isAvailable) {
+                    this.showNotification('You are now available for rides!', 'success');
+                } else {
+                    this.showNotification('You are now offline', 'info');
+                }
+            }
+
+            updateAvailabilityUI() {
+            const statusElement = document.querySelector('.availability-status');
+                if (!statusElement) return;
+            
+                if (this.isAvailable) {
+                statusElement.className = 'availability-status available fade-in';
+                statusElement.innerHTML = `
+                    <div class="status-indicator"></div>
+                    <span>Currently Available - Ready to accept rides</span>
+                        <button class="btn btn-danger" onclick="driverSchedule.toggleAvailability()">
+                        <i class="fas fa-power-off"></i>
+                        Go Offline
+                    </button>
+                `;
+            } else {
+                statusElement.className = 'availability-status offline fade-in';
+                statusElement.innerHTML = `
+                    <div class="status-indicator"></div>
+                    <span>Currently Offline - Not accepting rides</span>
+                        <button class="btn btn-success" onclick="driverSchedule.toggleAvailability()">
+                        <i class="fas fa-power-off"></i>
+                        Go Online
+                    </button>
+                `;
+                }
+            }
+
+            refreshSchedule() {
+                this.generateTimeSlots();
+                this.updateStats();
+                this.showNotification('Schedule refreshed!', 'info');
+            }
+
+            setupEventListeners() {
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                    logoutBtn.addEventListener('click', () => this.logoutDriver());
+                }
+                
+                // Add refresh button
+                const refreshBtn = document.createElement('button');
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+                refreshBtn.className = 'btn btn-secondary';
+                refreshBtn.onclick = () => this.refreshSchedule();
+                
+                const headerRight = document.querySelector('.header-right');
+                if (headerRight) {
+                    headerRight.insertBefore(refreshBtn, headerRight.firstChild);
+                }
+            }
+
+            setupNotifications() {
+                // Check for schedule conflicts
+                this.checkScheduleConflicts();
+                
+                // Set up notification polling
+                setInterval(() => {
+                    this.checkScheduleConflicts();
+                }, 30000); // Check every 30 seconds
+            }
+
+            checkScheduleConflicts() {
+                const today = new Date();
+                const todayStr = today.toISOString().split('T')[0];
+                const currentTime = today.toTimeString().split(' ')[0].substring(0, 5);
+                
+                const todaySchedules = this.getDaySchedules(today);
+                const currentSchedule = todaySchedules.find(s => 
+                    s.startTime <= currentTime && s.endTime > currentTime
+                );
+                
+                if (currentSchedule && currentSchedule.status === 'available' && !this.isAvailable) {
+                    this.showNotification('You have an active schedule but are offline!', 'warning');
+                }
+            }
+
+            startRealTimeUpdates() {
+                this.updateInterval = setInterval(() => {
+                    this.updateStats();
+                    this.updateSelectedDateInfo();
+                }, 60000); // Update every minute
+            }
+
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg text-white font-medium max-w-sm transform transition-all duration-300 translate-x-full`;
+                
+                switch (type) {
+                    case 'success':
+                        notification.className += ' bg-green-500';
+                        break;
+                    case 'error':
+                        notification.className += ' bg-red-500';
+                        break;
+                    case 'warning':
+                        notification.className += ' bg-yellow-500';
+                        break;
+                    default:
+                        notification.className += ' bg-blue-500';
+                }
+                
+                notification.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'info'} mr-2"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Animate in
+                setTimeout(() => {
+                    notification.classList.remove('translate-x-full');
+                }, 100);
+                
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    notification.classList.add('translate-x-full');
+                    setTimeout(() => {
+                        if (document.body.contains(notification)) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+
+            logoutDriver() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('user');
+                localStorage.removeItem('userType');
+                    this.showNotification('Logged out successfully!', 'success');
+                    setTimeout(() => {
+                window.location.href = 'login.html';
+                    }, 1000);
+                }
+            }
+
+            destroy() {
+                if (this.updateInterval) {
+                    clearInterval(this.updateInterval);
+                }
+            }
+        }
+
+        // Initialize schedule system when page loads
+        let driverSchedule;
+        document.addEventListener('DOMContentLoaded', function() {
+            driverSchedule = new DriverSchedule();
+        });
+
+        // Cleanup when page unloads
+        window.addEventListener('beforeunload', function() {
+            if (driverSchedule) {
+                driverSchedule.destroy();
+            }
+        });
+    </script>
+</body>
+</html>

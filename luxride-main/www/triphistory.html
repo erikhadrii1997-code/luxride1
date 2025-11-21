@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Luxride - Premium Transportation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Preconnect to external domains for better performance -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Font fallbacks to prevent rendering issues */
+        body, * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        .font-serif, h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+        }
+    </style>
+    <style>
+        :root {
+            --primary-gold: #d4af37;
+            --primary-gold-dark: #b8972e;
+            --primary-gold-light: #e6c14b;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --border-light: rgba(0, 0, 0, 0.05);
+            --border-medium: rgba(0, 0, 0, 0.1);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: var(--text-primary);
+            overscroll-behavior: none;
+            overflow-x: hidden;
+            line-height: 1.6;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: transparent;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-gold-dark) 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-md);
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, var(--primary-gold-light) 0%, var(--primary-gold) 100%);
+            box-shadow: var(--shadow-lg);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+        .input-field {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2), var(--shadow-md);
+            border-color: var(--primary-gold);
+            outline: none;
+        }
+        .input-field::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: var(--shadow-2xl);
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-gold), var(--primary-gold-dark));
+        }
+        .trip-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+        }
+        .trip-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+        .trip-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary-gold), var(--primary-gold-dark));
+        }
+        .trip-card.completed::before {
+            background: linear-gradient(180deg, #10b981, #059669);
+        }
+        .trip-card.upcoming::before {
+            background: linear-gradient(180deg, #3b82f6, #2563eb);
+        }
+        .trip-card.cancelled::before {
+            background: linear-gradient(180deg, #ef4444, #dc2626);
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-completed {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+        .status-upcoming {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #2563eb;
+        }
+        .status-cancelled {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+        .vehicle-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(212, 175, 55, 0.1);
+            color: #d4af37;
+        }
+        .rating {
+            color: #fbbf24;
+        }
+        .pagination-btn {
+            padding: 8px 12px;
+            margin: 0 4px;
+            border-radius: 8px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            transition: all 0.2s;
+        }
+        .pagination-btn:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        .pagination-btn.active {
+            background: #d4af37;
+            color: white;
+            border-color: #d4af37;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+        }
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #d1d5db;
+        }
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .animate-slide-in-left {
+            animation: slideInFromLeft 0.8s ease-out;
+        }
+        .animate-slide-in-right {
+            animation: slideInFromRight 0.8s ease-out;
+        }
+        .shimmer {
+            animation: shimmer 2s infinite;
+        }
+        .trip-details {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .trip-route {
+            flex-grow: 1;
+        }
+        .trip-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .stats-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+        .stats-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-gold), var(--primary-gold-dark));
+        }
+        .stats-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-gold);
+            margin-bottom: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+        .stats-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+        @media (max-width: 640px) {
+            .form-container {
+                margin: 10px;
+            }
+            .trip-details {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .trip-actions {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        /* New Solid Background Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #d4af37;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .brand-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333333;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-item:hover::before {
+            left: 0;
+        }
+
+        .nav-item:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .nav-item.logout {
+            background: #ef4444;
+            color: white;
+        }
+
+        .nav-item.logout:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-toggle:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .hamburger-line {
+            width: 25px;
+            height: 3px;
+            background: #333333;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            height: 100vh;
+            background: #ffffff;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+            transition: right 0.3s ease;
+            z-index: 1001;
+            overflow-y: auto;
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+        }
+
+        .mobile-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-brand .brand-logo {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .mobile-brand .brand-text {
+            color: white;
+            font-size: 20px;
+        }
+
+        .mobile-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .mobile-nav-content {
+            padding: 20px;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #333333;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        .mobile-nav-item:hover {
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            color: white;
+            transform: translateX(8px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .mobile-nav-item.active {
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .mobile-nav-item.logout {
+            background: #ef4444;
+            color: white;
+        }
+
+        .mobile-nav-item.logout:hover {
+            background: #dc2626;
+            transform: translateX(8px);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .navbar-container {
+                padding: 0 16px;
+                height: 60px;
+            }
+
+            .brand-text {
+                font-size: 20px;
+            }
+
+            .brand-logo {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mobile-nav {
+                width: 100%;
+            }
+
+            .navbar-container {
+                padding: 0 12px;
+            }
+        }
+
+        body {
+            padding-top: 70px; /* Account for fixed navbar */
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center">
+    <div id="particles-js"></div>
+    <!-- New Solid Background Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <!-- Logo Section -->
+            <div class="navbar-brand">
+                <div class="brand-logo">
+                    <i class="fas fa-car"></i>
+                </div>
+                <span class="brand-text">Luxride</span>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="navbar-nav desktop-nav">
+                <a href="/" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Ride</span>
+                </a>
+                <a href="/triphistory" class="nav-item active">
+                    <i class="fas fa-history"></i>
+                    <span>Trip History</span>
+                </a>
+                <a href="/inbox" class="nav-item">
+                    <i class="fas fa-inbox"></i>
+                    <span>Inbox</span>
+                </a>
+                <a href="/profile" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="/driver-dashboard" class="nav-item">
+                    <i class="fas fa-car-side"></i>
+                    <span>Driver</span>
+                </a>
+                <a href="/signup" class="nav-item">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Sign Up</span>
+                </a>
+                <a href="/receipt" class="nav-item">
+                    <i class="fas fa-receipt"></i>
+                    <span>Receipt</span>
+                </a>
+                <a href="/book" class="nav-item">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Book</span>
+                </a>
+                <a href="/login" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log out</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-toggle" id="mobile-toggle">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobile-nav">
+            <div class="mobile-nav-header">
+                <div class="mobile-brand">
+                    <div class="brand-logo">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <span class="brand-text">Luxride</span>
+                </div>
+                <button class="mobile-close" id="mobile-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mobile-nav-content">
+                <a href="/" class="mobile-nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Ride</span>
+                </a>
+                <a href="/triphistory" class="mobile-nav-item active">
+                    <i class="fas fa-history"></i>
+                    <span>Trip History</span>
+                </a>
+                <a href="/inbox" class="mobile-nav-item">
+                    <i class="fas fa-inbox"></i>
+                    <span>Inbox</span>
+                </a>
+                <a href="/profile" class="mobile-nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="/driver-dashboard" class="mobile-nav-item">
+                    <i class="fas fa-car-side"></i>
+                    <span>Driver</span>
+                </a>
+                <a href="/signup" class="mobile-nav-item">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Sign Up</span>
+                </a>
+                <a href="/receipt" class="mobile-nav-item">
+                    <i class="fas fa-receipt"></i>
+                    <span>Receipt</span>
+                </a>
+                <a href="/book" class="mobile-nav-item">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Book</span>
+                </a>
+                <a href="/login" class="mobile-nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log out</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Overlay -->
+        <div class="mobile-overlay" id="mobile-overlay"></div>
+    </nav>
+
+    <section class="py-12 w-full flex justify-center">
+        <div class="form-container p-8 max-w-4xl w-full mx-4">
+            <h2 class="text-3xl font-bold mb-6 text-center" style="font-family: 'Playfair Display', serif;">Trip History</h2>
+            
+            <!-- Statistics Section -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="stats-card">
+                    <div class="stats-value" id="total-trips">0</div>
+                    <div class="stats-label">Total Trips</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-value" id="total-spent">$0</div>
+                    <div class="stats-label">Total Spent</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-value" id="avg-rating">0.0</div>
+                    <div class="stats-label">Avg Rating</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-value" id="favorite-type">-</div>
+                    <div class="stats-label">Favorite Type</div>
+                </div>
+            </div>
+            
+            <!-- Filters Section -->
+            <div class="flex flex-col md:flex-row gap-4 mb-6">
+                <div class="relative flex-grow">
+                    <input type="text" id="search-input" class="input-field text-sm w-full pl-10" placeholder="Search by location or driver">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <select id="filter-status" class="input-field text-sm">
+                    <option value="all">All Trips</option>
+                    <option value="completed">Completed</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+                <select id="filter-type" class="input-field text-sm">
+                    <option value="all">All Types</option>
+                    <option value="Standard">Standard</option>
+                    <option value="Premium">Premium</option>
+                    <option value="SUV">SUV</option>
+                    <option value="Luxury">Luxury</option>
+                </select>
+                <input type="date" id="filter-date" class="input-field text-sm" placeholder="Filter by Date">
+                <button id="clear-filters" class="btn-primary py-2 px-4 text-sm">Clear</button>
+            </div>
+            
+            <!-- Sort Options -->
+            <div class="flex justify-end mb-4">
+                <select id="sort-options" class="input-field text-sm w-48">
+                    <option value="date-desc">Newest First</option>
+                    <option value="date-asc">Oldest First</option>
+                    <option value="price-desc">Highest Price</option>
+                    <option value="price-asc">Lowest Price</option>
+                </select>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loading-state" class="hidden">
+                <div class="trip-card skeleton h-32 mb-4"></div>
+                <div class="trip-card skeleton h-32 mb-4"></div>
+                <div class="trip-card skeleton h-32 mb-4"></div>
+            </div>
+            
+            <!-- Trip List -->
+            <div id="trip-list" class="space-y-4">
+                <!-- Trips will be populated by JS -->
+            </div>
+            
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state hidden">
+                <i class="fas fa-car"></i>
+                <h3 class="text-xl font-semibold mb-2">No trips found</h3>
+                <p>Try adjusting your filters or search terms</p>
+            </div>
+            
+            <!-- Pagination -->
+            <div id="pagination" class="flex justify-center mt-6">
+                <!-- Pagination buttons will be populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-8 w-full">
+        <div class="container mx-auto px-4 max-w-md">
+            <div class="grid grid-cols-1 gap-6 text-center">
+                <div>
+                    <h4 class="text-lg font-bold mb-3" style="font-family: 'Playfair Display', serif;">Luxride</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/" class="hover:text-[#d4af37]">About us</a></li>
+                        <li><a href="#" class="hover:text-[#d4af37]">Careers</a></li>
+                        <li><a href="#" class="hover:text-[#d4af37]">Newsroom</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-3" style="font-family: 'Playfair Display', serif;">Support</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="help.html" class="hover:text-[#d4af37]">Help Center</a></li>
+                        <li><a href="#" class="hover:text-[#d4af37]">Contact us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-3" style="font-family: 'Playfair Display', serif;">Follow us</h4>
+                    <div class="flex space-x-4 justify-center">
+                        <a href="#" class="hover:text-[#d4af37]"><i class="fab fa-facebook-f text-lg"></i></a>
+                        <a href="#" class="hover:text-[#d4af37]"><i class="fab fa-twitter text-lg"></i></a>
+                        <a href="#" class="hover:text-[#d4af37]"><i class="fab fa-instagram text-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 text-center text-sm text-gray-600">
+                <p>&copy; 2025 Luxride Technologies Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 50, density: { enable: true, value_area: 1000 } },
+                color: { value: ['#d4af37', '#3b82f6', '#ffffff', '#b8972e'] },
+                shape: { type: 'circle', stroke: { width: 2, color: '#d4af37' } },
+                opacity: { value: 0.6, random: true, anim: { enable: true, speed: 1.5, opacity_min: 0.1 } },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#d4af37', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: 'none', random: true }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+                modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+
+        // DOM Elements
+        const tripList = document.getElementById('trip-list');
+        const filterStatus = document.getElementById('filter-status');
+        const filterType = document.getElementById('filter-type');
+        const filterDate = document.getElementById('filter-date');
+        const searchInput = document.getElementById('search-input');
+        const sortOptions = document.getElementById('sort-options');
+        const clearFiltersBtn = document.getElementById('clear-filters');
+        const pagination = document.getElementById('pagination');
+        const loadingState = document.getElementById('loading-state');
+        const emptyState = document.getElementById('empty-state');
+        const toast = document.getElementById('toast');
+        
+
+        // State management
+        let currentPage = 1;
+        const itemsPerPage = 5;
+        let filteredTrips = [];
+        let allTrips = [];
+
+        // Generate sample trips with more realistic data
+        function generateSampleTrips() {
+            const routes = [
+                'Downtown to Airport',
+                'Mall to Home',
+                'Office to Station',
+                'Restaurant to Hotel',
+                'Home to Beach',
+                'Conference Center to Hotel',
+                'University to Downtown',
+                'Hospital to Home',
+                'Train Station to Office',
+                'Stadium to Restaurant'
+            ];
+            
+            const drivers = [
+                'John Smith', 'Emily Johnson', 'Michael Brown', 'Sarah Davis', 
+                'David Wilson', 'Lisa Anderson', 'Robert Taylor', 'Jennifer Thomas'
+            ];
+            
+            const statuses = ['completed', 'upcoming', 'cancelled'];
+            const types = ['Standard', 'Premium', 'SUV', 'Luxury'];
+            
+            const trips = [];
+            
+            // Generate 30 sample trips
+            for (let i = 1; i <= 30; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() - Math.floor(Math.random() * 60));
+                
+                const status = statuses[Math.floor(Math.random() * statuses.length)];
+                const type = types[Math.floor(Math.random() * types.length)];
+                const route = routes[Math.floor(Math.random() * routes.length)];
+                const driver = drivers[Math.floor(Math.random() * drivers.length)];
+                
+                // Base price varies by vehicle type
+                let basePrice = 15;
+                if (type === 'Premium') basePrice = 25;
+                if (type === 'SUV') basePrice = 30;
+                if (type === 'Luxury') basePrice = 45;
+                
+                // Add some random variation
+                const price = basePrice + Math.floor(Math.random() * 20);
+                
+                // Random rating for completed trips
+                let rating = 0;
+                if (status === 'completed') {
+                    rating = 3 + Math.random() * 2; // Rating between 3 and 5
+                }
+                
+                trips.push({
+                    id: i,
+                    route: route,
+                    date: date.toISOString().split('T')[0],
+                    time: `${Math.floor(Math.random() * 12) + 1}:${Math.random() > 0.5 ? '00' : '30'} ${Math.random() > 0.5 ? 'AM' : 'PM'}`,
+                    type: type,
+                    price: price,
+                    status: status,
+                    driver: driver,
+                    rating: rating.toFixed(1),
+                    duration: `${Math.floor(Math.random() * 30) + 10} min`,
+                    distance: `${(Math.random() * 20 + 2).toFixed(1)} miles`
+                });
+            }
+            
+            return trips;
+        }
+
+        // Initialize trips
+        allTrips = generateSampleTrips();
+        filteredTrips = [...allTrips];
+
+        // Show toast notification
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Format date for display
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        // Get vehicle icon based on type
+        function getVehicleIcon(type) {
+            switch(type) {
+                case 'Standard': return 'fa-car';
+                case 'Premium': return 'fa-car-side';
+                case 'SUV': return 'fa-truck-monster';
+                case 'Luxury': return 'fa-gem';
+                default: return 'fa-car';
+            }
+        }
+
+        // Render trips
+        function renderTrips() {
+            // Show loading state
+            loadingState.classList.remove('hidden');
+            tripList.innerHTML = '';
+            emptyState.classList.add('hidden');
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                loadingState.classList.add('hidden');
+                
+                // Calculate pagination
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const paginatedTrips = filteredTrips.slice(startIndex, endIndex);
+                
+                if (paginatedTrips.length === 0) {
+                    emptyState.classList.remove('hidden');
+                    pagination.innerHTML = '';
+                    return;
+                }
+                
+                // Render trip cards
+                paginatedTrips.forEach(trip => {
+                    const tripCard = document.createElement('div');
+                    tripCard.className = `trip-card ${trip.status}`;
+                    
+                    const statusClass = `status-${trip.status}`;
+                    const statusText = trip.status.charAt(0).toUpperCase() + trip.status.slice(1);
+                    
+                    tripCard.innerHTML = `
+                        <div class="trip-details">
+                            <div class="vehicle-icon">
+                                <i class="fas ${getVehicleIcon(trip.type)}"></i>
+                            </div>
+                            <div class="trip-route">
+                                <p class="text-lg font-semibold">${trip.route}</p>
+                                <p class="text-sm text-gray-600">${formatDate(trip.date)} • ${trip.time} • ${trip.duration} • ${trip.distance}</p>
+                                <p class="text-sm text-gray-600">${trip.type} • Driver: ${trip.driver}</p>
+                                ${trip.status === 'completed' ? `
+                                    <div class="rating mt-1">
+                                        ${generateStars(trip.rating)} ${trip.rating}
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <div class="trip-actions">
+                                <p class="text-lg font-semibold">$${trip.price.toFixed(2)}</p>
+                                <span class="status-badge ${statusClass}">${statusText}</span>
+                                <div class="flex gap-2 mt-2">
+                                    <a href="receipt.html?trip=${trip.id}" class="btn-primary py-2 px-4 text-sm">View Receipt</a>
+                                    ${trip.status === 'completed' ? `
+                                        <button class="btn-primary py-2 px-4 text-sm rebook-btn" data-trip="${trip.id}">Rebook</button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    tripList.appendChild(tripCard);
+                });
+                
+                // Render pagination
+                renderPagination();
+            }, 500);
+        }
+
+        // Generate star rating HTML
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            let starsHTML = '';
+            
+            for (let i = 0; i < fullStars; i++) {
+                starsHTML += '<i class="fas fa-star"></i>';
+            }
+            
+            if (hasHalfStar) {
+                starsHTML += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            const emptyStars = 5 - Math.ceil(rating);
+            for (let i = 0; i < emptyStars; i++) {
+                starsHTML += '<i class="far fa-star"></i>';
+            }
+            
+            return starsHTML;
+        }
+
+        // Render pagination
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredTrips.length / itemsPerPage);
+            pagination.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+            
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'pagination-btn';
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTrips();
+                }
+            });
+            pagination.appendChild(prevBtn);
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                // Show first page, last page, current page, and pages around current
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+                    pageBtn.textContent = i;
+                    pageBtn.addEventListener('click', () => {
+                        currentPage = i;
+                        renderTrips();
+                    });
+                    pagination.appendChild(pageBtn);
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    const dots = document.createElement('span');
+                    dots.textContent = '...';
+                    dots.className = 'px-2';
+                    pagination.appendChild(dots);
+                }
+            }
+            
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'pagination-btn';
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderTrips();
+                }
+            });
+            pagination.appendChild(nextBtn);
+        }
+
+        // Filter and sort trips
+        function filterAndSortTrips() {
+            const status = filterStatus.value;
+            const type = filterType.value;
+            const date = filterDate.value;
+            const searchTerm = searchInput.value.toLowerCase();
+            const sortBy = sortOptions.value;
+            
+            // Filter trips
+            filteredTrips = allTrips.filter(trip => {
+                const matchesStatus = status === 'all' || trip.status === status;
+                const matchesType = type === 'all' || trip.type === type;
+                const matchesDate = !date || trip.date === date;
+                const matchesSearch = !searchTerm || 
+                    trip.route.toLowerCase().includes(searchTerm) || 
+                    trip.driver.toLowerCase().includes(searchTerm);
+                
+                return matchesStatus && matchesType && matchesDate && matchesSearch;
+            });
+            
+            // Sort trips
+            switch(sortBy) {
+                case 'date-desc':
+                    filteredTrips.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    break;
+                case 'date-asc':
+                    filteredTrips.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    break;
+                case 'price-desc':
+                    filteredTrips.sort((a, b) => b.price - a.price);
+                    break;
+                case 'price-asc':
+                    filteredTrips.sort((a, b) => a.price - b.price);
+                    break;
+            }
+            
+            // Reset to first page
+            currentPage = 1;
+            
+            // Render filtered trips
+            renderTrips();
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            const completedTrips = allTrips.filter(trip => trip.status === 'completed');
+            const totalSpent = completedTrips.reduce((sum, trip) => sum + trip.price, 0);
+            const avgRating = completedTrips.length > 0 
+                ? (completedTrips.reduce((sum, trip) => sum + parseFloat(trip.rating), 0) / completedTrips.length).toFixed(1)
+                : '0.0';
+            
+            // Find favorite vehicle type
+            const typeCounts = {};
+            completedTrips.forEach(trip => {
+                typeCounts[trip.type] = (typeCounts[trip.type] || 0) + 1;
+            });
+            
+            let favoriteType = '-';
+            let maxCount = 0;
+            for (const type in typeCounts) {
+                if (typeCounts[type] > maxCount) {
+                    maxCount = typeCounts[type];
+                    favoriteType = type;
+                }
+            }
+            
+            // Update DOM
+            document.getElementById('total-trips').textContent = completedTrips.length;
+            document.getElementById('total-spent').textContent = `$${totalSpent.toFixed(2)}`;
+            document.getElementById('avg-rating').textContent = avgRating;
+            document.getElementById('favorite-type').textContent = favoriteType;
+        }
+
+        // Event listeners
+        filterStatus.addEventListener('change', filterAndSortTrips);
+        filterType.addEventListener('change', filterAndSortTrips);
+        filterDate.addEventListener('change', filterAndSortTrips);
+        searchInput.addEventListener('input', filterAndSortTrips);
+        sortOptions.addEventListener('change', filterAndSortTrips);
+        
+        clearFiltersBtn.addEventListener('click', () => {
+            filterStatus.value = 'all';
+            filterType.value = 'all';
+            filterDate.value = '';
+            searchInput.value = '';
+            sortOptions.value = 'date-desc';
+            filterAndSortTrips();
+            showToast('Filters cleared');
+        });
+
+        // Rebook functionality
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('rebook-btn')) {
+                const tripId = e.target.dataset.trip;
+                const trip = allTrips.find(t => t.id == tripId);
+                
+                // Store trip data for rebooking
+                localStorage.setItem('rebookTrip', JSON.stringify(trip));
+                
+                // Show notification
+                showToast(`Rebooking trip: ${trip.route}`);
+                
+                // Simulate navigation delay
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            }
+        });
+
+        // Initialize the page
+        renderTrips();
+        updateStatistics();
+
+        // New Navbar JavaScript
+        function initNavbar() {
+            const mobileToggle = document.getElementById('mobile-toggle');
+            const mobileNav = document.getElementById('mobile-nav');
+            const mobileClose = document.getElementById('mobile-close');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+
+            // Check if elements exist
+            if (!mobileToggle || !mobileNav || !mobileClose || !mobileOverlay) {
+                console.error('Navbar elements not found in triphistory.html:', {
+                    toggle: !!mobileToggle,
+                    nav: !!mobileNav,
+                    close: !!mobileClose,
+                    overlay: !!mobileOverlay
+                });
+                return;
+            }
+
+            // Toggle mobile menu
+            mobileToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile menu toggle clicked');
+                openMobileMenu();
+            });
+
+            // Close mobile menu
+            mobileClose.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile menu close clicked');
+                closeMobileMenu();
+            });
+
+            // Close on overlay click
+            mobileOverlay.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile overlay clicked');
+                closeMobileMenu();
+            });
+
+            // Close on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+                    closeMobileMenu();
+                }
+            });
+
+            // Close on nav item click
+            document.querySelectorAll('.mobile-nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    closeMobileMenu();
+                });
+            });
+
+            function openMobileMenu() {
+                mobileNav.classList.add('active');
+                mobileOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMobileMenu() {
+                mobileNav.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            console.log('Navbar initialized successfully in triphistory.html');
+        }
+
+        // Initialize navbar when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initNavbar();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Driver Dashboard - Luxride</title>
+    <meta name="description" content="Luxride Driver Dashboard - Manage your rides, earnings, and schedule. Professional driver tools for premium transportation services.">
+    <meta name="keywords" content="driver dashboard, luxride driver, ride management, driver earnings, transportation">
+    <meta name="author" content="Luxride Technologies">
+    
+    <!-- Preconnect to external domains for better performance -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    
+    <!-- Load critical CSS first -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js" integrity="sha512-lDfwi5eQyhxv2Znn0Z49oF1NSAAWgtCsKhzR9j2V/5X1Ml8bJcfEdgKkbMDdQN1NS5+KkR5i/Sgcttk0y2bjmw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #2d2d2d;
+            --accent-color: #d4af37;
+            --accent-hover: #b8972e;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: var(--text-primary);
+            overscroll-behavior: none;
+            overflow-x: hidden;
+            line-height: 1.6;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            max-height: 100vh;
+            overflow-y: auto;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px;
+            min-height: calc(100vh - 30px);
+            overflow-y: auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 1.5rem 0;
+            margin-bottom: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #f4d03f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .status-online {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success-color);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-busy {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning-color);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .status-offline {
+            background: rgba(107, 114, 128, 0.2);
+            color: var(--text-secondary);
+            border: 1px solid rgba(107, 114, 128, 0.3);
+        }
+
+        .nav-bar {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-link:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-link.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-card {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .stats-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stats-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stats-icon.rides { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .stats-icon.earnings { background: linear-gradient(135deg, #10b981, #059669); }
+        .stats-icon.rating { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .stats-icon.orders { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+
+        .stats-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .stats-change {
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .stats-change.positive { color: var(--success-color); }
+        .stats-change.negative { color: var(--danger-color); }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-card {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .performance-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            flex: 1;
+        }
+
+        .perf-item {
+            text-align: center;
+            padding: 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .perf-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .perf-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .today-stats {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .today-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .today-item:last-child {
+            border-bottom: none;
+        }
+
+        .today-item span:first-child {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .today-item span:last-child {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .recent-orders {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: white;
+        }
+
+        .order-icon.pending { background: var(--warning-color); }
+        .order-icon.accepted { background: var(--success-color); }
+        .order-icon.completed { background: var(--info-color); }
+
+        .order-content {
+            flex: 1;
+        }
+
+        .order-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .order-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .order-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .order-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning-color); }
+        .status-accepted { background: rgba(16, 185, 129, 0.1); color: var(--success-color); }
+        .status-completed { background: rgba(59, 130, 246, 0.1); color: var(--info-color); }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem 1.5rem;
+            background: var(--bg-primary);
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .action-btn:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .action-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .action-btn:hover .action-icon {
+            background: white;
+            color: var(--accent-color);
+        }
+
+        .action-text {
+            text-align: center;
+        }
+
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-desc {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Custom Chart Styles */
+        .performance-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .chart-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .chart-bar {
+            flex: 1;
+            height: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chart-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .chart-fill.completed {
+            background: var(--success-color);
+        }
+
+        .chart-fill.in-progress {
+            background: var(--info-color);
+        }
+
+        .chart-fill.pending {
+            background: var(--warning-color);
+        }
+
+        .chart-label {
+            min-width: 120px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .earnings-chart {
+            padding: 1rem;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .chart-header h4 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .total-earnings {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: end;
+            gap: 0.5rem;
+            height: 120px;
+            padding: 0.5rem 0;
+        }
+
+        .bar-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .bar {
+            width: 100%;
+            background: linear-gradient(to top, var(--accent-color), var(--accent-hover));
+            border-radius: 4px 4px 0 0;
+            min-height: 4px;
+            transition: height 0.3s ease;
+        }
+
+        .bar-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .bar-value {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        .no-data i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.5;
+        }
+
+        .no-data p {
+            margin: 0;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header fade-in">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>Advanced Driver Dashboard</h1>
+                    <p>Real-time analytics and performance tracking</p>
+                </div>
+                <div class="header-right">
+                    <div id="driver-status" class="status-indicator status-online">
+                        <div class="pulse" style="width: 8px; height: 8px; background: var(--success-color); border-radius: 50%;"></div>
+                        <span>Online - Available</span>
+                    </div>
+                    <button id="logout-btn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Bar -->
+        <div class="nav-bar fade-in">
+            <div class="nav-links">
+                <a href="/driver-index" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+                <a href="/driver-dashboard" class="nav-link active">
+                    <i class="fas fa-chart-line"></i>
+                    Analytics
+                </a>
+                <a href="/driver-rides" class="nav-link">
+                    <i class="fas fa-car"></i>
+                    Ride Management
+                </a>
+                <a href="/driver-orders" class="nav-link">
+                    <i class="fas fa-clipboard-list"></i>
+                    Order Management
+                </a>
+                <a href="/driver-schedule" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    Schedule
+                </a>
+                <a href="/driver-earnings" class="nav-link">
+                    <i class="fas fa-dollar-sign"></i>
+                    Earnings
+                </a>
+                <a href="/driver-profile" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    Profile
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="dashboard-grid fade-in">
+            <div class="stats-card">
+                <div class="stats-header">
+                    <div class="stats-icon rides">
+                        <i class="fas fa-car"></i>
+                    </div>
+                </div>
+                <div class="stats-value" id="total-rides">0</div>
+                <div class="stats-label">Total Rides Today</div>
+                <div class="stats-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    +15% from yesterday
+                </div>
+            </div>
+
+            <div class="stats-card">
+                <div class="stats-header">
+                    <div class="stats-icon earnings">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                </div>
+                <div class="stats-value" id="today-earnings">$0.00</div>
+                <div class="stats-label">Today's Earnings</div>
+                <div class="stats-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    +22% from yesterday
+                </div>
+            </div>
+
+            <div class="stats-card">
+                <div class="stats-header">
+                    <div class="stats-icon rating">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="stats-value" id="avg-rating">4.8</div>
+                <div class="stats-label">Average Rating</div>
+                <div class="stats-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    +0.3 this week
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Grid -->
+        <div class="charts-grid fade-in">
+            <div class="chart-card">
+                <h2 class="chart-title">
+                    <i class="fas fa-chart-line"></i>
+                    Performance Overview
+                </h2>
+                <div class="performance-stats">
+                    <div class="perf-item">
+                        <div class="perf-value">95%</div>
+                        <div class="perf-label">Acceptance Rate</div>
+                    </div>
+                    <div class="perf-item">
+                        <div class="perf-value">4.8</div>
+                        <div class="perf-label">Avg Rating</div>
+                    </div>
+                    <div class="perf-item">
+                        <div class="perf-value">2.5min</div>
+                        <div class="perf-label">Response Time</div>
+                    </div>
+                    <div class="perf-item">
+                        <div class="perf-value">$28.50</div>
+                        <div class="perf-label">Avg Earnings</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h2 class="chart-title">
+                    <i class="fas fa-chart-pie"></i>
+                    Today's Summary
+                </h2>
+                <div class="today-stats">
+                    <div class="today-item">
+                        <span>Rides Completed:</span>
+                        <span>12</span>
+                    </div>
+                    <div class="today-item">
+                        <span>Hours Online:</span>
+                        <span>8.5</span>
+                    </div>
+                    <div class="today-item">
+                        <span>Earnings:</span>
+                        <span>$342.00</span>
+                    </div>
+                    <div class="today-item">
+                        <span>Miles Driven:</span>
+                        <span>156</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions fade-in">
+            <a href="/driver-rides" class="action-btn">
+                <div class="action-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="action-text">
+                    <div class="action-title">Manage Rides</div>
+                    <div class="action-desc">Accept and track ride requests</div>
+                </div>
+            </a>
+
+            <a href="/driver-orders" class="action-btn">
+                <div class="action-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <div class="action-text">
+                    <div class="action-title">Order Management</div>
+                    <div class="action-desc">Track multiple orders and deliveries</div>
+                </div>
+            </a>
+
+            <a href="/driver-schedule" class="action-btn">
+                <div class="action-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="action-text">
+                    <div class="action-title">Schedule</div>
+                    <div class="action-desc">Manage availability and shifts</div>
+                </div>
+            </a>
+
+            <a href="/driver-earnings" class="action-btn">
+                <div class="action-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="action-text">
+                    <div class="action-title">Earnings Report</div>
+                    <div class="action-desc">View detailed earnings analytics</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="recent-orders fade-in">
+            <h2 class="chart-title">
+                <i class="fas fa-clock"></i>
+                Recent Orders & Rides
+            </h2>
+            <div id="recent-orders-list">
+                <!-- Recent orders will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Advanced Driver Dashboard System
+        class DriverDashboard {
+            constructor() {
+                this.user = null;
+                this.dashboardData = {
+                    stats: {},
+                    recentOrders: [],
+                    performance: {},
+                    earnings: {}
+                };
+                this.updateInterval = null;
+                this.charts = {};
+                this.init();
+            }
+
+            async init() {
+                await this.checkUserAccess();
+                await this.loadDashboardData();
+                this.setupEventListeners();
+                this.initializeCharts();
+                this.startRealTimeUpdates();
+                this.setupNotifications();
+            }
+
+            async checkUserAccess() {
+                this.user = JSON.parse(localStorage.getItem('user') || '{}');
+                
+                if (!this.user.email) {
+                    this.showNotification('Please login to access this page.', 'error');
+                    setTimeout(() => {
+                window.location.href = 'login.html';
+                    }, 2000);
+                    return false;
+            }
+                return true;
+        }
+
+            async loadDashboardData() {
+                try {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                    const today = new Date();
+                    const weekStart = new Date(today);
+                    weekStart.setDate(today.getDate() - today.getDay());
+                    const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+
+                    // Calculate comprehensive stats
+                    this.dashboardData.stats = this.calculateStats(bookings, today, weekStart, monthStart);
+                    this.dashboardData.recentOrders = this.getRecentOrders(bookings);
+                    this.dashboardData.performance = this.calculatePerformance(bookings);
+                    this.dashboardData.earnings = this.calculateEarnings(bookings, today, weekStart, monthStart);
+
+                    this.updateDashboard();
+                    this.updateCharts();
+                } catch (error) {
+                    console.error('Error loading dashboard data:', error);
+                    // Error notification removed as requested
+                }
+            }
+
+            calculateStats(bookings, today, weekStart, monthStart) {
+                const todayStr = today.toDateString();
+                const weekStartStr = weekStart.toDateString();
+
+            const todayRides = bookings.filter(b => 
+                b.status === 'completed' && 
+                    new Date(b.completionDate || b.timestamp).toDateString() === todayStr
+                );
+
+                const weekRides = bookings.filter(b => 
+                    b.status === 'completed' && 
+                    new Date(b.completionDate || b.timestamp) >= weekStart
+                );
+
+                const monthRides = bookings.filter(b => 
+                    b.status === 'completed' && 
+                    new Date(b.completionDate || b.timestamp) >= monthStart
+                );
+
+                const totalRides = bookings.filter(b => b.status === 'completed').length;
+            const todayEarnings = todayRides.reduce((sum, b) => sum + (b.price || 0), 0);
+                const weekEarnings = weekRides.reduce((sum, b) => sum + (b.price || 0), 0);
+                const monthEarnings = monthRides.reduce((sum, b) => sum + (b.price || 0), 0);
+
+                return {
+                    totalRides: totalRides,
+                    todayRides: todayRides.length,
+                    todayEarnings: todayEarnings,
+                    weekEarnings: weekEarnings,
+                    monthEarnings: monthEarnings,
+                    avgRating: this.calculateAverageRating(bookings),
+                    acceptanceRate: this.calculateAcceptanceRate(bookings),
+                    responseTime: this.calculateResponseTime(bookings)
+                };
+            }
+
+            calculateAverageRating(bookings) {
+                const ratedRides = bookings.filter(b => b.rating && b.status === 'completed');
+                if (ratedRides.length === 0) return 4.8;
+                return (ratedRides.reduce((sum, b) => sum + b.rating, 0) / ratedRides.length).toFixed(1);
+            }
+
+            calculateAcceptanceRate(bookings) {
+                const totalRequests = bookings.filter(b => 
+                    b.status === 'accepted' || b.status === 'rejected' || b.status === 'completed'
+                ).length;
+                const accepted = bookings.filter(b => 
+                    b.status === 'accepted' || b.status === 'completed'
+                ).length;
+                return totalRequests > 0 ? Math.round((accepted / totalRequests) * 100) : 95;
+            }
+
+            calculateResponseTime(bookings) {
+                // Simulate response time calculation
+                return '2.5min';
+            }
+
+            getRecentOrders(bookings) {
+                return bookings
+                .filter(b => b.status === 'accepted' || b.status === 'in-progress' || b.status === 'completed')
+                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                    .slice(0, 10);
+            }
+
+            calculatePerformance(bookings) {
+                const completedRides = bookings.filter(b => b.status === 'completed');
+                const totalDistance = completedRides.reduce((sum, b) => sum + (b.distance || 0), 0);
+                const totalTime = completedRides.reduce((sum, b) => sum + (b.duration || 0), 0);
+
+                return {
+                    totalDistance: totalDistance,
+                    totalTime: totalTime,
+                    avgSpeed: totalTime > 0 ? (totalDistance / totalTime * 60).toFixed(1) : 0,
+                    efficiency: this.calculateEfficiency(bookings)
+                };
+            }
+
+            calculateEfficiency(bookings) {
+                const completedRides = bookings.filter(b => b.status === 'completed');
+                const onTimeRides = completedRides.filter(b => 
+                    b.estimatedTime && b.actualTime && 
+                    Math.abs(new Date(b.actualTime) - new Date(b.estimatedTime)) < 5 * 60 * 1000
+                );
+                return completedRides.length > 0 ? Math.round((onTimeRides.length / completedRides.length) * 100) : 95;
+            }
+
+            calculateEarnings(bookings, today, weekStart, monthStart) {
+                const todayStr = today.toDateString();
+                const weekStartStr = weekStart.toDateString();
+
+                const todayEarnings = bookings
+                    .filter(b => b.status === 'completed' && 
+                        new Date(b.completionDate || b.timestamp).toDateString() === todayStr)
+                    .reduce((sum, b) => sum + (b.price || 0), 0);
+
+                const weekEarnings = bookings
+                    .filter(b => b.status === 'completed' && 
+                        new Date(b.completionDate || b.timestamp) >= weekStart)
+                    .reduce((sum, b) => sum + (b.price || 0), 0);
+
+                const monthEarnings = bookings
+                    .filter(b => b.status === 'completed' && 
+                        new Date(b.completionDate || b.timestamp) >= monthStart)
+                    .reduce((sum, b) => sum + (b.price || 0), 0);
+
+                return {
+                    today: todayEarnings,
+                    week: weekEarnings,
+                    month: monthEarnings,
+                    total: bookings.filter(b => b.status === 'completed')
+                        .reduce((sum, b) => sum + (b.price || 0), 0)
+                };
+            }
+
+            updateDashboard() {
+                // Update main stats
+                document.getElementById('total-rides').textContent = this.dashboardData.stats.todayRides;
+                document.getElementById('today-earnings').textContent = `$${this.dashboardData.stats.todayEarnings.toFixed(2)}`;
+                document.getElementById('avg-rating').textContent = this.dashboardData.stats.avgRating;
+
+                // Update performance stats
+                this.updatePerformanceStats();
+                
+                // Update recent orders
+                this.updateRecentOrders();
+            }
+
+            updatePerformanceStats() {
+                const performanceContainer = document.querySelector('.performance-stats');
+                if (performanceContainer) {
+                    performanceContainer.innerHTML = `
+                        <div class="perf-item">
+                            <div class="perf-value">${this.dashboardData.stats.acceptanceRate}%</div>
+                            <div class="perf-label">Acceptance Rate</div>
+                        </div>
+                        <div class="perf-item">
+                            <div class="perf-value">${this.dashboardData.stats.avgRating}</div>
+                            <div class="perf-label">Avg Rating</div>
+                        </div>
+                        <div class="perf-item">
+                            <div class="perf-value">${this.dashboardData.stats.responseTime}</div>
+                            <div class="perf-label">Response Time</div>
+                        </div>
+                        <div class="perf-item">
+                            <div class="perf-value">$${(this.dashboardData.stats.todayEarnings / Math.max(this.dashboardData.stats.todayRides, 1)).toFixed(2)}</div>
+                            <div class="perf-label">Avg Earnings</div>
+                        </div>
+                    `;
+                }
+            }
+
+            updateRecentOrders() {
+            const ordersList = document.getElementById('recent-orders-list');
+            
+                if (this.dashboardData.recentOrders.length === 0) {
+                ordersList.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-inbox text-4xl mb-4"></i>
+                        <p>No recent orders</p>
+                    </div>
+                `;
+                return;
+            }
+            
+                ordersList.innerHTML = this.dashboardData.recentOrders.slice(0, 5).map(order => `
+                    <div class="order-item" onclick="driverDashboard.viewOrderDetails('${order.id}')">
+                    <div class="order-icon ${order.status === 'completed' ? 'completed' : order.status === 'accepted' ? 'accepted' : 'pending'}">
+                        <i class="fas fa-${order.status === 'completed' ? 'check' : order.status === 'accepted' ? 'car' : 'clock'}"></i>
+                    </div>
+                    <div class="order-content">
+                        <div class="order-title">${order.pickup} → ${order.destination}</div>
+                        <div class="order-desc">${order.type} • $${order.price.toFixed(2)}</div>
+                    </div>
+                    <div class="order-time">${new Date(order.timestamp).toLocaleTimeString()}</div>
+                    <div class="order-status status-${order.status}">${order.status.replace('-', ' ')}</div>
+                </div>
+            `).join('');
+        }
+
+            viewOrderDetails(orderId) {
+                const order = this.dashboardData.recentOrders.find(o => o.id === orderId);
+                if (!order) return;
+
+                const details = `
+Order ID: #${order.id.slice(-6)}
+Type: ${order.type}
+Status: ${order.status}
+Route: ${order.pickup} → ${order.destination}
+Price: $${order.price.toFixed(2)}
+Date: ${order.date}
+Time: ${order.time}
+${order.notes ? `Notes: ${order.notes}` : ''}
+                `;
+                
+                this.showModal('Order Details', details);
+            }
+
+            initializeCharts() {
+                // Initialize performance visualization (without Chart.js)
+                this.initializePerformanceVisualization();
+                
+                // Initialize earnings visualization
+                this.initializeEarningsVisualization();
+            }
+
+            initializePerformanceVisualization() {
+                const chartContainer = document.querySelector('.performance-stats');
+                if (chartContainer) {
+                    // Create a simple HTML-based chart
+                    const completed = this.dashboardData.stats.totalRides || 0;
+                    const inProgress = this.dashboardData.recentOrders.filter(o => o.status === 'in-progress').length;
+                    const pending = this.dashboardData.recentOrders.filter(o => o.status === 'pending').length;
+                    const total = completed + inProgress + pending;
+                    
+                    if (total > 0) {
+                        const completedPercent = (completed / total) * 100;
+                        const inProgressPercent = (inProgress / total) * 100;
+                        const pendingPercent = (pending / total) * 100;
+                        
+                        chartContainer.innerHTML = `
+                            <div class="performance-chart">
+                                <div class="chart-item">
+                                    <div class="chart-bar">
+                                        <div class="chart-fill completed" style="width: ${completedPercent}%"></div>
+                                    </div>
+                                    <div class="chart-label">Completed: ${completed}</div>
+                                </div>
+                                <div class="chart-item">
+                                    <div class="chart-bar">
+                                        <div class="chart-fill in-progress" style="width: ${inProgressPercent}%"></div>
+                                    </div>
+                                    <div class="chart-label">In Progress: ${inProgress}</div>
+                                </div>
+                                <div class="chart-item">
+                                    <div class="chart-bar">
+                                        <div class="chart-fill pending" style="width: ${pendingPercent}%"></div>
+                                    </div>
+                                    <div class="chart-label">Pending: ${pending}</div>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        chartContainer.innerHTML = `
+                            <div class="no-data">
+                                <i class="fas fa-chart-pie"></i>
+                                <p>No performance data available</p>
+                            </div>
+                        `;
+                    }
+                }
+            }
+
+            initializeEarningsVisualization() {
+                const chartContainer = document.querySelector('.today-stats');
+                if (chartContainer) {
+                    // Create a simple earnings visualization
+                    const weeklyData = this.generateWeeklyEarningsData();
+                    const maxEarnings = Math.max(...weeklyData);
+                    
+                    chartContainer.innerHTML = `
+                        <div class="earnings-chart">
+                            <div class="chart-header">
+                                <h4>Weekly Earnings</h4>
+                                <span class="total-earnings">$${weeklyData.reduce((a, b) => a + b, 0)}</span>
+                            </div>
+                            <div class="chart-bars">
+                                ${weeklyData.map((amount, index) => {
+                                    const height = maxEarnings > 0 ? (amount / maxEarnings) * 100 : 0;
+                                    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                                    return `
+                                        <div class="bar-item">
+                                            <div class="bar" style="height: ${height}%"></div>
+                                            <div class="bar-label">${days[index]}</div>
+                                            <div class="bar-value">$${amount}</div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            generateWeeklyEarningsData() {
+                // Generate realistic weekly earnings data
+                const baseEarnings = this.dashboardData.stats.todayEarnings || 50;
+                return Array.from({length: 7}, (_, i) => {
+                    const dayMultiplier = i === 6 ? 0.8 : i === 5 ? 1.2 : 1.0; // Weekend adjustment
+                    return Math.round(baseEarnings * dayMultiplier * (0.8 + Math.random() * 0.4));
+                });
+            }
+
+            updateCharts() {
+                this.initializePerformanceVisualization();
+                this.initializeEarningsVisualization();
+            }
+
+            setupEventListeners() {
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                    logoutBtn.addEventListener('click', () => this.logoutDriver());
+                }
+
+                // Add refresh button functionality
+                const refreshBtn = document.createElement('button');
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+                refreshBtn.className = 'btn btn-secondary';
+                refreshBtn.onclick = () => this.loadDashboardData();
+                
+                const headerRight = document.querySelector('.header-right');
+                if (headerRight) {
+                    headerRight.insertBefore(refreshBtn, headerRight.firstChild);
+                }
+            }
+
+            setupNotifications() {
+                // Check for new notifications
+                this.checkNotifications();
+                
+                // Set up notification polling
+                setInterval(() => {
+                    this.checkNotifications();
+                }, 10000); // Check every 10 seconds
+
+                // Listen for real-time storage events
+                window.addEventListener('storage', (e) => {
+                    if (e.key === 'bookings') {
+                        console.log('Storage event detected:', e.key);
+                        this.checkNotifications(); // Check notifications when storage changes
+                    }
+                });
+            }
+
+            checkNotifications() {
+                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                const availableRides = bookings.filter(b => 
+                    (b.status === 'requested' || b.status === 'booked' || b.status === 'confirmed') && 
+                    !b.acceptedBy
+                );
+                
+                if (availableRides.length > 0) {
+                    this.showNotification(`You have ${availableRides.length} new ride requests!`, 'info');
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg text-white font-medium max-w-sm transform transition-all duration-300 translate-x-full`;
+                
+                switch (type) {
+                    case 'success':
+                        notification.className += ' bg-green-500';
+                        break;
+                    case 'error':
+                        notification.className += ' bg-red-500';
+                        break;
+                    case 'warning':
+                        notification.className += ' bg-yellow-500';
+                        break;
+                    default:
+                        notification.className += ' bg-blue-500';
+                }
+                
+                notification.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'info'} mr-2"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Animate in
+                setTimeout(() => {
+                    notification.classList.remove('translate-x-full');
+                }, 100);
+                
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    notification.classList.add('translate-x-full');
+                    setTimeout(() => {
+                        if (document.body.contains(notification)) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+
+            showModal(title, content) {
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                modal.innerHTML = `
+                    <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                        <h3 class="text-lg font-semibold mb-4">${title}</h3>
+                        <div class="text-sm text-gray-600 whitespace-pre-line">${content}</div>
+                        <div class="mt-6 flex justify-end">
+                            <button class="btn btn-primary" onclick="this.closest('.fixed').remove()">Close</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+            }
+
+            logoutDriver() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('user');
+                localStorage.removeItem('userType');
+                    this.showNotification('Logged out successfully!', 'success');
+                    setTimeout(() => {
+                window.location.href = 'login.html';
+                    }, 1000);
+                }
+            }
+
+            startRealTimeUpdates() {
+                this.updateInterval = setInterval(() => {
+                    this.loadDashboardData();
+            }, 5000); // Update every 5 seconds
+        }
+
+            destroy() {
+                if (this.updateInterval) {
+                    clearInterval(this.updateInterval);
+                }
+            }
+        }
+
+        // Initialize dashboard when page loads
+        let driverDashboard;
+        document.addEventListener('DOMContentLoaded', function() {
+            driverDashboard = new DriverDashboard();
+        });
+
+        // Cleanup when page unloads
+        window.addEventListener('beforeunload', function() {
+            if (driverDashboard) {
+                driverDashboard.destroy();
+            }
+        });
+    </script>
+</body>
+</html>

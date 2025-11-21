@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Luxride - Inbox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Preconnect to external domains for better performance -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Font fallbacks to prevent rendering issues */
+        body, * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        .font-serif, h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #2d2d2d;
+            --accent-color: #d4af37;
+            --accent-hover: #b8972e;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: var(--text-primary);
+            overscroll-behavior: none;
+            overflow-x: hidden;
+            padding-top: 70px; /* Account for fixed navbar */
+            line-height: 1.6;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: transparent;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37 0%, #b8972e 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-md);
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #b8972e 0%, #d4af37 100%);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-md);
+            border-radius: 12px;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #4b5563 0%, #6b7280 100%);
+            box-shadow: var(--shadow-lg);
+        }
+        .btn-danger {
+            background: linear-gradient(90deg, #dc2626, #b91c1c);
+            transition: all 0.4s ease;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            color: #ffffff;
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+        .input-field {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: #333333;
+            border-radius: 12px;
+            padding: 14px 16px;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3), 0 0 20px rgba(0, 0, 0, 0.1);
+            border-color: #d4af37;
+        }
+        .form-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1), 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .tab-container {
+            display: flex;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 8px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .tab-button {
+            flex: 1;
+            padding: 12px 24px;
+            font-weight: 600;
+            color: #6b7280;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        .tab-button:hover::before {
+            left: 100%;
+        }
+        .tab-button.active {
+            color: #d4af37;
+            background: rgba(212, 175, 55, 0.1);
+            box-shadow: var(--shadow-sm);
+        }
+        .tab-button:hover:not(.active) {
+            color: #374151;
+            background: rgba(0, 0, 0, 0.02);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .notification-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .notification-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #d4af37, #b8972e);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .notification-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-xl);
+        }
+        .notification-card:hover::before {
+            opacity: 1;
+        }
+        .notification-card.unread {
+            border-left: 4px solid #d4af37;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(212, 175, 55, 0.02) 100%);
+        }
+        .notification-card.read {
+            border-left: 4px solid #e5e7eb;
+            opacity: 0.8;
+        }
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .notification-title {
+            font-weight: 600;
+            font-size: 18px;
+            font-family: 'Playfair Display', serif;
+        }
+        .notification-time {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        .notification-content {
+            margin-bottom: 12px;
+        }
+        .notification-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        .notification-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .notification-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .confirm-btn {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+        .cancel-btn {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+        .details-btn {
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .empty-state i {
+            font-size: 48px;
+            color: #d4af37;
+            margin-bottom: 16px;
+        }
+        .empty-state h4 {
+            font-size: 20px;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 8px;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            font-family: 'Playfair Display', serif;
+        }
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+            transition: color 0.2s ease;
+        }
+        .close-modal:hover {
+            color: #333333;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            min-width: 320px;
+            padding: 18px 24px;
+            border-radius: 12px;
+            color: #ffffff;
+            font-weight: 500;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1), 0 8px 25px rgba(0, 0, 0, 0.2);
+            transform: translateX(100%);
+            transition: transform 0.4s ease-out, opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            border-left: 5px solid #d4af37;
+            z-index: 1000;
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        .toast.success { background: linear-gradient(135deg, #10b981, #059669); }
+        .toast.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .toast.warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .toast.info { background: linear-gradient(135deg, #d4af37, #b8972e); }
+        .filter-controls {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-label {
+            font-weight: 500;
+            color: #4b5563;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        .pagination-btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #d4af37, #b8972e);
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .pagination-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .pagination-btn:disabled {
+            background: linear-gradient(90deg, #9ca3af, #6b7280);
+            cursor: not-allowed;
+            transform: none;
+        }
+        .page-info {
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            color: #4b5563;
+            font-size: 14px;
+        }
+        .bulk-actions {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .bulk-actions.hidden {
+            display: none;
+        }
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 2px solid #d1d5db;
+            background-color: #ffffff;
+            cursor: pointer;
+            position: relative;
+        }
+        .checkbox:checked {
+            background-color: #d4af37;
+            border-color: #d4af37;
+        }
+        .checkbox:checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: #ffffff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+        }
+        .notification-checkbox {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+        }
+        .notification-content-wrapper {
+            padding-left: 32px;
+        }
+        .notification-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: 8px;
+        }
+        .status-pending {
+            background-color: rgba(212, 175, 55, 0.1);
+            color: #d4af37;
+        }
+        .status-confirmed {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+        .status-completed {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+        .status-cancelled {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        .notification-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .detail-label {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        .detail-value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .vehicle-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            margin-right: 12px;
+        }
+        .vehicle-standard { background: linear-gradient(135deg, #10b981, #059669); }
+        .vehicle-premium { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .vehicle-suv { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .vehicle-xl { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .notification-vehicle {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .notification-vehicle-info {
+            flex-grow: 1;
+        }
+        .notification-vehicle-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .notification-vehicle-details {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .notification-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #ef4444;
+            color: #ffffff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        @keyframes slideInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .animate-slide-in-left {
+            animation: slideInFromLeft 0.8s ease-out;
+        }
+        .animate-slide-in-right {
+            animation: slideInFromRight 0.8s ease-out;
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        .shimmer {
+            animation: shimmer 2s infinite;
+        }
+        @media (max-width: 640px) {
+            .notification-card {
+                padding: 16px;
+                margin-bottom: 16px;
+            }
+            .notification-details {
+                grid-template-columns: 1fr;
+            }
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 16px;
+                gap: 12px;
+            }
+            .filter-group {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .bulk-actions {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .toast {
+                min-width: auto;
+                right: 12px;
+                left: 12px;
+            }
+            .tab-container {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .tab-button {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+        }
+
+        /* New Solid Background Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #d4af37;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .brand-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333333;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-item:hover::before {
+            left: 0;
+        }
+
+        .nav-item:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .nav-item.logout {
+            background: #ef4444;
+            color: white;
+        }
+
+        .nav-item.logout:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-toggle:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .hamburger-line {
+            width: 25px;
+            height: 3px;
+            background: #333333;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            height: 100vh;
+            background: #ffffff;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+            transition: right 0.3s ease;
+            z-index: 1001;
+            overflow-y: auto;
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+        }
+
+        .mobile-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-brand .brand-logo {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .mobile-brand .brand-text {
+            color: white;
+            font-size: 20px;
+        }
+
+        .mobile-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .mobile-nav-content {
+            padding: 20px;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #333333;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        .mobile-nav-item:hover {
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            color: white;
+            transform: translateX(8px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .mobile-nav-item.active {
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .mobile-nav-item.logout {
+            background: #ef4444;
+            color: white;
+        }
+
+        .mobile-nav-item.logout:hover {
+            background: #dc2626;
+            transform: translateX(8px);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .navbar-container {
+                padding: 0 16px;
+                height: 60px;
+            }
+
+            .brand-text {
+                font-size: 20px;
+            }
+
+            .brand-logo {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mobile-nav {
+                width: 100%;
+            }
+
+            .navbar-container {
+                padding: 0 12px;
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center">
+    <div id="particles-js"></div>
+    
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+    
+    
+    <!-- Modal -->
+    <div id="notification-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Ride Details</h3>
+                <button id="close-modal" class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <!-- New Solid Background Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <!-- Logo Section -->
+            <div class="navbar-brand">
+                <div class="brand-logo">
+                    <i class="fas fa-car"></i>
+                </div>
+                <span class="brand-text">Luxride</span>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="navbar-nav desktop-nav">
+                <a href="/" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Ride</span>
+                </a>
+                <a href="/triphistory" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Trip History</span>
+                </a>
+                <a href="/inbox" class="nav-item active">
+                    <i class="fas fa-inbox"></i>
+                    <span>Inbox</span>
+                </a>
+                <a href="/profile" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="/driver-dashboard" class="nav-item">
+                    <i class="fas fa-car-side"></i>
+                    <span>Driver</span>
+                </a>
+                <a href="/signup" class="nav-item">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Sign Up</span>
+                </a>
+                <a href="/receipt" class="nav-item">
+                    <i class="fas fa-receipt"></i>
+                    <span>Receipt</span>
+                </a>
+                <a href="/book" class="nav-item">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Book</span>
+                </a>
+                <a href="/login" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log out</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-toggle" id="mobile-toggle">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobile-nav">
+            <div class="mobile-nav-header">
+                <div class="mobile-brand">
+                    <div class="brand-logo">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <span class="brand-text">Luxride</span>
+                </div>
+                <button class="mobile-close" id="mobile-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mobile-nav-content">
+                <a href="/" class="mobile-nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Ride</span>
+                </a>
+                <a href="/triphistory" class="mobile-nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Trip History</span>
+                </a>
+                <a href="/inbox" class="mobile-nav-item active">
+                    <i class="fas fa-inbox"></i>
+                    <span>Inbox</span>
+                </a>
+                <a href="/profile" class="mobile-nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="/driver-dashboard" class="mobile-nav-item">
+                    <i class="fas fa-car-side"></i>
+                    <span>Driver</span>
+                </a>
+                <a href="/signup" class="mobile-nav-item">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Sign Up</span>
+                </a>
+                <a href="/receipt" class="mobile-nav-item">
+                    <i class="fas fa-receipt"></i>
+                    <span>Receipt</span>
+                </a>
+                <a href="/book" class="mobile-nav-item">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Book</span>
+                </a>
+                <a href="/login" class="mobile-nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log out</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Overlay -->
+        <div class="mobile-overlay" id="mobile-overlay"></div>
+    </nav>
+
+    <section class="py-16 w-full flex justify-center">
+        <div class="form-container p-8 max-w-6xl w-full mx-6">
+            <div class="text-center mb-12 animate-fade-in-up">
+                <h2 class="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent" style="font-family: 'Playfair Display', serif;">Your Inbox</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Stay updated with your ride notifications, messages, and important updates from Luxride.</p>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="tab-container animate-slide-in-left">
+                <div class="tab-button active" data-tab="notifications">
+                    <i class="fas fa-bell mr-2"></i>Notifications
+                </div>
+                <div class="tab-button" data-tab="messages">
+                    <i class="fas fa-envelope mr-2"></i>Messages
+                </div>
+                <div class="tab-button" data-tab="archived">
+                    <i class="fas fa-archive mr-2"></i>Archived
+                </div>
+            </div>
+            
+            <!-- Notifications Tab -->
+            <div id="notifications" class="tab-content active">
+                <!-- Filter Controls -->
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label class="filter-label">Search:</label>
+                        <input type="text" id="search-input" class="input-field text-sm" placeholder="Search notifications...">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Status:</label>
+                        <select id="status-filter" class="input-field text-sm">
+                            <option value="">All</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Sort:</label>
+                        <select id="sort-filter" class="input-field text-sm">
+                            <option value="date-desc">Newest First</option>
+                            <option value="date-asc">Oldest First</option>
+                        </select>
+                    </div>
+                    <button id="clear-filters" class="btn-secondary px-4 py-2 text-sm">Clear Filters</button>
+                </div>
+                
+                <!-- Bulk Actions -->
+                <div id="bulk-actions" class="bulk-actions hidden">
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="select-all" class="checkbox">
+                        <label for="select-all">Select All</label>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="mark-read" class="btn-secondary px-3 py-1 text-sm">Mark as Read</button>
+                        <button id="archive-selected" class="btn-secondary px-3 py-1 text-sm">Archive</button>
+                        <button id="delete-selected" class="btn-danger px-3 py-1 text-sm">Delete</button>
+                    </div>
+                </div>
+                
+                <!-- Notifications List -->
+                <div id="notifications-list" class="space-y-4">
+                    <!-- Notifications will be populated by JS -->
+                </div>
+                
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state hidden">
+                    <i class="fas fa-inbox"></i>
+                    <h4>No notifications</h4>
+                    <p>Your ride notifications will appear here</p>
+                </div>
+                
+                <!-- Pagination -->
+                <div id="pagination" class="pagination">
+                    <button id="prev-page" class="pagination-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                    <div class="page-info">Page 1 of 1</div>
+                    <button id="next-page" class="pagination-btn" disabled><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <!-- Messages Tab -->
+            <div id="messages" class="tab-content">
+                <div id="messages-list" class="space-y-4">
+                    <!-- Messages will be populated by JS -->
+                </div>
+                <div id="messages-empty" class="empty-state">
+                    <i class="fas fa-envelope"></i>
+                    <h4>No messages</h4>
+                    <p>Your messages from Luxride will appear here</p>
+                </div>
+            </div>
+            
+            <!-- Archived Tab -->
+            <div id="archived" class="tab-content">
+                <div id="archived-list" class="space-y-4">
+                    <!-- Archived items will be populated by JS -->
+                </div>
+                <div id="archived-empty" class="empty-state">
+                    <i class="fas fa-archive"></i>
+                    <h4>No archived items</h4>
+                    <p>Your archived notifications and messages will appear here</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-8 w-full">
+        <div class="container mx-auto px-4 max-w-md">
+            <div class="grid grid-cols-1 gap-6 text-center">
+                <div>
+                    <h4 class="text-lg font-bold mb-3" style="font-family: 'Playfair Display', serif;">Luxride</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/" class="hover:text-[#d4af37]">About us</a></li>
+                        <li><a href="#" class="hover:text-[#d4af37]">Careers</a></li>
+                        <li><a href="#" class="hover:text-[#d4af37]">Newsroom</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-3" style="font-family: 'Playfair Display', serif;">Support</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="help.html" class="hover:text-[#d4af37]">Help Center</a></li>
+                        <li><a href="#" class="hover:text-[#d4af37]">Contact us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-3" style="font-family: 'Playfair Display', serif;">Follow us</h4>
+                    <div class="flex space-x-4 justify-center">
+                        <a href="#" class="hover:text-[#d4af37]"><i class="fab fa-facebook-f text-lg"></i></a>
+                        <a href="#" class="hover:text-[#d4af37]"><i class="fab fa-twitter text-lg"></i></a>
+                        <a href="#" class="hover:text-[#d4af37]"><i class="fab fa-instagram text-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 text-center text-sm text-gray-600">
+                <p>&copy; 2025 Luxride Technologies Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Initialize particles
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 50, density: { enable: true, value_area: 1000 } },
+                color: { value: ['#d4af37', '#3b82f6', '#ffffff', '#b8972e'] },
+                shape: { type: 'circle', stroke: { width: 2, color: '#d4af37' } },
+                opacity: { value: 0.6, random: true, anim: { enable: true, speed: 1.5, opacity_min: 0.1 } },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#d4af37', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: 'none', random: true }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+                modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+
+        // Toast notification system
+        class Toast {
+            static show(message, type = 'info', duration = 4000) {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                    <i class="fas fa-times close" onclick="this.parentElement.remove()"></i>
+                `;
+                container.appendChild(toast);
+                setTimeout(() => toast.classList.add('show'), 100);
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, duration);
+            }
+            static success(message) { this.show(message, 'success'); }
+            static error(message) { this.show(message, 'error'); }
+            static warning(message) { this.show(message, 'warning'); }
+            static info(message) { this.show(message, 'info'); }
+        }
+
+        // DOM elements
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const notificationsList = document.getElementById('notifications-list');
+        const messagesList = document.getElementById('messages-list');
+        const archivedList = document.getElementById('archived-list');
+        const emptyState = document.getElementById('empty-state');
+        const messagesEmpty = document.getElementById('messages-empty');
+        const archivedEmpty = document.getElementById('archived-empty');
+        const searchInput = document.getElementById('search-input');
+        const statusFilter = document.getElementById('status-filter');
+        const sortFilter = document.getElementById('sort-filter');
+        const clearFiltersBtn = document.getElementById('clear-filters');
+        const bulkActions = document.getElementById('bulk-actions');
+        const selectAllCheckbox = document.getElementById('select-all');
+        const markReadBtn = document.getElementById('mark-read');
+        const archiveSelectedBtn = document.getElementById('archive-selected');
+        const deleteSelectedBtn = document.getElementById('delete-selected');
+        const prevPageBtn = document.getElementById('prev-page');
+        const nextPageBtn = document.getElementById('next-page');
+        const pageInfo = document.querySelector('.page-info');
+        const notificationModal = document.getElementById('notification-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalBody = document.getElementById('modal-body');
+
+        // State
+        let currentTab = 'notifications';
+        let notifications = [];
+        let messages = [];
+        let archivedItems = [];
+        let filteredNotifications = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let selectedNotifications = new Set();
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial tab setup
+            const initialTab = new URLSearchParams(window.location.search).get('tab') || 'notifications';
+            currentTab = initialTab;
+            switchTab(initialTab);
+            
+            // Initial data load and display
+            loadData();
+            setupEventListeners();
+            displayBookedRides();
+            
+            // Setup periodic checks and real-time updates
+            setInterval(checkForNewRides, 30000);
+            
+            // Listen for real-time updates
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'bookedRides') {
+                    displayBookedRides();
+                }
+            });
+            
+            // Show initial empty states if needed
+            updateEmptyStates();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Tab navigation
+            document.querySelectorAll('[data-tab]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabName = button.getAttribute('data-tab');
+                    switchTab(tabName);
+                });
+            });
+
+            // Search functionality
+            searchInput?.addEventListener('input', debounce(() => {
+                filterNotifications();
+            }, 300));
+
+            // Status filter
+            statusFilter?.addEventListener('change', filterNotifications);
+
+            // Sort filter
+            sortFilter?.addEventListener('change', filterNotifications);
+
+            // Clear filters
+            clearFiltersBtn?.addEventListener('click', () => {
+                searchInput.value = '';
+                statusFilter.value = 'all';
+                sortFilter.value = 'newest';
+                filterNotifications();
+            });
+
+            // Bulk actions
+            selectAllCheckbox?.addEventListener('change', () => {
+                const checkboxes = document.querySelectorAll('.notification-checkbox:not(:disabled)');
+                checkboxes.forEach(cb => cb.checked = selectAllCheckbox.checked);
+                updateBulkActions();
+            });
+
+            // Bulk action buttons
+            markReadBtn?.addEventListener('click', markSelectedAsRead);
+            archiveSelectedBtn?.addEventListener('click', archiveSelected);
+            deleteSelectedBtn?.addEventListener('click', deleteSelected);
+
+            // Pagination
+            prevPageBtn?.addEventListener('click', () => changePage(-1));
+            nextPageBtn?.addEventListener('click', () => changePage(1));
+            
+            // Modal
+            closeModalBtn?.addEventListener('click', () => {
+                notificationModal?.classList.add('hidden');
+            });
+
+            // Mobile menu
+            initNavbar();
+        }
+
+        // New Navbar JavaScript
+        function initNavbar() {
+            const mobileToggle = document.getElementById('mobile-toggle');
+            const mobileNav = document.getElementById('mobile-nav');
+            const mobileClose = document.getElementById('mobile-close');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+
+            // Check if elements exist
+            if (!mobileToggle || !mobileNav || !mobileClose || !mobileOverlay) {
+                console.error('Navbar elements not found in inbox.html:', {
+                    toggle: !!mobileToggle,
+                    nav: !!mobileNav,
+                    close: !!mobileClose,
+                    overlay: !!mobileOverlay
+                });
+                return;
+            }
+
+            // Toggle mobile menu
+            mobileToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile menu toggle clicked');
+                openMobileMenu();
+            });
+
+            // Close mobile menu
+            mobileClose.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile menu close clicked');
+                closeMobileMenu();
+            });
+
+            // Close on overlay click
+            mobileOverlay.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile overlay clicked');
+                closeMobileMenu();
+            });
+
+            // Close on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+                    closeMobileMenu();
+                }
+            });
+
+            // Close on nav item click
+            document.querySelectorAll('.mobile-nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    closeMobileMenu();
+                });
+            });
+
+            function openMobileMenu() {
+                mobileNav.classList.add('active');
+                mobileOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMobileMenu() {
+                mobileNav.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            console.log('Navbar initialized successfully in inbox.html');
+        }
+
+        // Initialize navbar when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initNavbar();
+        });
+
+        // Switch tab
+        function switchTab(tabName) {
+            // Update tab buttons
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+                if (button.getAttribute('data-tab') === tabName) {
+                    button.classList.add('active');
+                }
+            });
+
+            // Update tab content
+            tabContents.forEach(content => {
+                content.classList.add('hidden');
+            });
+            const tabContent = document.getElementById(tabName);
+            if (tabContent) tabContent.classList.remove('hidden');
+
+            currentTab = tabName;
+            currentPage = 1;
+            selectedNotifications.clear();
+            updateBulkActions();
+            
+            // Display correct content
+            if (tabName === 'notifications') {
+                displayBookedRides();
+            } else if (tabName === 'messages') {
+                displayMessages();
+            } else if (tabName === 'archived') {
+                displayArchived();
+            }
+        }
+
+        // Load data from localStorage
+        function loadData() {
+            try {
+                // Load booked rides for notifications
+                const bookedRides = JSON.parse(localStorage.getItem('bookedRides') || '[]');
+                notifications = bookedRides.filter(ride => !ride.archived);
+                archivedItems = bookedRides.filter(ride => ride.archived);
+                messages = JSON.parse(localStorage.getItem('messages') || '[]');
+                filteredNotifications = [...notifications];
+                updateEmptyStates();
+            } catch (e) {
+                console.error('Error loading data:', e);
+            }
+        }
+
+        // Function to display booked rides as notifications
+        function displayBookedRides() {
+            const notificationsContainer = document.getElementById('notifications-list');
+            notificationsContainer.innerHTML = '';
+            
+            if (currentTab !== 'notifications' || !filteredNotifications.length) {
+                updateEmptyStates();
+                return;
+            }
+
+            // Calculate pagination
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedNotifications = filteredNotifications.slice(startIndex, endIndex);
+            
+            paginatedNotifications.forEach(ride => {
+                const notification = document.createElement('div');
+                notification.setAttribute('data-ride-id', ride.id);
+                notification.className = `notification-card bg-white rounded-xl shadow-lg p-6 mb-4 flex flex-col gap-3 border border-gray-200 ${ride.read ? '' : 'unread'}`;
+                
+                notification.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" 
+                                class="notification-checkbox w-5 h-5 rounded border-gray-300 text-[#d4af37] focus:ring-[#d4af37]" 
+                                data-id="${ride.id}"
+                                ${ride.archived ? 'disabled' : ''}
+                            >
+                            <span class="font-bold text-[#d4af37] text-lg">${ride.vehicleInfo.fullName} Booked</span>
+                        </div>
+                        <span class="text-xs text-gray-500">${new Date(ride.timestamp).toLocaleTimeString()} ${new Date(ride.timestamp).toLocaleDateString()}</span>
+                    </div>
+                    <div class="flex flex-col gap-1 mb-2">
+                        <span class="text-gray-700"><i class="fas fa-map-marker-alt text-[#d4af37]"></i> Pickup: <span class="font-semibold">${ride.pickup}</span></span>
+                        <span class="text-gray-700"><i class="fas fa-location-arrow text-[#d4af37]"></i> Destination: <span class="font-semibold">${ride.destination}</span></span>
+                        ${ride.datetime ? `<span class="text-gray-700"><i class="fas fa-clock text-[#d4af37]"></i> Time: <span class="font-semibold">${new Date(ride.datetime).toLocaleString()}</span></span>` : ''}
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-gray-600">Price: <span class="font-bold">${ride.vehicleInfo.price}</span></span>
+                        <span class="text-gray-600">Status: <span class="font-bold capitalize ${ride.status === 'confirmed' ? 'text-green-600' : 'text-yellow-600'}">${ride.status}</span></span>
+                    </div>
+                    <div class="flex justify-end gap-2 mt-2">
+                        ${!ride.read ? `
+                            <button class="mark-read-btn px-3 py-2 rounded bg-gray-500 text-white hover:bg-gray-600 flex items-center gap-2">
+                                <i class="fas fa-check"></i> Mark as Read
+                            </button>
+                        ` : ''}
+                        ${!ride.archived ? `
+                            <button class="archive-btn px-3 py-2 rounded bg-[#d4af37] text-white hover:bg-[#b8972e] flex items-center gap-2">
+                                <i class="fas fa-archive"></i> Archive
+                            </button>
+                        ` : ''}
+                        <button class="delete-btn px-3 py-2 rounded bg-red-500 text-white hover:bg-red-600 flex items-center gap-2">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                `;
+                
+                // Add checkbox event listener
+                const checkbox = notification.querySelector('.notification-checkbox');
+                checkbox?.addEventListener('change', () => {
+                    updateBulkActions();
+                });
+                
+                // Add mark as read functionality
+                const markReadBtn = notification.querySelector('.mark-read-btn');
+                markReadBtn?.addEventListener('click', () => {
+                    const rides = JSON.parse(localStorage.getItem('bookedRides') || '[]');
+                    const updated = rides.map(r => r.id === ride.id ? { ...r, read: true } : r);
+                    localStorage.setItem('bookedRides', JSON.stringify(updated));
+                    loadData();
+                    displayBookedRides();
+                });
+                
+                // Add archive functionality
+                const archiveBtn = notification.querySelector('.archive-btn');
+                archiveBtn?.addEventListener('click', () => {
+                    const rides = JSON.parse(localStorage.getItem('bookedRides') || '[]');
+                    const updated = rides.map(r => r.id === ride.id ? { ...r, archived: true } : r);
+                    localStorage.setItem('bookedRides', JSON.stringify(updated));
+                    loadData();
+                    displayBookedRides();
+                });
+                
+                // Add delete functionality
+                const deleteBtn = notification.querySelector('.delete-btn');
+                deleteBtn?.addEventListener('click', () => {
+                    const rides = JSON.parse(localStorage.getItem('bookedRides') || '[]');
+                    const updated = rides.filter(r => r.id !== ride.id);
+                    localStorage.setItem('bookedRides', JSON.stringify(updated));
+                    loadData();
+                    displayBookedRides();
+                });
+                
+                notificationsContainer.appendChild(notification);
+            });
+            
+            updatePagination();
+            updateBulkActions();
+        }
+
+        // Display messages
+        function displayMessages() {
+            messagesList.innerHTML = '';
+            
+            if (messages.length === 0) {
+                messagesEmpty.classList.remove('hidden');
+                return;
+            }
+            
+            messagesEmpty.classList.add('hidden');
+            
+            messages.forEach(message => {
+                const messageCard = createMessageCard(message);
+                messagesList.appendChild(messageCard);
+            });
+        }
+
+        // Create message card
+        function createMessageCard(message) {
+            const card = document.createElement('div');
+            card.className = `notification-card ${message.read ? 'read' : 'unread'}`;
+            
+            const formattedDate = formatDate(message.timestamp);
+            
+            card.innerHTML = `
+                <div class="notification-header">
+                    <div class="notification-title">${message.subject}</div>
+                    <div class="notification-time">${formattedDate}</div>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-details">
+                        <div class="detail-item">
+                            <div class="detail-label">From</div>
+                            <div class="detail-value">${message.sender}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Message</div>
+                            <div class="detail-value">${message.content}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="notification-actions">
+                    <button class="notification-btn details-btn" data-id="${message.id}">View</button>
+                </div>
+            `;
+
+            // Add event listener for details button
+            const detailsBtn = card.querySelector('.details-btn');
+            detailsBtn.addEventListener('click', () => showMessageDetails(message));
+
+            return card;
+        }
+
+        // Display archived items
+        function displayArchived() {
+            archivedList.innerHTML = '';
+            
+            if (archivedItems.length === 0) {
+                archivedEmpty.classList.remove('hidden');
+                return;
+            }
+            
+            archivedEmpty.classList.add('hidden');
+            
+            archivedItems.forEach(item => {
+                const itemCard = createArchivedCard(item);
+                archivedList.appendChild(itemCard);
+            });
+        }
+
+        // Create archived card
+        function createArchivedCard(item) {
+            const card = document.createElement('div');
+            card.className = 'notification-card read';
+            
+            const formattedDate = formatDate(item.timestamp);
+
+            if (item.type === 'notification') {
+                card.innerHTML = `
+                    <div class="notification-header">
+                        <div class="notification-title">${item.title}</div>
+                        <div class="notification-time">${formattedDate}</div>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Pickup</div>
+                                <div class="detail-value">${item.pickup}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Destination</div>
+                                <div class="detail-value">${item.destination}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notification-actions">
+                        <button class="notification-btn details-btn" data-id="${item.id}">Details</button>
+                        <button class="notification-btn restore-btn" data-id="${item.id}">Restore</button>
+                    </div>
+                `;
+            } else {
+                card.innerHTML = `
+                    <div class="notification-header">
+                        <div class="notification-title">${item.subject}</div>
+                        <div class="notification-time">${formattedDate}</div>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-details">
+                            <div class="detail-item">
+                                <div class="detail-label">From</div>
+                                <div class="detail-value">${item.sender}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Message</div>
+                                <div class="detail-value">${item.content}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notification-actions">
+                        <button class="notification-btn details-btn" data-id="${item.id}">View</button>
+                        <button class="notification-btn restore-btn" data-id="${item.id}">Restore</button>
+                    </div>
+                `;
+            }
+
+            // Add event listeners
+            const detailsBtn = card.querySelector('.details-btn');
+            detailsBtn.addEventListener('click', () => {
+                if (item.type === 'notification') {
+                    showNotificationDetails(item);
+                } else {
+                    showMessageDetails(item);
+                }
+            });
+
+            const restoreBtn = card.querySelector('.restore-btn');
+            restoreBtn.addEventListener('click', () => restoreItem(item.id));
+
+            return card;
+        }
+
+        // Update empty states
+        function updateEmptyStates() {
+            emptyState.classList.toggle('hidden', notifications.length > 0);
+            messagesEmpty.classList.toggle('hidden', messages.length > 0);
+            archivedEmpty.classList.toggle('hidden', archivedItems.length > 0);
+        }
+
+        // Filter notifications
+        function filterNotifications() {
+            const searchTerm = searchInput?.value.toLowerCase();
+            const statusValue = statusFilter?.value;
+            const sortValue = sortFilter?.value;
+
+            filteredNotifications = notifications.filter(notification => {
+                const matchesSearch = !searchTerm || 
+                    notification.pickup.toLowerCase().includes(searchTerm) ||
+                    notification.destination.toLowerCase().includes(searchTerm) ||
+                    (notification.vehicleInfo && notification.vehicleInfo.fullName.toLowerCase().includes(searchTerm));
+                
+                const matchesStatus = !statusValue || notification.status === statusValue;
+                
+                return matchesSearch && matchesStatus;
+            });
+
+            if (sortValue === 'date-asc') {
+                filteredNotifications.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            } else {
+                filteredNotifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            }
+
+            currentPage = 1;
+            displayBookedRides();
+        }
+
+        // Update pagination
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredNotifications.length / itemsPerPage);
+            prevPageBtn.disabled = currentPage <= 1;
+            nextPageBtn.disabled = currentPage >= totalPages;
+            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+        }
+
+        // Change page
+        function changePage(delta) {
+            const newPage = currentPage + delta;
+            const totalPages = Math.ceil(filteredNotifications.length / itemsPerPage);
+            if (newPage >= 1 && newPage <= totalPages) {
+                currentPage = newPage;
+                displayBookedRides();
+            }
+        }
+
+        // Helper function for debouncing
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Update bulk actions
+        function updateBulkActions() {
+            const hasSelection = document.querySelectorAll('.notification-checkbox:checked').length > 0;
+            bulkActions?.classList.toggle('hidden', !hasSelection);
+        }
+
+        // Mark selected as read
+        function markSelectedAsRead() {
+            const selected = getSelectedNotifications();
+            const bookedRides = JSON.parse(localStorage.getItem('bookedRides') || '[]');
+            const updated = bookedRides.map(ride => {
+                if (selected.includes(ride.id)) {
+                    return { ...ride, read: true };
+                }
+                return ride;
+            });
+            localStorage.setItem('bookedRides', JSON.stringify(updated));
+            loadData();
+            displayBookedRides();
+            Toast.success(`${selected.length} notification(s) marked as read`);
+        }
+
+        // Archive selected
+        function archiveSelected() {
+            const selected = getSelectedNotifications();
+            const bookedRides = JSON.parse(localStorage.getItem('bookedRides') || '[]');
+            const updated = bookedRides.map(ride => {
+                if (selected.includes(ride.id)) {
+                    return { ...ride, archived: true };
+                }
+                return ride;
+            });
+            localStorage.setItem('bookedRides', JSON.stringify(updated));
+            loadData();
+            displayBookedRides();
+            Toast.success(`${selected.length} item(s) archived`);
+        }
+
+        // Delete selected
+        function deleteSelected() {
+            const selected = getSelectedNotifications();
+            if (!confirm(`Are you sure you want to delete ${selected.length} notification(s)?`)) {
+                return;
+            }
+            
+            const bookedRides = JSON.parse(localStorage.getItem('bookedRides') || '[]');
+            const updated = bookedRides.filter(ride => !selected.includes(ride.id));
+            localStorage.setItem('bookedRides', JSON.stringify(updated));
+            loadData();
+            displayBookedRides();
+            Toast.success(`${selected.length} notification(s) deleted`);
+        }
+
+        // Get selected notifications
+        function getSelectedNotifications() {
+            return Array.from(document.querySelectorAll('.notification-checkbox:checked'))
+                .map(cb => cb.getAttribute('data-id'));
+        }
+
+        // Restore archived item
+        function restoreItem(id) {
+            const bookedRides = JSON.parse(localStorage.getItem('bookedRides') || '[]');
+            const updated = bookedRides.map(ride => {
+                if (ride.id === id) {
+                    return { ...ride, archived: false };
+                }
+                return ride;
+            });
+            localStorage.setItem('bookedRides', JSON.stringify(updated));
+            loadData();
+            displayBookedRides();
+            Toast.success('Item restored');
+        }
+
+        // Show notification details
+        function showNotificationDetails(notification) {
+            const statusClass = `status-${notification.status}`;
+            const vehicleClass = `vehicle-${notification.vehicleInfo.type || 'standard'}`;
+            const formattedDate = new Date(notification.timestamp).toLocaleString();
+            
+            modalBody.innerHTML = `
+                <div class="notification-vehicle">
+                    <div class="vehicle-icon ${vehicleClass}">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="notification-vehicle-info">
+                        <div class="notification-vehicle-name">${notification.vehicleInfo.fullName}</div>
+                        <div class="notification-vehicle-details">${notification.vehicleInfo.price} • ${notification.vehicleInfo.capacity || 4} seats • ${notification.vehicleInfo.time || '15 min'}</div>
+                    </div>
+                </div>
+                <div class="notification-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Pickup</div>
+                        <div class="detail-value">${notification.pickup}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Destination</div>
+                        <div class="detail-value">${notification.destination}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value">
+                            <span class="notification-status ${statusClass}">${notification.status}</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Booked</div>
+                        <div class="detail-value">${formattedDate}</div>
+                    </div>
+                </div>
+                <div class="notification-actions">
+                    ${notification.status === 'pending' ? `<button class="notification-btn confirm-btn" onclick="confirmRide('${notification.id}')">Confirm</button>` : ''}
+                    ${notification.status === 'pending' || notification.status === 'confirmed' ? `<button class="notification-btn cancel-btn" onclick="cancelRide('${notification.id}')">Cancel</button>` : ''}
+                    <button class="notification-btn details-btn" onclick="window.location.href='receipt.html?ride=${notification.id}'">View Receipt</button>
+                </div>
+            `;
+            
+            notificationModal.classList.remove('hidden');
+        }
+
+        // Show message details
+        function showMessageDetails(message) {
+            const formattedDate = new Date(message.timestamp).toLocaleString();
+            
+            modalBody.innerHTML = `
+                <div class="notification-details">
+                    <div class="detail-item">
+                        <div class="detail-label">From</div>
+                        <div class="detail-value">${message.sender}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Subject</div>
+                        <div class="detail-value">${message.subject}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Message</div>
+                        <div class="detail-value">${message.content}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Received</div>
+                        <div class="detail-value">${formattedDate}</div>
+                    </div>
+                </div>
+                <div class="notification-actions">
+                    <button class="notification-btn details-btn" onclick="replyToMessage('${message.id}')">Reply</button>
+                    <button class="notification-btn details-btn" onclick="deleteMessage('${message.id}')">Delete</button>
+                </div>
+            `;
+            
+            notificationModal.classList.remove('hidden');
+        }
+
+        // Confirm ride
+        function confirmRide(id) {
+            const bookedRides = JSON.parse(localStorage.getItem('bookedRides') || '[]');
+            const updated = bookedRides.map(ride => {
+                if (ride.id === id) {
+                    return { ...ride, status: 'confirmed' };
+                }
+                return ride;
+            });
+            localStorage.setItem('bookedRides', JSON.stringify(updated));
+            loadData();
+            displayBookedRides();
+            notificationModal.classList.add('hidden');
+            Toast.success('Ride confirmed');
+        }
+
+        // Cancel ride
+        function cancelRide(id) {
+            if (!confirm('Are you sure you want to cancel this ride?')) return;
+            
+            const bookedRides = JSON.parse(localStorage.getItem('bookedRides') || '[]');
+            const updated = bookedRides.map(ride => {
+                if (ride.id === id) {
+                    return { ...ride, status: 'cancelled' };
+                }
+                return ride;
+            });
+            localStorage.setItem('bookedRides', JSON.stringify(updated));
+            loadData();
+            displayBookedRides();
+            notificationModal.classList.add('hidden');
+            Toast.warning('Ride cancelled');
+        }
+
+        // Reply to message
+        function replyToMessage(id) {
+            notificationModal.classList.add('hidden');
+            Toast.info('Reply feature coming soon');
+        }
+
+        // Delete message
+        function deleteMessage(id) {
+            if (!confirm('Are you sure you want to delete this message?')) return;
+            
+            const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+            const updated = messages.filter(m => m.id !== id);
+            localStorage.setItem('messages', JSON.stringify(updated));
+            loadData();
+            displayMessages();
+            notificationModal.classList.add('hidden');
+            Toast.success('Message deleted');
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffInHours = (now - date) / (1000 * 60 * 60);
+            
+            if (diffInHours < 24) {
+                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            } else if (diffInHours < 168) {
+                return date.toLocaleDateString('en-US', { weekday: 'short' }) + ' at ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            } else {
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            }
+        }
+
+        // Check for new rides
+        function checkForNewRides() {
+            const lastCheck = localStorage.getItem('lastNotificationCheck');
+            const bookedRides = JSON.parse(localStorage.getItem('bookedRides') || '[]');
+            
+            if (lastCheck) {
+                const newRides = bookedRides.filter(ride => 
+                    new Date(ride.timestamp) > new Date(lastCheck) && !ride.read
+                );
+                
+                if (newRides.length > 0) {
+                    showNewRidesNotification(newRides.length);
+                }
+            }
+            
+            localStorage.setItem('lastNotificationCheck', new Date().toISOString());
+        }
+
+        // Show new rides notification
+        function showNewRidesNotification(count) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-[#d4af37] text-white px-6 py-3 rounded-lg shadow-lg z-50';
+            toast.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-bell"></i>
+                    <span>${count} new ${count === 1 ? 'ride' : 'rides'} booked!</span>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+
+
+        // Clear any existing ride notifications on page load to prevent issues
+        window.addEventListener('load', () => {
+            localStorage.removeItem('rideNotification');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Luxride - Premium Transportation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Preconnect to external domains for better performance -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Font fallbacks to prevent rendering issues */
+        body, * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        .font-serif, h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+        }
+    </style>
+    <style>
+        :root {
+            --primary-gold: #d4af37;
+            --primary-gold-dark: #b8972e;
+            --primary-gold-light: #e6c14b;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --border-light: rgba(0, 0, 0, 0.05);
+            --border-medium: rgba(0, 0, 0, 0.1);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: var(--text-primary);
+            overscroll-behavior: none;
+            overflow-x: hidden;
+            padding-top: 70px; /* Account for fixed navbar */
+            line-height: 1.6;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: transparent;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-gold-dark) 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-md);
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, var(--primary-gold-light) 0%, var(--primary-gold) 100%);
+            box-shadow: var(--shadow-lg);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-md);
+            border-radius: 12px;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: var(--shadow-lg);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-md);
+            border-radius: 12px;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #4b5563 0%, #6b7280 100%);
+            box-shadow: var(--shadow-lg);
+        }
+        .input-field {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+        }
+        .input-field:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2), var(--shadow-md);
+            border-color: var(--primary-gold);
+            background: rgba(255, 255, 255, 1);
+        }
+        .input-field::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: var(--shadow-2xl);
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-gold), var(--primary-gold-dark));
+        }
+        .error-toast {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: #ffffff;
+            padding: 12px;
+            border-radius: 12px;
+            margin: 12px 0;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #dc2626;
+            animation: slideInUp 0.4s ease-out;
+        }
+        .success-toast {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+            padding: 12px;
+            border-radius: 12px;
+            margin: 12px 0;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #10b981;
+            animation: slideInUp 0.4s ease-out;
+        }
+        .profile-photo {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-gold);
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .profile-photo:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-2xl);
+        }
+        .profile-photo-container {
+            position: relative;
+            display: inline-block;
+        }
+        .photo-upload-btn {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 3px solid white;
+        }
+        .photo-upload-btn:hover {
+            background: linear-gradient(135deg, var(--primary-gold-light), var(--primary-gold));
+            transform: scale(1.1);
+            box-shadow: var(--shadow-xl);
+        }
+        .tab-container {
+            display: flex;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 8px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            gap: 4px;
+        }
+        .tab-button {
+            padding: 12px 20px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        .tab-button:hover::before {
+            left: 100%;
+        }
+        .tab-button.active {
+            color: var(--primary-gold);
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(184, 151, 46, 0.05));
+            box-shadow: var(--shadow-sm);
+        }
+        .tab-button:hover {
+            color: var(--primary-gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .notification-item {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+        .notification-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-gold), var(--primary-gold-dark));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .notification-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        .notification-item:hover::before {
+            opacity: 1;
+        }
+        .notification-item.unread {
+            border-left: 4px solid var(--primary-gold);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(212, 175, 55, 0.02) 100%);
+        }
+        .notification-item.unread::before {
+            opacity: 1;
+        }
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .notification-title {
+            font-weight: 600;
+        }
+        .notification-time {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .toggle-slider {
+            background-color: #d4af37;
+        }
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 24px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideInUp 0.3s;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        .close-modal:hover {
+            color: #333333;
+        }
+        .stats-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-gold), var(--primary-gold-dark));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .stats-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-xl);
+        }
+        .stats-card:hover::before {
+            opacity: 1;
+        }
+        .stats-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-gold);
+            margin-bottom: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+        .stats-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+        @keyframes slideInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .animate-slide-in-left {
+            animation: slideInFromLeft 0.8s ease-out;
+        }
+        .animate-slide-in-right {
+            animation: slideInFromRight 0.8s ease-out;
+        }
+        .shimmer {
+            animation: shimmer 2s infinite;
+        }
+        @media (max-width: 640px) {
+            .form-container {
+                margin: 16px;
+                padding: 20px;
+            }
+            .profile-photo {
+                width: 120px;
+                height: 120px;
+            }
+            .tab-container {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                gap: 8px;
+            }
+            .tab-button {
+                padding: 10px 16px;
+                font-size: 14px;
+                white-space: nowrap;
+            }
+            .notification-item, .stats-card {
+                padding: 16px;
+            }
+        }
+
+        /* New Solid Background Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #d4af37;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .brand-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333333;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-item:hover::before {
+            left: 0;
+        }
+
+        .nav-item:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .nav-item.logout {
+            background: #ef4444;
+            color: white;
+        }
+
+        .nav-item.logout:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-toggle:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .hamburger-line {
+            width: 25px;
+            height: 3px;
+            background: #333333;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            height: 100vh;
+            background: #ffffff;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+            transition: right 0.3s ease;
+            z-index: 1001;
+            overflow-y: auto;
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+        }
+
+        .mobile-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-brand .brand-logo {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .mobile-brand .brand-text {
+            color: white;
+            font-size: 20px;
+        }
+
+        .mobile-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .mobile-nav-content {
+            padding: 20px;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #333333;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        .mobile-nav-item:hover {
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            color: white;
+            transform: translateX(8px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .mobile-nav-item.active {
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .mobile-nav-item.logout {
+            background: #ef4444;
+            color: white;
+        }
+
+        .mobile-nav-item.logout:hover {
+            background: #dc2626;
+            transform: translateX(8px);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .navbar-container {
+                padding: 0 16px;
+                height: 60px;
+            }
+
+            .brand-text {
+                font-size: 20px;
+            }
+
+            .brand-logo {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mobile-nav {
+                width: 100%;
+            }
+
+            .navbar-container {
+                padding: 0 12px;
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center">
+    <div id="particles-js"></div>
+    <!-- Header -->
+    <!-- New Solid Background Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <!-- Logo Section -->
+            <div class="navbar-brand">
+                <div class="brand-logo">
+                    <i class="fas fa-car"></i>
+                </div>
+                <span class="brand-text">Luxride</span>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="navbar-nav desktop-nav">
+                <a href="/" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Ride</span>
+                </a>
+                <a href="/triphistory" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Trip History</span>
+                </a>
+                <a href="/inbox" class="nav-item">
+                    <i class="fas fa-inbox"></i>
+                    <span>Inbox</span>
+                </a>
+                <a href="/profile" class="nav-item active">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="/driver-dashboard" class="nav-item">
+                    <i class="fas fa-car-side"></i>
+                    <span>Driver</span>
+                </a>
+                <a href="/signup" class="nav-item">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Sign Up</span>
+                </a>
+                <a href="/receipt" class="nav-item">
+                    <i class="fas fa-receipt"></i>
+                    <span>Receipt</span>
+                </a>
+                <a href="/book" class="nav-item">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Book</span>
+                </a>
+                <a href="/login" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log out</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-toggle" id="mobile-toggle">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobile-nav">
+            <div class="mobile-nav-header">
+                <div class="mobile-brand">
+                    <div class="brand-logo">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <span class="brand-text">Luxride</span>
+                </div>
+                <button class="mobile-close" id="mobile-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mobile-nav-content">
+                <a href="/" class="mobile-nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Ride</span>
+                </a>
+                <a href="/triphistory" class="mobile-nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Trip History</span>
+                </a>
+                <a href="/inbox" class="mobile-nav-item">
+                    <i class="fas fa-inbox"></i>
+                    <span>Inbox</span>
+                </a>
+                <a href="/profile" class="mobile-nav-item active">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="/driver-dashboard" class="mobile-nav-item">
+                    <i class="fas fa-car-side"></i>
+                    <span>Driver</span>
+                </a>
+                <a href="/signup" class="mobile-nav-item">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Sign Up</span>
+                </a>
+                <a href="/receipt" class="mobile-nav-item">
+                    <i class="fas fa-receipt"></i>
+                    <span>Receipt</span>
+                </a>
+                <a href="/book" class="mobile-nav-item">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Book</span>
+                </a>
+                <a href="/login" class="mobile-nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log out</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Overlay -->
+        <div class="mobile-overlay" id="mobile-overlay"></div>
+    </nav>
+
+    <section class="py-16 w-full flex justify-center">
+        <div class="form-container p-8 max-w-5xl w-full mx-6">
+            <div class="text-center mb-12 animate-fade-in-up">
+                <h2 class="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent" style="font-family: 'Playfair Display', serif;">Your Profile</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Manage your account settings, preferences, and ride statistics</p>
+            </div>
+            
+            <!-- Profile Photo Section -->
+            <div class="flex justify-center mb-8 animate-slide-in-left">
+                <div class="profile-photo-container">
+                    <img id="profile-photo" src="https://plus.unsplash.com/premium_photo-1691784781482-9af9bce05096?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTd8fHBlcnNvbnxlbnwwfHwwfHx8MA%3D%3D" alt="Profile Photo" class="profile-photo">
+                    <label for="photo-upload" class="photo-upload-btn">
+                        <i class="fas fa-camera"></i>
+                    </label>
+                    <input type="file" id="photo-upload" accept="image/*" style="display: none;">
+                </div>
+            </div>
+            
+            <!-- Tab Navigation -->
+            <div class="tab-container animate-slide-in-right">
+                <div class="tab-button active" data-tab="personal">Personal Info</div>
+                <div class="tab-button" data-tab="notifications">Notifications</div>
+                <div class="tab-button" data-tab="security">Security</div>
+                <div class="tab-button" data-tab="stats">Ride Stats</div>
+            </div>
+            
+            <!-- Tab Content -->
+            <div id="personal" class="tab-content active">
+                <form id="profile-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="relative">
+                            <input type="text" id="name" placeholder="Full Name" class="w-full pl-12 pr-4 py-3 input-field text-sm" required>
+                            <i class="fas fa-user absolute top-1/2 left-4 transform -translate-y-1/2 text-[#d4af37] text-lg"></i>
+                        </div>
+                        <div class="relative">
+                            <input type="email" id="email" placeholder="Email" class="w-full pl-12 pr-4 py-3 input-field text-sm" required>
+                            <i class="fas fa-envelope absolute top-1/2 left-4 transform -translate-y-1/2 text-[#d4af37] text-lg"></i>
+                        </div>
+                        <div class="relative">
+                            <input type="tel" id="phone" placeholder="Phone Number" class="w-full pl-12 pr-4 py-3 input-field text-sm" required>
+                            <i class="fas fa-phone absolute top-1/2 left-4 transform -translate-y-1/2 text-[#d4af37] text-lg"></i>
+                        </div>
+                        <div class="relative">
+                            <input type="date" id="birthday" placeholder="Birthday" class="w-full pl-12 pr-4 py-3 input-field text-sm">
+                            <i class="fas fa-birthday-cake absolute top-1/2 left-4 transform -translate-y-1/2 text-[#d4af37] text-lg"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="relative">
+                            <select id="preferred-vehicle" class="w-full pl-12 pr-4 py-3 input-field text-sm">
+                                <option value="standard">Standard</option>
+                                <option value="premium">Premium</option>
+                                <option value="suv">SUV</option>
+                                <option value="xl">XL</option>
+                            </select>
+                            <i class="fas fa-car absolute top-1/2 left-4 transform -translate-y-1/2 text-[#d4af37] text-lg"></i>
+                        </div>
+                        <div class="relative">
+                            <select id="language" class="w-full pl-12 pr-4 py-3 input-field text-sm">
+                                <option value="english">English</option>
+                                <option value="spanish">Spanish</option>
+                                <option value="french">French</option>
+                                <option value="german">German</option>
+                            </select>
+                            <i class="fas fa-language absolute top-1/2 left-4 transform -translate-y-1/2 text-[#d4af37] text-lg"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="relative">
+                        <textarea id="bio" placeholder="Tell us about yourself" class="w-full pl-12 pr-4 py-3 input-field text-sm" rows="3"></textarea>
+                        <i class="fas fa-info-circle absolute top-4 left-4 text-[#d4af37] text-lg"></i>
+                    </div>
+                    
+                    <button type="submit" class="w-full py-3 btn-primary text-base flex items-center justify-center gap-2">
+                        <i class="fas fa-save"></i>
+                        <span>Save Changes</span>
+                    </button>
+                </form>
+            </div>
+            
+            
+            <div id="notifications" class="tab-content">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center p-4 bg-white rounded-lg shadow">
+                        <div>
+                            <h3 class="font-semibold">Ride Updates</h3>
+                            <p class="text-sm text-gray-600">Get notified about your ride status</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="ride-updates" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="flex justify-between items-center p-4 bg-white rounded-lg shadow">
+                        <div>
+                            <h3 class="font-semibold">Promotions</h3>
+                            <p class="text-sm text-gray-600">Receive special offers and discounts</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="promotions">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="flex justify-between items-center p-4 bg-white rounded-lg shadow">
+                        <div>
+                            <h3 class="font-semibold">Newsletter</h3>
+                            <p class="text-sm text-gray-600">Stay updated with Luxride news</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="newsletter" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <h3 class="text-xl font-semibold mt-8 mb-4">Recent Notifications</h3>
+                <div id="notifications-list" class="space-y-4">
+                    <!-- Notifications will be populated by JS -->
+                </div>
+            </div>
+            
+            <div id="security" class="tab-content">
+                <form id="security-form" class="space-y-4">
+                    <div class="relative">
+                        <input type="password" id="current-password" placeholder="Current Password" class="w-full pl-12 pr-4 py-3 input-field text-sm" required>
+                        <i class="fas fa-lock absolute top-1/2 left-4 transform -translate-y-1/2 text-[#d4af37] text-lg"></i>
+                    </div>
+                    <div class="relative">
+                        <input type="password" id="new-password" placeholder="New Password" class="w-full pl-12 pr-4 py-3 input-field text-sm" required>
+                        <i class="fas fa-key absolute top-1/2 left-4 transform -translate-y-1/2 text-[#d4af37] text-lg"></i>
+                    </div>
+                    <div class="relative">
+                        <input type="password" id="confirm-password" placeholder="Confirm New Password" class="w-full pl-12 pr-4 py-3 input-field text-sm" required>
+                        <i class="fas fa-key absolute top-1/2 left-4 transform -translate-y-1/2 text-[#d4af37] text-lg"></i>
+                    </div>
+                    
+                    <div class="flex justify-between items-center p-4 bg-white rounded-lg shadow">
+                        <div>
+                            <h3 class="font-semibold">Two-Factor Authentication</h3>
+                            <p class="text-sm text-gray-600">Add an extra layer of security</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="two-factor">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="w-full py-3 btn-primary text-base flex items-center justify-center gap-2">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Update Security Settings</span>
+                    </button>
+                </form>
+                
+                <div class="mt-8">
+                    <h3 class="text-xl font-semibold mb-4">Login History</h3>
+                    <div id="login-history" class="space-y-4">
+                        <!-- Login history will be populated by JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <div id="stats" class="tab-content">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="stats-card">
+                        <div class="stats-value" id="total-trips">0</div>
+                        <div class="stats-label">Total Trips</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-value" id="total-distance">0</div>
+                        <div class="stats-label">Miles Traveled</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-value" id="total-spent">$0</div>
+                        <div class="stats-label">Total Spent</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-value" id="avg-rating">0.0</div>
+                        <div class="stats-label">Avg Rating</div>
+                    </div>
+                </div>
+                
+                <h3 class="text-xl font-semibold mb-4">Favorite Routes</h3>
+                <div id="favorite-routes" class="space-y-4">
+                    <!-- Favorite routes will be populated by JS -->
+                </div>
+            </div>
+            
+            <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                <button id="logout-form-btn" class="w-full py-3 btn-danger text-base flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log Out</span>
+                </button>
+                <button id="delete-account-btn" class="w-full py-3 btn-danger text-base flex items-center justify-center gap-2">
+                    <i class="fas fa-trash"></i>
+                    <span>Delete Account</span>
+                </button>
+            </div>
+            
+            <div id="form-message" class="mt-4"></div>
+        </div>
+    </section>
+
+    <footer class="py-8 w-full">
+        <div class="container mx-auto px-4 max-w-md">
+            <div class="grid grid-cols-1 gap-6 text-center">
+                <div>
+                    <h4 class="text-lg font-bold mb-3" style="font-family: 'Playfair Display', serif;">Luxride</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/" class="hover:text-[#d4af37]">About us</a></li>
+                        <li><a href="#" class="hover:text-[#d4af37]">Careers</a></li>
+                        <li><a href="#" class="hover:text-[#d4af37]">Newsroom</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-3" style="font-family: 'Playfair Display', serif;">Support</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="help.html" class="hover:text-[#d4af37]">Help Center</a></li>
+                        <li><a href="#" class="hover:text-[#d4af37]">Contact us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-3" style="font-family: 'Playfair Display', serif;">Follow us</h4>
+                    <div class="flex space-x-4 justify-center">
+                        <a href="#" class="hover:text-[#d4af37]"><i class="fab fa-facebook-f text-lg"></i></a>
+                        <a href="#" class="hover:text-[#d4af37]"><i class="fab fa-twitter text-lg"></i></a>
+                        <a href="#" class="hover:text-[#d4af37]"><i class="fab fa-instagram text-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 text-center text-sm text-gray-600">
+                <p>&copy; 2025 Luxride Technologies Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 50, density: { enable: true, value_area: 1000 } },
+                color: { value: ['#d4af37', '#3b82f6', '#ffffff', '#b8972e'] },
+                shape: { type: 'circle', stroke: { width: 2, color: '#d4af37' } },
+                opacity: { value: 0.6, random: true, anim: { enable: true, speed: 1.5, opacity_min: 0.1 } },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#d4af37', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: 'none', random: true }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+                modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+
+        // DOM Elements
+        const profileForm = document.getElementById('profile-form');
+        const securityForm = document.getElementById('security-form');
+        const messageContainer = document.getElementById('form-message');
+        const logoutBtn = document.getElementById('logout-form-btn');
+        const deleteAccountBtn = document.getElementById('delete-account-btn');
+        const photoUpload = document.getElementById('photo-upload');
+        const profilePhoto = document.getElementById('profile-photo');
+        const closeModal = document.querySelector('.close-modal');
+        const toast = document.getElementById('toast');
+        
+        // New Navbar JavaScript
+        function initNavbar() {
+            const mobileToggle = document.getElementById('mobile-toggle');
+            const mobileNav = document.getElementById('mobile-nav');
+            const mobileClose = document.getElementById('mobile-close');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+
+            // Check if elements exist
+            if (!mobileToggle || !mobileNav || !mobileClose || !mobileOverlay) {
+                console.error('Navbar elements not found in profile.html:', {
+                    toggle: !!mobileToggle,
+                    nav: !!mobileNav,
+                    close: !!mobileClose,
+                    overlay: !!mobileOverlay
+                });
+                return;
+            }
+
+            // Toggle mobile menu
+            mobileToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile menu toggle clicked');
+                openMobileMenu();
+            });
+
+            // Close mobile menu
+            mobileClose.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile menu close clicked');
+                closeMobileMenu();
+            });
+
+            // Close on overlay click
+            mobileOverlay.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile overlay clicked');
+                closeMobileMenu();
+            });
+
+            // Close on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+                    closeMobileMenu();
+                }
+            });
+
+            // Close on nav item click
+            document.querySelectorAll('.mobile-nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    closeMobileMenu();
+                });
+            });
+
+            function openMobileMenu() {
+                mobileNav.classList.add('active');
+                mobileOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMobileMenu() {
+                mobileNav.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            console.log('Navbar initialized successfully in profile.html');
+        }
+
+        // Initialize navbar when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initNavbar();
+        });
+
+        // Tab elements
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // Tab functionality
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.getAttribute('data-tab');
+                
+                // Update active tab button
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Update active tab content
+                tabContents.forEach(content => content.classList.remove('active'));
+                document.getElementById(tabName).classList.add('active');
+                
+                // Load data for specific tabs
+                if (tabName === 'notifications') {
+                    loadNotifications();
+                } else if (tabName === 'security') {
+                    loadLoginHistory();
+                } else if (tabName === 'stats') {
+                    loadRideStats();
+                }
+            });
+        });
+
+        // Show toast notification
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Load user data
+        function loadUserData() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            document.getElementById('name').value = user.name || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('phone').value = user.phone || '';
+            document.getElementById('preferred-vehicle').value = user.preferredVehicle || 'standard';
+            document.getElementById('birthday').value = user.birthday || '';
+            document.getElementById('language').value = user.language || 'english';
+            document.getElementById('bio').value = user.bio || '';
+            
+            // Load notification preferences
+            const notifications = JSON.parse(localStorage.getItem('notifications') || '{}');
+            document.getElementById('ride-updates').checked = notifications.rideUpdates !== false;
+            document.getElementById('promotions').checked = notifications.promotions === true;
+            document.getElementById('newsletter').checked = notifications.newsletter !== false;
+            
+            // Load security settings
+            const security = JSON.parse(localStorage.getItem('security') || '{}');
+            document.getElementById('two-factor').checked = security.twoFactor === true;
+            
+            // Load profile photo if exists
+            if (user.profilePhoto) {
+                profilePhoto.src = user.profilePhoto;
+            }
+        }
+
+        // Save user data
+        function saveUserData() {
+            const user = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                preferredVehicle: document.getElementById('preferred-vehicle').value,
+                birthday: document.getElementById('birthday').value,
+                language: document.getElementById('language').value,
+                bio: document.getElementById('bio').value,
+                profilePhoto: profilePhoto.src
+            };
+            
+            localStorage.setItem('user', JSON.stringify(user));
+            showToast('Profile updated successfully!');
+        }
+
+        // Save notification preferences
+        function saveNotificationPreferences() {
+            const notifications = {
+                rideUpdates: document.getElementById('ride-updates').checked,
+                promotions: document.getElementById('promotions').checked,
+                newsletter: document.getElementById('newsletter').checked
+            };
+            
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+            showToast('Notification preferences updated!');
+        }
+
+        // Save security settings
+        function saveSecuritySettings() {
+            const security = {
+                twoFactor: document.getElementById('two-factor').checked
+            };
+            
+            localStorage.setItem('security', JSON.stringify(security));
+            showToast('Security settings updated!');
+        }
+
+
+        // Load notifications
+        function loadNotifications() {
+            const notifications = [
+                {
+                    title: 'Your ride is confirmed',
+                    message: 'Your ride from Downtown to Airport has been confirmed for tomorrow at 9:00 AM.',
+                    time: '2 hours ago',
+                    read: false
+                },
+                {
+                    title: 'Ride completed',
+                    message: 'Your ride has been completed successfully.',
+                    time: '1 day ago',
+                    read: true
+                },
+                {
+                    title: 'New promotion available',
+                    message: 'Get 20% off your next ride with code LUXRIDE20. Valid until the end of the month.',
+                    time: '3 days ago',
+                    read: true
+                }
+            ];
+            
+            const notificationsContainer = document.getElementById('notifications-list');
+            notificationsContainer.innerHTML = '';
+            
+            notifications.forEach(notification => {
+                const notificationItem = document.createElement('div');
+                notificationItem.className = `notification-item ${notification.read ? '' : 'unread'}`;
+                notificationItem.innerHTML = `
+                    <div class="notification-header">
+                        <div class="notification-title">${notification.title}</div>
+                        <div class="notification-time">${notification.time}</div>
+                    </div>
+                    <div class="notification-message">${notification.message}</div>
+                `;
+                
+                notificationsContainer.appendChild(notificationItem);
+            });
+        }
+
+        // Load login history
+        function loadLoginHistory() {
+            const loginHistory = [
+                {
+                    device: 'iPhone 13 Pro',
+                    location: 'New York, NY',
+                    time: 'Today, 10:30 AM',
+                    current: true
+                },
+                {
+                    device: 'MacBook Pro',
+                    location: 'New York, NY',
+                    time: 'Yesterday, 8:45 PM',
+                    current: false
+                },
+                {
+                    device: 'iPad Air',
+                    location: 'Boston, MA',
+                    time: 'Oct 15, 2025, 2:15 PM',
+                    current: false
+                }
+            ];
+            
+            const loginHistoryContainer = document.getElementById('login-history');
+            loginHistoryContainer.innerHTML = '';
+            
+            loginHistory.forEach(login => {
+                const loginItem = document.createElement('div');
+                loginItem.className = 'flex justify-between items-center p-4 bg-white rounded-lg shadow';
+                loginItem.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <i class="fas ${getDeviceIcon(login.device)} text-gray-600"></i>
+                        <div>
+                            <p class="font-semibold">${login.device}</p>
+                            <p class="text-sm text-gray-600">${login.location} • ${login.time}</p>
+                        </div>
+                    </div>
+                    ${login.current ? '<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Current</span>' : ''}
+                `;
+                
+                loginHistoryContainer.appendChild(loginItem);
+            });
+        }
+
+        // Get device icon
+        function getDeviceIcon(device) {
+            if (device.includes('iPhone') || device.includes('iPad')) return 'fa-mobile-alt';
+            if (device.includes('MacBook') || device.includes('Laptop')) return 'fa-laptop';
+            return 'fa-desktop';
+        }
+
+        // Load ride stats
+        function loadRideStats() {
+            // Generate sample stats
+            const stats = {
+                totalTrips: 47,
+                totalDistance: 324.5,
+                totalSpent: 892.75,
+                avgRating: 4.8
+            };
+            
+            document.getElementById('total-trips').textContent = stats.totalTrips;
+            document.getElementById('total-distance').textContent = stats.totalDistance;
+            document.getElementById('total-spent').textContent = `$${stats.totalSpent}`;
+            document.getElementById('avg-rating').textContent = stats.avgRating;
+            
+            // Generate favorite routes
+            const favoriteRoutes = [
+                { route: 'Home to Office', count: 15 },
+                { route: 'Office to Gym', count: 8 },
+                { route: 'Downtown to Airport', count: 6 }
+            ];
+            
+            const favoriteRoutesContainer = document.getElementById('favorite-routes');
+            favoriteRoutesContainer.innerHTML = '';
+            
+            favoriteRoutes.forEach(route => {
+                const routeItem = document.createElement('div');
+                routeItem.className = 'flex justify-between items-center p-4 bg-white rounded-lg shadow';
+                routeItem.innerHTML = `
+                    <div>
+                        <p class="font-semibold">${route.route}</p>
+                        <p class="text-sm text-gray-600">Taken ${route.count} times</p>
+                    </div>
+                    <button class="btn-primary py-2 px-4 text-sm" onclick="bookAgain('${route.route}')">Book Again</button>
+                `;
+                
+                favoriteRoutesContainer.appendChild(routeItem);
+            });
+        }
+
+        // Form submissions
+        profileForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            saveUserData();
+        });
+
+        securityForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            if (newPassword !== confirmPassword) {
+                messageContainer.innerHTML = '<div class="error-toast">New passwords do not match.</div>';
+                return;
+            }
+            
+            // In a real app, you would validate the current password and update it
+            saveSecuritySettings();
+            securityForm.reset();
+        });
+
+
+        // Notification toggles
+        document.getElementById('ride-updates').addEventListener('change', saveNotificationPreferences);
+        document.getElementById('promotions').addEventListener('change', saveNotificationPreferences);
+        document.getElementById('newsletter').addEventListener('change', saveNotificationPreferences);
+        document.getElementById('two-factor').addEventListener('change', saveSecuritySettings);
+
+        // Photo upload
+        photoUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    profilePhoto.src = event.target.result;
+                    showToast('Profile photo updated!');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+
+        // Logout
+        logoutBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to log out?')) {
+                localStorage.removeItem('user');
+                showToast('Logging out...');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1000);
+            }
+        });
+
+        // Delete account
+        deleteAccountBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                if (confirm('This will permanently delete all your data. Are you absolutely sure?')) {
+                    localStorage.clear();
+                    showToast('Account deleted. Redirecting...');
+                    setTimeout(() => {
+                        window.location.href = 'signup.html';
+                    }, 2000);
+                }
+            }
+        });
+
+        // Initialize the page
+        loadUserData();
+
+        // Book Again functionality
+        function bookAgain(route) {
+            // Parse the route to get pickup and destination
+            const routeParts = route.split(' to ');
+            if (routeParts.length === 2) {
+                const pickup = routeParts[0].trim();
+                const destination = routeParts[1].trim();
+                
+                // Store the route data for the booking page
+                const routeData = {
+                    pickup: pickup,
+                    destination: destination,
+                    timestamp: new Date().toISOString()
+                };
+                
+                localStorage.setItem('bookAgainRoute', JSON.stringify(routeData));
+                
+                // Redirect to index page with pre-filled data
+                window.location.href = 'index.html';
+            } else {
+                // Fallback: just redirect to booking page
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

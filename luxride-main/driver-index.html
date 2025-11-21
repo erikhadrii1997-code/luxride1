@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a1a">
+    <link rel="manifest" href="/manifest.json">
+    <title>Luxride Driver - Dashboard</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@capacitor/core@latest/dist/capacitor.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Luxride Brand Colors - Matching index.html */
+            --primary-color: #1a1a1a;
+            --secondary-color: #2d2d2d;
+            --accent-color: #d4af37;
+            --accent-hover: #b8972e;
+            --accent-light: rgba(212, 175, 55, 0.1);
+            --accent-medium: rgba(212, 175, 55, 0.2);
+            --accent-strong: rgba(212, 175, 55, 0.3);
+            
+            /* Text Colors */
+            --text-primary: #333333;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --text-white: #ffffff;
+            --text-gold: #d4af37;
+            
+            /* Background Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa, #e4e7eb);
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --bg-glass-dark: rgba(255, 255, 255, 0.1);
+            
+            /* Border Colors */
+            --border-color: #e2e8f0;
+            --border-gold: #d4af37;
+            --border-light: rgba(212, 175, 55, 0.3);
+            
+            /* Shadow System */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            --shadow-gold: 0 0 30px rgba(212, 175, 55, 0.3);
+            --shadow-gold-strong: 0 0 50px rgba(212, 175, 55, 0.4);
+            
+            /* Status Colors */
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            overscroll-behavior: none;
+            overflow-x: hidden;
+            line-height: 1.6;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            max-height: 100vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Add subtle background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, var(--accent-light) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, var(--accent-light) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, var(--accent-medium) 0%, transparent 50%);
+            z-index: -1;
+            animation: backgroundFloat 20s ease-in-out infinite;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #f4d03f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-left p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .order-stats {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-width: 80px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            color: white;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .user-details h3 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-details p {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .logout-btn:hover {
+            background: rgba(220, 38, 38, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .nav-bar {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-xl), var(--shadow-gold);
+            border: 2px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        .nav-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-hover));
+            border-radius: 20px 20px 0 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 16px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .nav-link:hover {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            color: var(--text-white);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg), var(--shadow-gold);
+            border-color: var(--border-gold);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            color: var(--text-white);
+            box-shadow: var(--shadow-md), var(--shadow-gold);
+            border-color: var(--border-gold);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-xl), var(--shadow-gold);
+            border: 2px solid var(--border-light);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-hover));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-2xl), var(--shadow-gold-strong);
+            border-color: var(--border-gold);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-icon.rides { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .stat-icon.earnings { background: linear-gradient(135deg, #10b981, #059669); }
+        .stat-icon.rating { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .stat-icon.online { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .stat-change {
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: #4a5568;
+        }
+
+        .stat-change.positive { color: #10b981; }
+        .stat-change.negative { color: #ef4444; }
+
+        .quick-actions {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+
+        .recent-activity {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: white;
+        }
+
+        .activity-icon.ride { background: #3b82f6; }
+        .activity-icon.earnings { background: #10b981; }
+        .activity-icon.rating { background: #f59e0b; }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: #333333;
+        }
+
+        .activity-desc {
+            font-size: 0.875rem;
+            color: #666666;
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: #999999;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .header-left h1 {
+                font-size: 2rem;
+            }
+
+            .order-stats {
+                gap: 1rem;
+            }
+
+            .stat-item {
+                min-width: 70px;
+                padding: 0.5rem 0.75rem;
+            }
+
+            .stat-value {
+                font-size: 1.25rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Driver Inbox Styles */
+        .driver-inbox {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .notification-badge {
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            position: absolute;
+            right: -8px;
+            top: -8px;
+        }
+
+        .inbox-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .inbox-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .inbox-item * {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .inbox-item:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .inbox-item.unread {
+            border-left: 4px solid var(--accent-color);
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.05) 0%, var(--bg-secondary) 100%);
+        }
+
+        .inbox-item.high {
+            border-left-color: var(--danger-color);
+        }
+
+        .inbox-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .inbox-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .inbox-time {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .inbox-content {
+            margin-bottom: 12px;
+        }
+
+        .inbox-message {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .inbox-details {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .inbox-details span {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .inbox-details .price {
+            color: var(--accent-color);
+            background: rgba(212, 175, 55, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .inbox-details .distance {
+            color: var(--text-secondary);
+        }
+
+        .inbox-details .priority {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .inbox-details .priority.high {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .inbox-details .priority.medium {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .inbox-details .priority.low {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .inbox-actions {
+            display: flex !important;
+            gap: 12px;
+            margin-top: 12px;
+            justify-content: flex-end;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .btn-accept {
+            background: #10b981 !important;
+            color: white !important;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            min-width: 80px;
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: inline-block !important;
+        }
+
+        .btn-accept:hover {
+            background: #059669 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-reject {
+            background: #ef4444 !important;
+            color: white !important;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            min-width: 80px;
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: inline-block !important;
+        }
+
+        .btn-reject:hover {
+            background: #dc2626 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+
+
+
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+
+        @keyframes backgroundFloat {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header fade-in">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>Driver Dashboard</h1>
+                    <p>Manage your rides, track earnings, and grow your business</p>
+                </div>
+                <div class="header-right">
+                    <div class="order-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="total-rides">0</div>
+                            <div class="stat-label">Total Rides</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="active-rides">0</div>
+                            <div class="stat-label">Active</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="completed-rides">0</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                    </div>
+                    <button id="logout-btn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Bar -->
+        <div class="nav-bar fade-in">
+            <div class="nav-links">
+                <a href="/driver-index" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+                <a href="/driver-dashboard" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    Analytics
+                </a>
+                <a href="/driver-rides" class="nav-link">
+                    <i class="fas fa-car"></i>
+                    Ride Management
+                </a>
+                <a href="/driver-orders" class="nav-link">
+                    <i class="fas fa-clipboard-list"></i>
+                    Order Management
+                </a>
+                <a href="/driver-schedule" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    Schedule
+                </a>
+                <a href="/driver-earnings" class="nav-link">
+                    <i class="fas fa-dollar-sign"></i>
+                    Earnings
+                </a>
+                <a href="/driver-profile" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    Profile
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid fade-in">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon rides">
+                        <i class="fas fa-car"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="total-rides">0</div>
+                <div class="stat-label">Total Rides</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    +12% this week
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon earnings">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="total-earnings">$0.00</div>
+                <div class="stat-label">Total Earnings</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    +8% this week
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon rating">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="avg-rating">4.8</div>
+                <div class="stat-label">Average Rating</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    +0.2 this month
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon online">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="online-status">Online</div>
+                <div class="stat-label">Status</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-circle"></i>
+                    Available for rides
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Driver Inbox -->
+        <div class="driver-inbox fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-bell"></i>
+                Ride Requests
+                <span id="notification-badge" class="notification-badge" style="display: none;">0</span>
+            </h2>
+            <div id="driver-inbox" class="inbox-container">
+                <!-- Inbox items will be populated here -->
+                    </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="recent-activity fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-clock"></i>
+                Recent Activity
+            </h2>
+            <div id="recent-activity-list">
+                <div class="activity-item">
+                    <div class="activity-icon ride">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Ride Completed</div>
+                        <div class="activity-desc">Downtown to Airport - $25.50</div>
+                    </div>
+                    <div class="activity-time">2 hours ago</div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon earnings">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Payment Received</div>
+                        <div class="activity-desc">Weekly earnings deposited</div>
+                    </div>
+                    <div class="activity-time">1 day ago</div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon rating">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">New Rating</div>
+                        <div class="activity-desc">5-star rating from passenger</div>
+                    </div>
+                    <div class="activity-time">2 days ago</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Advanced Driver Index Dashboard System
+        class DriverIndex {
+            constructor() {
+                this.user = null;
+                this.userType = null;
+                this.currentRide = null;
+                this.driverInbox = [];
+                this.notifications = [];
+                this.updateInterval = null;
+                this.notificationInterval = null;
+                this.isOnline = true;
+                this.init();
+            }
+
+            async init() {
+                await this.checkUserAccess();
+                await this.loadDriverData();
+                this.setupEventListeners();
+                this.setupNotifications();
+                this.startRealTimeUpdates();
+                this.initializeDashboard();
+            }
+
+
+
+            async checkUserAccess() {
+                this.user = JSON.parse(localStorage.getItem('user') || '{}');
+                this.userType = localStorage.getItem('userType');
+                
+                if (!this.user.email) {
+                    this.showNotification('Please login to access this page.', 'error');
+                    setTimeout(() => {
+                window.location.href = 'login.html';
+                    }, 2000);
+                    return false;
+            }
+            
+            // Update user info
+                if (this.user.name) {
+                    const userNameElement = document.getElementById('user-name');
+                    const userAvatarElement = document.getElementById('user-avatar');
+                    
+                    if (userNameElement) {
+                        userNameElement.textContent = this.user.name;
+                    }
+                    if (userAvatarElement) {
+                        userAvatarElement.textContent = this.user.name.split(' ').map(n => n[0]).join('');
+                    }
+            }
+            
+            // Update user type display
+            const userTypeDisplay = document.getElementById('user-type');
+            if (userTypeDisplay) {
+                    if (this.userType === 'driver') {
+                    userTypeDisplay.textContent = 'Driver Account';
+                        userTypeDisplay.className = 'user-type driver';
+                } else {
+                    userTypeDisplay.textContent = 'Rider Account';
+                        userTypeDisplay.className = 'user-type rider';
+                    }
+                }
+                
+                return true;
+            }
+
+            async loadDriverData() {
+                try {
+                    // Load bookings and calculate stats
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                    const today = new Date().toDateString();
+                    
+                    // Calculate comprehensive statistics
+                    const stats = this.calculateDriverStats(bookings, today);
+                    this.updateDriverStats(stats);
+                    
+                    // Load driver inbox
+                    this.loadDriverInbox(bookings);
+                    
+                    // Load current ride
+                    this.loadCurrentRide(bookings);
+                    
+                    // Load ride history
+                    this.loadRideHistory(bookings);
+                    
+                    // Load notifications
+                    this.loadNotifications();
+                    
+                } catch (error) {
+                    console.error('Error loading driver data:', error);
+                    // Error notification removed as requested
+                }
+            }
+
+            calculateDriverStats(bookings, today) {
+                const completedRides = bookings.filter(b => b.status === 'completed');
+                const todayRides = completedRides.filter(b => 
+                    new Date(b.completionDate || b.timestamp).toDateString() === today
+                );
+                const pendingRides = bookings.filter(b => 
+                    (b.status === 'requested' || b.status === 'booked' || b.status === 'confirmed') && 
+                    !b.acceptedBy
+                );
+                
+                const totalEarnings = completedRides.reduce((sum, b) => sum + (b.price || 0), 0);
+                const todayEarnings = todayRides.reduce((sum, b) => sum + (b.price || 0), 0);
+                const avgRating = this.calculateAverageRating(completedRides);
+                
+                return {
+                    totalRides: completedRides.length,
+                    todayRides: todayRides.length,
+                    pendingRides: pendingRides.length,
+                    totalEarnings: totalEarnings,
+                    todayEarnings: todayEarnings,
+                    avgRating: avgRating,
+                    completionRate: this.calculateCompletionRate(bookings),
+                    responseTime: this.calculateResponseTime(bookings)
+                };
+            }
+
+            calculateAverageRating(rides) {
+                const ratedRides = rides.filter(r => r.rating);
+                if (ratedRides.length === 0) return 4.8;
+                return (ratedRides.reduce((sum, r) => sum + r.rating, 0) / ratedRides.length).toFixed(1);
+            }
+
+            calculateCompletionRate(bookings) {
+                const acceptedRides = bookings.filter(b => b.status === 'accepted' || b.status === 'completed');
+                const completedRides = bookings.filter(b => b.status === 'completed');
+                return acceptedRides.length > 0 ? Math.round((completedRides.length / acceptedRides.length) * 100) : 100;
+            }
+
+            calculateResponseTime(bookings) {
+                // Simulate response time calculation
+                return '2.5min';
+            }
+
+            updateDriverStats(stats) {
+                // Update main stats
+                const totalRidesElement = document.getElementById('total-rides');
+                const totalEarningsElement = document.getElementById('total-earnings');
+                
+                if (totalRidesElement) {
+                    totalRidesElement.textContent = stats.totalRides;
+                }
+                if (totalEarningsElement) {
+                    totalEarningsElement.textContent = `$${stats.totalEarnings.toFixed(2)}`;
+                }
+                
+                // Update additional stats if elements exist
+                this.updateElementIfExists('today-rides', stats.todayRides);
+                this.updateElementIfExists('pending-rides', stats.pendingRides);
+                this.updateElementIfExists('today-earnings', `$${stats.todayEarnings.toFixed(2)}`);
+                this.updateElementIfExists('avg-rating', stats.avgRating);
+                this.updateElementIfExists('completion-rate', `${stats.completionRate}%`);
+                this.updateElementIfExists('response-time', stats.responseTime);
+            }
+
+            updateElementIfExists(elementId, value) {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.textContent = value;
+                }
+            }
+
+            loadDriverInbox(bookings) {
+                // Create driver inbox from bookings
+                this.createInboxFromBookings(bookings);
+                this.renderDriverInbox();
+            }
+
+            createInboxFromBookings(bookings) {
+                console.log('Creating inbox from bookings:', bookings);
+                
+                // Clear existing inbox
+                this.driverInbox = [];
+                
+                // Simply use all bookings that are requested/booked and not accepted
+                const availableRides = bookings.filter(b => 
+                    (b.status === 'requested' || b.status === 'booked' || b.status === 'confirmed') && 
+                    !b.acceptedBy
+                );
+                
+                console.log('Available rides:', availableRides);
+                
+                availableRides.forEach(ride => {
+                    this.driverInbox.push({
+                        id: `inbox-${ride.id}`,
+                        rideId: ride.id,
+                        type: 'ride_request',
+                        title: 'New Ride Request',
+                        message: `${ride.pickup} → ${ride.destination}`,
+                        timestamp: ride.timestamp,
+                        read: false,
+                        priority: this.calculateRidePriority(ride),
+                        price: ride.price,
+                        distance: this.calculateDistance(ride.pickup, ride.destination),
+                        vehicleType: ride.type,
+                        pickup: ride.pickup,
+                        destination: ride.destination,
+                        date: ride.date,
+                        time: ride.time,
+                        status: ride.status
+                    });
+                });
+                
+                // Sort by timestamp (newest first)
+                this.driverInbox.sort((a, b) => {
+                    const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
+                    if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
+                        return priorityOrder[b.priority] - priorityOrder[a.priority];
+                    }
+                    return new Date(b.timestamp) - new Date(a.timestamp);
+                });
+                
+                console.log('Final driver inbox:', this.driverInbox);
+            }
+
+            calculateRidePriority(ride) {
+                const now = new Date();
+                const rideTime = new Date(ride.timestamp);
+                const timeDiff = (now - rideTime) / (1000 * 60); // minutes
+                
+                if (timeDiff > 15) return 'high';
+                if (timeDiff > 5) return 'medium';
+                return 'low';
+            }
+
+            calculateDistance(pickup, destination) {
+                // Simulate distance calculation
+                return Math.random() * 20 + 2; // 2-22 miles
+            }
+
+            renderDriverInbox() {
+                const inboxContainer = document.getElementById('driver-inbox');
+                if (!inboxContainer) return;
+                
+                console.log('Rendering driver inbox with', this.driverInbox.length, 'notifications');
+                console.log('Driver inbox data:', this.driverInbox);
+                
+                if (this.driverInbox.length === 0) {
+                    inboxContainer.innerHTML = `
+                        <div class="text-center py-8 text-gray-500">
+                            <i class="fas fa-inbox text-4xl mb-4"></i>
+                            <p>No new ride requests</p>
+                            <p class="text-sm">New requests will appear here</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const inboxHTML = this.driverInbox.slice(0, 5).map(notification => `
+                    <div class="inbox-item ${notification.priority} ${notification.read ? 'read' : 'unread'}" 
+                         data-ride-id="${notification.rideId}">
+                        <div class="inbox-header">
+                            <div class="inbox-title">${notification.title}</div>
+                            <div class="inbox-time">${this.formatTime(notification.timestamp)}</div>
+                        </div>
+                        <div class="inbox-content">
+                            <div class="inbox-message">${notification.message}</div>
+                            <div class="inbox-details">
+                                <span class="price">$${notification.price.toFixed(2)}</span>
+                                <span class="distance">${notification.distance.toFixed(1)} mi</span>
+                                <span class="priority priority-${notification.priority}">${notification.priority}</span>
+                            </div>
+                        </div>
+                        <div class="inbox-actions">
+                            <button onclick="driverIndex.acceptRideFromInbox('${notification.rideId}')" 
+                                    class="btn btn-accept btn-sm">
+                                <i class="fas fa-check"></i>
+                                Accept
+                            </button>
+                            <button onclick="driverIndex.rejectRideFromInbox('${notification.rideId}')" 
+                                    class="btn btn-reject btn-sm">
+                                <i class="fas fa-times"></i>
+                                Reject
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                inboxContainer.innerHTML = inboxHTML;
+                this.updateNotificationCount();
+            }
+
+            loadCurrentRide(bookings) {
+                const currentRideData = bookings.find(b => 
+                    (b.status === 'accepted' || b.status === 'in-progress') && 
+                    b.acceptedBy === 'John Smith'
+                );
+                
+                if (currentRideData) {
+                    this.currentRide = currentRideData;
+                    this.renderCurrentRide();
+                } else {
+                    this.currentRide = null;
+                    this.hideCurrentRide();
+                }
+            }
+
+            renderCurrentRide() {
+                const currentRideContainer = document.getElementById('current-ride');
+                if (!currentRideContainer || !this.currentRide) return;
+                
+                const distance = this.calculateDistance(this.currentRide.pickup, this.currentRide.destination);
+                const estimatedTime = this.estimateRideTime(distance);
+                
+                currentRideContainer.innerHTML = `
+                    <div class="current-ride-header">
+                        <h3>Current Ride</h3>
+                        <div class="ride-status status-${this.currentRide.status}">
+                            ${this.currentRide.status.replace('-', ' ')}
+                        </div>
+                    </div>
+                    <div class="current-ride-content">
+                        <div class="ride-route">
+                            <div class="route-point pickup">
+                                <i class="fas fa-map-marker-alt"></i>
+                                ${this.currentRide.pickup}
+                            </div>
+                            <div class="route-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="route-point destination">
+                                <i class="fas fa-flag"></i>
+                                ${this.currentRide.destination}
+                            </div>
+                        </div>
+                        <div class="ride-info">
+                            <div class="info-item">
+                                <i class="fas fa-dollar-sign"></i>
+                                $${this.currentRide.price.toFixed(2)}
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-route"></i>
+                                ${distance.toFixed(1)} mi
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                ~${estimatedTime} min
+                            </div>
+                        </div>
+                        <div class="ride-actions">
+                            ${this.currentRide.status === 'accepted' ? `
+                                <button onclick="driverIndex.startRide('${this.currentRide.id}')" class="btn btn-primary">
+                                    <i class="fas fa-play"></i>
+                                    Start Ride
+                                </button>
+                            ` : `
+                                <button onclick="driverIndex.completeRide('${this.currentRide.id}')" class="btn btn-success">
+                                    <i class="fas fa-flag-checkered"></i>
+                                    Complete Ride
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                `;
+                
+                currentRideContainer.classList.remove('hidden');
+            }
+
+            hideCurrentRide() {
+                const currentRideContainer = document.getElementById('current-ride');
+                if (currentRideContainer) {
+                    currentRideContainer.classList.add('hidden');
+                }
+            }
+
+            estimateRideTime(distance) {
+                return Math.round(distance * 2.5 + Math.random() * 10);
+            }
+
+            loadRideHistory(bookings) {
+                const recentRides = bookings
+                    .filter(b => b.status === 'completed')
+                    .sort((a, b) => new Date(b.completionDate || b.timestamp) - new Date(a.completionDate || a.timestamp))
+                    .slice(0, 5);
+                
+                this.renderRideHistory(recentRides);
+            }
+
+            renderRideHistory(rides) {
+                const historyContainer = document.getElementById('ride-history');
+                if (!historyContainer) return;
+                
+                if (rides.length === 0) {
+                    historyContainer.innerHTML = `
+                        <div class="text-center py-8 text-gray-500">
+                            <i class="fas fa-history text-4xl mb-4"></i>
+                            <p>No ride history</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const historyHTML = rides.map(ride => {
+                    const distance = this.calculateDistance(ride.pickup, ride.destination);
+                    return `
+                        <div class="history-item">
+                            <div class="history-route">
+                                <div class="route-point pickup">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    ${ride.pickup}
+                                </div>
+                                <div class="route-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                                <div class="route-point destination">
+                                    <i class="fas fa-flag"></i>
+                                    ${ride.destination}
+                                </div>
+                            </div>
+                            <div class="history-info">
+                                <div class="info-item">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    $${ride.price.toFixed(2)}
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-route"></i>
+                                    ${distance.toFixed(1)} mi
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-clock"></i>
+                                    ${new Date(ride.completionDate || ride.timestamp).toLocaleDateString()}
+                                </div>
+                                ${ride.rating ? `
+                                    <div class="info-item">
+                                        <i class="fas fa-star"></i>
+                                        ${ride.rating.toFixed(1)}/5
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                historyContainer.innerHTML = historyHTML;
+            }
+
+            loadNotifications() {
+                this.notifications = JSON.parse(localStorage.getItem('driverNotifications') || '[]');
+                this.updateNotificationCount();
+            }
+
+            addNotification(title, message, type = 'info') {
+                const notification = {
+                    id: Date.now().toString(),
+                    title: title,
+                    message: message,
+                    type: type,
+                    timestamp: new Date().toISOString(),
+                    read: false
+                };
+                
+                this.notifications.unshift(notification);
+                this.notifications = this.notifications.slice(0, 50); // Keep only last 50
+                
+                localStorage.setItem('driverNotifications', JSON.stringify(this.notifications));
+                this.updateNotificationCount();
+            }
+
+            updateNotificationCount() {
+                const unreadCount = this.notifications.filter(n => !n.read).length;
+                const inboxUnreadCount = this.driverInbox.filter(n => !n.read).length;
+                const totalUnread = unreadCount + inboxUnreadCount;
+                
+                const notificationBadge = document.getElementById('notification-badge');
+                if (notificationBadge) {
+                    if (totalUnread > 0) {
+                        notificationBadge.textContent = totalUnread;
+                        notificationBadge.classList.remove('hidden');
+                    } else {
+                        notificationBadge.classList.add('hidden');
+                    }
+                }
+            }
+
+            acceptRideFromInbox(rideId) {
+                console.log('=== ACCEPTING RIDE ===');
+                console.log('Looking for rideId:', rideId);
+                
+                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                console.log('All bookings:', bookings);
+                
+                // Try to find the ride with flexible ID matching
+                let ride = bookings.find(r => r.id === rideId);
+                if (!ride) {
+                    // Try string to number conversion
+                    ride = bookings.find(r => r.id === parseInt(rideId));
+                }
+                if (!ride) {
+                    // Try number to string conversion
+                    ride = bookings.find(r => r.id.toString() === rideId);
+                }
+                if (!ride) {
+                    // Try with rideId from the notification (in case it's stored differently)
+                    ride = bookings.find(r => r.rideId === rideId);
+                }
+                
+                console.log('Found ride:', ride);
+                
+                if (!ride) {
+                    console.log('Ride not found! Available IDs:', bookings.map(b => b.id));
+                    console.log('Available rideIds:', bookings.map(b => b.rideId));
+                    this.showNotification('Ride not found!', 'error');
+                    return;
+                }
+
+                // Check if ride is still available (not accepted by another driver)
+                if (ride.acceptedBy && ride.acceptedBy !== 'John Smith') {
+                    this.showNotification('This ride was already accepted by another driver!', 'error');
+                    // Refresh the inbox to show updated status
+                    this.loadDriverData();
+                    return;
+                }
+
+                // Check if ride is still pending/upcoming
+                if (ride.status !== 'upcoming' && ride.status !== 'pending' && ride.status !== 'requested' && ride.status !== 'booked') {
+                    this.showNotification('This ride is no longer available!', 'error');
+                    this.loadDriverData();
+                    return;
+                }
+
+                // COMPETITIVE ACCEPTANCE - First come, first served
+                const currentDriver = 'John Smith'; // In real app, this would be the logged-in driver
+                
+                // Update ride status with driver info
+                ride.status = 'accepted';
+                ride.driver = currentDriver;
+                ride.acceptedBy = currentDriver;
+                ride.acceptedAt = new Date().toISOString();
+
+                // Save updated bookings
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+
+                // Set as current ride for this driver
+                this.currentRide = ride;
+
+                // Update user's booking status
+                this.updateUserBookingStatus(rideId, 'accepted');
+
+                // Update all driver inboxes to show this ride was accepted
+                this.updateAllDriverInboxes(rideId, currentDriver);
+
+                // Update driver inbox notifications
+                this.updateDriverInboxNotifications(rideId, 'accepted');
+
+                // Add success notification
+                this.addNotification('Ride Accepted!', `You successfully accepted a ride from ${ride.pickup} to ${ride.destination}`);
+
+                // Update UI
+                this.renderDriverInbox();
+                this.renderCurrentRide();
+                this.loadDriverData();
+                this.showNotification('🎉 Ride accepted successfully! You got this ride!', 'success');
+            }
+
+            rejectRideFromInbox(rideId) {
+                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                const ride = bookings.find(r => r.id === rideId);
+                if (!ride) return;
+
+                // Update ride status
+                ride.status = 'cancelled';
+                ride.cancelledAt = new Date().toISOString();
+                ride.cancelledBy = 'John Smith';
+
+                // Save updated bookings
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+
+                // Update user's booking status
+                this.updateUserBookingStatus(rideId, 'cancelled');
+
+                // Update all driver inboxes
+                this.updateAllDriverInboxes(rideId, 'cancelled');
+
+                // Add notification
+                this.addNotification('Ride Rejected', `You rejected a ride from ${ride.pickup} to ${ride.destination}`);
+
+                // Update UI
+                this.renderDriverInbox();
+                this.loadDriverData();
+                this.showNotification('Ride rejected', 'info');
+            }
+
+            updateAllDriverInboxes(rideId, acceptedByDriver) {
+                const driverInbox = JSON.parse(localStorage.getItem('driverInbox') || '[]');
+                const allDriverNotifications = JSON.parse(localStorage.getItem('allDriverNotifications') || '[]');
+                
+                driverInbox.forEach(notification => {
+                    if (notification.rideId === rideId) {
+                        if (acceptedByDriver === 'cancelled') {
+                            notification.status = 'cancelled';
+                            notification.title = 'Ride Cancelled';
+                        } else {
+                            notification.status = 'accepted';
+                            notification.title = 'Ride Accepted by Another Driver';
+                            notification.acceptedBy = acceptedByDriver;
+                        }
+                        notification.read = true;
+                    }
+                });
+                
+                allDriverNotifications.forEach(notification => {
+                    if (notification.rideId === rideId) {
+                        if (acceptedByDriver === 'cancelled') {
+                            notification.status = 'cancelled';
+                            notification.title = 'Ride Cancelled';
+                        } else {
+                            notification.status = 'accepted';
+                            notification.title = 'Ride Accepted by Another Driver';
+                            notification.acceptedBy = acceptedByDriver;
+                        }
+                        notification.read = true;
+                    }
+                });
+                
+                localStorage.setItem('driverInbox', JSON.stringify(driverInbox));
+                localStorage.setItem('allDriverNotifications', JSON.stringify(allDriverNotifications));
+            }
+
+            updateDriverInboxNotifications(rideId, status) {
+                // Update driver inbox notifications
+                let driverInbox = JSON.parse(localStorage.getItem('driverInbox') || '[]');
+                let allDriverNotifications = JSON.parse(localStorage.getItem('allDriverNotifications') || '[]');
+                
+                // Update driver inbox
+                driverInbox = driverInbox.map(notification => {
+                    if (notification.rideId === rideId) {
+                        return {
+                            ...notification,
+                            status: status,
+                            read: true
+                        };
+                    }
+                    return notification;
+                });
+                
+                // Update all driver notifications
+                allDriverNotifications = allDriverNotifications.map(notification => {
+                    if (notification.rideId === rideId) {
+                        return {
+                            ...notification,
+                            status: status,
+                            read: true
+                        };
+                    }
+                    return notification;
+                });
+                
+                localStorage.setItem('driverInbox', JSON.stringify(driverInbox));
+                localStorage.setItem('allDriverNotifications', JSON.stringify(allDriverNotifications));
+            }
+
+            markInboxNotificationAsRead(rideId) {
+                const notification = this.driverInbox.find(n => n.rideId === rideId);
+                if (notification) {
+                    notification.read = true;
+                    localStorage.setItem('driverInbox', JSON.stringify(this.driverInbox));
+                    this.updateNotificationCount();
+                }
+            }
+
+            startRide(rideId) {
+                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                const ride = bookings.find(r => r.id === rideId);
+                if (!ride) return;
+
+                // Update ride status
+                ride.status = 'in-progress';
+                ride.startedAt = new Date().toISOString();
+
+                // Save updated bookings
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+
+                // Update current ride
+                this.currentRide = ride;
+
+                // Add notification
+                this.addNotification('Ride Started!', `You started a ride from ${ride.pickup} to ${ride.destination}`);
+
+                // Update UI
+                this.renderCurrentRide();
+                this.loadDriverData();
+                this.showNotification('Ride started! Good luck!', 'success');
+            }
+
+            completeRide(rideId) {
+                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                const ride = bookings.find(r => r.id === rideId);
+                if (!ride) return;
+
+                // Update ride status
+                ride.status = 'completed';
+                ride.completedAt = new Date().toISOString();
+                ride.completionDate = new Date().toISOString();
+
+                // Add earnings data
+                const baseAmount = ride.price || 0;
+                const driverCut = baseAmount * 0.75; // 75% driver cut
+                const tip = Math.random() > 0.6 ? Math.random() * 5 : 0; // 40% chance of tip
+                const bonus = Math.random() > 0.9 ? Math.random() * 10 : 0; // 10% chance of bonus
+                const platformFee = baseAmount * 0.25; // 25% platform fee
+
+                ride.driverEarnings = {
+                    baseAmount: driverCut,
+                    tip: tip,
+                    bonus: bonus,
+                    platformFee: platformFee,
+                    totalEarnings: driverCut + tip + bonus,
+                    originalPrice: baseAmount
+                };
+
+                // Save updated bookings
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+
+                // Clear current ride
+                this.currentRide = null;
+
+                // Add notification
+                this.addNotification('Ride Completed!', `You completed a ride from ${ride.pickup} to ${ride.destination} for $${ride.driverEarnings.totalEarnings.toFixed(2)}`);
+
+                // Update UI
+                this.hideCurrentRide();
+                this.loadDriverData();
+                this.showNotification(`Ride completed successfully! You earned $${ride.driverEarnings.totalEarnings.toFixed(2)}!`, 'success');
+            }
+
+            updateUserBookingStatus(rideId, status) {
+                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                const booking = bookings.find(b => b.id === rideId);
+                if (booking) {
+                    booking.status = status;
+                    localStorage.setItem('bookings', JSON.stringify(bookings));
+                }
+            }
+
+            showNotifications() {
+                const recentNotifications = this.notifications.slice(0, 10);
+                
+                if (recentNotifications.length === 0) {
+                    this.showNotification('No notifications', 'info');
+                    return;
+                }
+                
+                const notificationsList = recentNotifications.map(n => 
+                    `${n.title}: ${n.message} (${this.formatTime(n.timestamp)})`
+                ).join('\n');
+                
+                alert(`Recent Notifications:\n\n${notificationsList}`);
+            }
+
+            formatTime(timestamp) {
+                const date = new Date(timestamp);
+                const now = new Date();
+                const diff = now - date;
+                
+                if (diff < 60000) return 'Just now';
+                if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+                if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+                return date.toLocaleDateString();
+            }
+
+            toggleDriverStatus() {
+                this.isOnline = !this.isOnline;
+                localStorage.setItem('driverStatus', this.isOnline.toString());
+                
+                const statusElement = document.getElementById('driver-status');
+                if (statusElement) {
+                    if (this.isOnline) {
+                        statusElement.className = 'driver-status online';
+                        statusElement.innerHTML = `
+                            <div class="status-indicator"></div>
+                            <span>Online - Available for rides</span>
+                        `;
+                        this.showNotification('You are now online and available for rides!', 'success');
+                    } else {
+                        statusElement.className = 'driver-status offline';
+                        statusElement.innerHTML = `
+                            <div class="status-indicator"></div>
+                            <span>Offline - Not accepting rides</span>
+                        `;
+                        this.showNotification('You are now offline', 'info');
+                    }
+                }
+                
+                // Reload data to reflect status change
+                this.loadDriverData();
+            }
+
+            setupEventListeners() {
+            const logoutBtn = document.getElementById('logout-btn');
+                const statusToggle = document.getElementById('status-toggle');
+                const refreshBtn = document.getElementById('refresh-btn');
+                const notificationsBtn = document.getElementById('notifications-btn');
+                
+            if (logoutBtn) {
+                    logoutBtn.addEventListener('click', () => this.logoutDriver());
+                }
+                
+                if (statusToggle) {
+                    statusToggle.addEventListener('click', () => this.toggleDriverStatus());
+                }
+                
+                if (refreshBtn) {
+                    refreshBtn.addEventListener('click', () => this.loadDriverData());
+                }
+                
+                if (notificationsBtn) {
+                    notificationsBtn.addEventListener('click', () => this.showNotifications());
+                }
+
+                
+                // Load saved status
+                const savedStatus = localStorage.getItem('driverStatus');
+                if (savedStatus !== null) {
+                    this.isOnline = savedStatus === 'true';
+                    this.toggleDriverStatus(); // This will update the UI
+                }
+            }
+
+            openProfileSettings() {
+                this.showNotification('Profile settings coming soon!', 'info');
+                // In a real app, this would open a profile modal or navigate to profile page
+            }
+
+            setupNotifications() {
+                // Check for new ride requests
+                this.checkNewRideRequests();
+                
+                // Set up notification polling
+                this.notificationInterval = setInterval(() => {
+                    this.checkNewRideRequests();
+                }, 10000); // Check every 10 seconds
+
+                // Listen for real-time storage events
+                window.addEventListener('storage', (e) => {
+                    if (e.key === 'bookings') {
+                        console.log('Storage event detected:', e.key, e.newValue);
+                        this.loadDriverData(); // Reload data when storage changes
+                    }
+                });
+            }
+
+            checkNewRideRequests() {
+                if (!this.isOnline) return;
+                
+                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                const newRides = bookings.filter(b => 
+                    (b.status === 'requested' || b.status === 'booked') && 
+                    !b.acceptedBy &&
+                    new Date(b.timestamp) > new Date(Date.now() - 30000) // Last 30 seconds
+                );
+                
+                if (newRides.length > 0) {
+                    this.addNotification(
+                        'New Ride Requests', 
+                        `You have ${newRides.length} new ride request${newRides.length > 1 ? 's' : ''} available!`,
+                        'info'
+                    );
+                }
+            }
+
+            startRealTimeUpdates() {
+                this.updateInterval = setInterval(() => {
+                    if (this.isOnline) {
+                        this.loadDriverData();
+                    }
+                }, 5000); // Update every 5 seconds
+            }
+
+            initializeDashboard() {
+                // Add any additional dashboard initialization
+                this.showNotification('Driver dashboard loaded successfully!', 'success');
+            }
+
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg text-white font-medium max-w-sm transform transition-all duration-300 translate-x-full`;
+                
+                switch (type) {
+                    case 'success':
+                        notification.className += ' bg-green-500';
+                        break;
+                    case 'error':
+                        notification.className += ' bg-red-500';
+                        break;
+                    case 'warning':
+                        notification.className += ' bg-yellow-500';
+                        break;
+                    default:
+                        notification.className += ' bg-blue-500';
+                }
+                
+                notification.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'info'} mr-2"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Animate in
+                setTimeout(() => {
+                    notification.classList.remove('translate-x-full');
+                }, 100);
+                
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    notification.classList.add('translate-x-full');
+                    setTimeout(() => {
+                        if (document.body.contains(notification)) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+
+            logoutDriver() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('user');
+                localStorage.removeItem('userType');
+                    this.showNotification('Logged out successfully!', 'success');
+                    setTimeout(() => {
+                window.location.href = 'login.html';
+                    }, 1000);
+                }
+            }
+
+            destroy() {
+                if (this.updateInterval) {
+                    clearInterval(this.updateInterval);
+                }
+                if (this.notificationInterval) {
+                    clearInterval(this.notificationInterval);
+                }
+            }
+        }
+
+        // Initialize driver index system when page loads
+        let driverIndex;
+        document.addEventListener('DOMContentLoaded', function() {
+            driverIndex = new DriverIndex();
+            
+            // Make test function available globally
+            window.testAcceptRide = (rideId) => {
+                console.log('=== TESTING RIDE ACCEPTANCE ===');
+                console.log('Testing with rideId:', rideId);
+                driverIndex.acceptRideFromInbox(rideId);
+            };
+        });
+
+        // Cleanup when page unloads
+        window.addEventListener('beforeunload', function() {
+            if (driverIndex) {
+                driverIndex.destroy();
+            }
+        });
+    </script>
+</body>
+</html>

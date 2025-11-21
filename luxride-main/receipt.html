@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Receipt - Luxride</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Preconnect to external domains for better performance -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Font fallbacks to prevent rendering issues */
+        body, * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        .font-serif, h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+        }
+    </style>
+    <style>
+        :root {
+            --primary-color: #d4af37;
+            --secondary-color: #b8972e;
+            --accent-color: #3b82f6;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+        
+        .receipt-container {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            padding-top: 70px; /* Account for fixed navbar */
+        }
+        
+        .receipt-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+        
+        .receipt-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .receipt-item {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 0;
+        }
+        
+        .receipt-item:last-child {
+            border-bottom: none;
+        }
+        
+        .total-section {
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .map-container {
+            height: 200px;
+            background: #e2e8f0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 14px;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-upcoming {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .rating-stars {
+            color: #fbbf24;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .print-button {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+        
+        .print-button:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        }
+
+        /* New Solid Background Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #d4af37;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .brand-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333333;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-item:hover::before {
+            left: 0;
+        }
+
+        .nav-item:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .nav-item.logout {
+            background: #ef4444;
+            color: white;
+        }
+
+        .nav-item.logout:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-toggle:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .hamburger-line {
+            width: 25px;
+            height: 3px;
+            background: #333333;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            height: 100vh;
+            background: #ffffff;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+            transition: right 0.3s ease;
+            z-index: 1001;
+            overflow-y: auto;
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+        }
+
+        .mobile-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-brand .brand-logo {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .mobile-brand .brand-text {
+            color: white;
+            font-size: 20px;
+        }
+
+        .mobile-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .mobile-nav-content {
+            padding: 20px;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #333333;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        .mobile-nav-item:hover {
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            color: white;
+            transform: translateX(8px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .mobile-nav-item.active {
+            background: linear-gradient(135deg, #d4af37, #b8972e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .mobile-nav-item.logout {
+            background: #ef4444;
+            color: white;
+        }
+
+        .mobile-nav-item.logout:hover {
+            background: #dc2626;
+            transform: translateX(8px);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .navbar-container {
+                padding: 0 16px;
+                height: 60px;
+            }
+
+            .brand-text {
+                font-size: 20px;
+            }
+
+            .brand-logo {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mobile-nav {
+                width: 100%;
+            }
+
+            .navbar-container {
+                padding: 0 12px;
+            }
+        }
+    </style>
+</head>
+<body class="receipt-container">
+    <!-- New Solid Background Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <!-- Logo Section -->
+            <div class="navbar-brand">
+                <div class="brand-logo">
+                    <i class="fas fa-car"></i>
+                </div>
+                <span class="brand-text">Luxride</span>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="navbar-nav desktop-nav">
+                <a href="/" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Ride</span>
+                </a>
+                <a href="/triphistory" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Trip History</span>
+                </a>
+                <a href="/inbox" class="nav-item">
+                    <i class="fas fa-inbox"></i>
+                    <span>Inbox</span>
+                </a>
+                <a href="/profile" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="/driver-dashboard" class="nav-item">
+                    <i class="fas fa-car-side"></i>
+                    <span>Driver</span>
+                </a>
+                <a href="/signup" class="nav-item">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Sign Up</span>
+                </a>
+                <a href="/receipt" class="nav-item active">
+                    <i class="fas fa-receipt"></i>
+                    <span>Receipt</span>
+                </a>
+                <a href="/book" class="nav-item">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Book</span>
+                </a>
+                <a href="/login" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log out</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-toggle" id="mobile-toggle">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobile-nav">
+            <div class="mobile-nav-header">
+                <div class="mobile-brand">
+                    <div class="brand-logo">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <span class="brand-text">Luxride</span>
+                </div>
+                <button class="mobile-close" id="mobile-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mobile-nav-content">
+                <a href="/" class="mobile-nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Ride</span>
+                </a>
+                <a href="/triphistory" class="mobile-nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Trip History</span>
+                </a>
+                <a href="/inbox" class="mobile-nav-item">
+                    <i class="fas fa-inbox"></i>
+                    <span>Inbox</span>
+                </a>
+                <a href="/profile" class="mobile-nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="/driver-dashboard" class="mobile-nav-item">
+                    <i class="fas fa-car-side"></i>
+                    <span>Driver</span>
+                </a>
+                <a href="/signup" class="mobile-nav-item">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Sign Up</span>
+                </a>
+                <a href="/receipt" class="mobile-nav-item active">
+                    <i class="fas fa-receipt"></i>
+                    <span>Receipt</span>
+                </a>
+                <a href="/book" class="mobile-nav-item">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Book</span>
+                </a>
+                <a href="/login" class="mobile-nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log out</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Overlay -->
+        <div class="mobile-overlay" id="mobile-overlay"></div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        <div class="receipt-card fade-in">
+            <!-- Receipt Header -->
+            <div class="receipt-header p-8 text-center">
+                <div class="mb-4">
+                    <i class="fas fa-car text-4xl mb-2"></i>
+                    <h2 class="text-2xl font-bold">Luxride</h2>
+                    <p class="text-sm opacity-90">Premium Transportation Service</p>
+                </div>
+                <div class="text-sm opacity-90">
+                    <p>Receipt #<span id="receipt-number">TR-2025-001</span></p>
+                    <p>Date: <span id="receipt-date">August 17, 2025</span></p>
+                </div>
+            </div>
+
+            <!-- Receipt Content -->
+            <div class="p-8">
+                <!-- Trip Details -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-route text-[#d4af37] mr-2"></i>
+                        Trip Details
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <div class="receipt-item">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">From:</span>
+                                    <span class="font-medium" id="pickup-location">Conference Center</span>
+                                </div>
+                            </div>
+                            <div class="receipt-item">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">To:</span>
+                                    <span class="font-medium" id="destination-location">Hotel</span>
+                                </div>
+                            </div>
+                            <div class="receipt-item">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Date & Time:</span>
+                                    <span class="font-medium" id="trip-datetime">Aug 17, 2025 • 2:30 PM</span>
+                                </div>
+                            </div>
+                            <div class="receipt-item">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Duration:</span>
+                                    <span class="font-medium" id="trip-duration">36 min</span>
+                                </div>
+                            </div>
+                            <div class="receipt-item">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Distance:</span>
+                                    <span class="font-medium" id="trip-distance">11.2 miles</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="receipt-item">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Service Type:</span>
+                                    <span class="font-medium" id="service-type">Standard</span>
+                                </div>
+                            </div>
+                            <div class="receipt-item">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Driver:</span>
+                                    <span class="font-medium" id="driver-name">John Smith</span>
+                                </div>
+                            </div>
+                            <div class="receipt-item">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Vehicle:</span>
+                                    <span class="font-medium" id="vehicle-info">Toyota Camry • ABC-123</span>
+                                </div>
+                            </div>
+                            <div class="receipt-item">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Status:</span>
+                                    <span class="status-badge status-upcoming" id="trip-status">Upcoming</span>
+                                </div>
+                            </div>
+                            <div class="receipt-item">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Rating:</span>
+                                    <div class="rating-stars" id="trip-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <span class="ml-2 text-gray-600">(4.8)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-map text-[#d4af37] mr-2"></i>
+                        Route Map
+                    </h3>
+                    <div class="map-container">
+                        <div class="text-center">
+                            <i class="fas fa-map-marked-alt text-3xl text-gray-400 mb-2"></i>
+                            <p>Route visualization</p>
+                            <p class="text-xs text-gray-500">Conference Center → Hotel</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Details -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-credit-card text-[#d4af37] mr-2"></i>
+                        Payment Details
+                    </h3>
+                    
+                    <div class="total-section">
+                        <div class="receipt-item">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Base Fare:</span>
+                                <span class="font-medium">$15.00</span>
+                            </div>
+                        </div>
+                        <div class="receipt-item">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Distance (11.2 miles):</span>
+                                <span class="font-medium">$8.40</span>
+                            </div>
+                        </div>
+                        <div class="receipt-item">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Time (36 min):</span>
+                                <span class="font-medium">$2.60</span>
+                            </div>
+                        </div>
+                        <div class="receipt-item">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Service Fee:</span>
+                                <span class="font-medium">$2.00</span>
+                            </div>
+                        </div>
+                        <div class="receipt-item">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Tax:</span>
+                                <span class="font-medium">$2.00</span>
+                            </div>
+                        </div>
+                        <div class="receipt-item border-t-2 border-gray-300 pt-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold text-gray-900">Total:</span>
+                                <span class="text-2xl font-bold text-[#d4af37]" id="total-amount">$26.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-wallet text-[#d4af37] mr-2"></i>
+                        Payment Method
+                    </h3>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <i class="fab fa-paypal text-2xl text-blue-600 mr-3"></i>
+                            <div>
+                                <p class="font-medium">PayPal</p>
+                                <p class="text-sm text-gray-600">Payment completed</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-phone text-[#d4af37] mr-2"></i>
+                        Contact Information
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <p class="text-sm text-gray-600">Customer Service</p>
+                            <p class="font-medium">1-800-LUXRIDE</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <p class="text-sm text-gray-600">Email Support</p>
+                            <p class="font-medium">support@luxride.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="text-center text-sm text-gray-500 border-t pt-6">
+                    <p>Thank you for choosing Luxride!</p>
+                    <p class="mt-2">This receipt was generated on <span id="generated-date">August 17, 2025 at 2:30 PM</span></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // New Navbar JavaScript
+        function initNavbar() {
+            const mobileToggle = document.getElementById('mobile-toggle');
+            const mobileNav = document.getElementById('mobile-nav');
+            const mobileClose = document.getElementById('mobile-close');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+
+            // Check if elements exist
+            if (!mobileToggle || !mobileNav || !mobileClose || !mobileOverlay) {
+                console.error('Navbar elements not found in receipt.html:', {
+                    toggle: !!mobileToggle,
+                    nav: !!mobileNav,
+                    close: !!mobileClose,
+                    overlay: !!mobileOverlay
+                });
+                return;
+            }
+
+            // Toggle mobile menu
+            mobileToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile menu toggle clicked');
+                openMobileMenu();
+            });
+
+            // Close mobile menu
+            mobileClose.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile menu close clicked');
+                closeMobileMenu();
+            });
+
+            // Close on overlay click
+            mobileOverlay.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile overlay clicked');
+                closeMobileMenu();
+            });
+
+            // Close on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+                    closeMobileMenu();
+                }
+            });
+
+            // Close on nav item click
+            document.querySelectorAll('.mobile-nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    closeMobileMenu();
+                });
+            });
+
+            function openMobileMenu() {
+                mobileNav.classList.add('active');
+                mobileOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMobileMenu() {
+                mobileNav.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            console.log('Navbar initialized successfully in receipt.html');
+        }
+
+        // Initialize navbar when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initNavbar();
+        });
+
+        // Get trip ID from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const tripId = urlParams.get('trip');
+        
+        // Sample trip data (in a real app, this would come from an API)
+        const tripData = {
+            'trip-1': {
+                pickup: 'Conference Center',
+                destination: 'Hotel',
+                date: 'Aug 17, 2025',
+                time: '2:30 PM',
+                duration: '36 min',
+                distance: '11.2 miles',
+                type: 'Standard',
+                driver: 'John Smith',
+                vehicle: 'Toyota Camry • ABC-123',
+                status: 'upcoming',
+                rating: 4.8,
+                total: 26.00,
+                receiptNumber: 'TR-2025-001'
+            },
+            'trip-2': {
+                pickup: 'Airport Terminal 1',
+                destination: 'Downtown Hotel',
+                date: 'Aug 15, 2025',
+                time: '10:45 AM',
+                duration: '28 min',
+                distance: '8.5 miles',
+                type: 'Premium',
+                driver: 'Sarah Johnson',
+                vehicle: 'BMW 5 Series • XYZ-789',
+                status: 'completed',
+                rating: 4.9,
+                total: 32.50,
+                receiptNumber: 'TR-2025-002'
+            },
+            'trip-3': {
+                pickup: 'Office Building',
+                destination: 'Shopping Mall',
+                date: 'Aug 12, 2025',
+                time: '6:15 PM',
+                duration: '22 min',
+                distance: '6.8 miles',
+                type: 'Standard',
+                driver: 'Mike Davis',
+                vehicle: 'Honda Accord • DEF-456',
+                status: 'completed',
+                rating: 4.7,
+                total: 18.75,
+                receiptNumber: 'TR-2025-003'
+            }
+        };
+        
+        // Load trip data
+        function loadTripData() {
+            const trip = tripData[tripId] || tripData['trip-1']; // Default to first trip if not found
+            
+            // Update all the receipt fields
+            document.getElementById('receipt-number').textContent = trip.receiptNumber;
+            document.getElementById('receipt-date').textContent = trip.date;
+            document.getElementById('pickup-location').textContent = trip.pickup;
+            document.getElementById('destination-location').textContent = trip.destination;
+            document.getElementById('trip-datetime').textContent = `${trip.date} • ${trip.time}`;
+            document.getElementById('trip-duration').textContent = trip.duration;
+            document.getElementById('trip-distance').textContent = trip.distance;
+            document.getElementById('service-type').textContent = trip.type;
+            document.getElementById('driver-name').textContent = trip.driver;
+            document.getElementById('vehicle-info').textContent = trip.vehicle;
+            document.getElementById('total-amount').textContent = `$${trip.total.toFixed(2)}`;
+            
+            // Update status badge
+            const statusElement = document.getElementById('trip-status');
+            statusElement.textContent = trip.status.charAt(0).toUpperCase() + trip.status.slice(1);
+            statusElement.className = `status-badge status-${trip.status}`;
+            
+            // Update rating
+            const ratingElement = document.getElementById('trip-rating');
+            ratingElement.innerHTML = generateStars(trip.rating) + `<span class="ml-2 text-gray-600">(${trip.rating})</span>`;
+            
+            // Update generated date
+            const now = new Date();
+            const generatedDate = now.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            }) + ' at ' + now.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            document.getElementById('generated-date').textContent = generatedDate;
+        }
+        
+        // Generate star rating HTML
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            let starsHTML = '';
+            
+            for (let i = 0; i < fullStars; i++) {
+                starsHTML += '<i class="fas fa-star"></i>';
+            }
+            
+            if (hasHalfStar) {
+                starsHTML += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            const emptyStars = 5 - Math.ceil(rating);
+            for (let i = 0; i < emptyStars; i++) {
+                starsHTML += '<i class="far fa-star"></i>';
+            }
+            
+            return starsHTML;
+        }
+        
+        // Print receipt function
+        function printReceipt() {
+            window.print();
+        }
+        
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTripData();
+        });
+    </script>
+</body>
+</html>

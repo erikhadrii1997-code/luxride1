@@ -1,0 +1,2554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a1a">
+    <link rel="manifest" href="/manifest.json">
+    <title>Luxride Driver - Profile Management</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@capacitor/core@latest/dist/capacitor.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #2d2d2d;
+            --accent-color: #d4af37;
+            --accent-hover: #b8972e;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: var(--text-primary);
+            overscroll-behavior: none;
+            overflow-x: hidden;
+            line-height: 1.6;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            max-height: 100vh;
+            overflow-y: auto;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #f4d03f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .nav-bar {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-link:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-link.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-card {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            max-height: 700px;
+            overflow-y: auto;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .avatar-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--info-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 3px solid white;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-title {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .profile-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .rating-stars {
+            color: var(--warning-color);
+        }
+
+        .rating-text {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .profile-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-stat {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .profile-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .form-textarea {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .verification-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .verification-status.verified {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .verification-status.pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .verification-status.unverified {
+            background: rgba(107, 114, 128, 0.1);
+            color: var(--text-secondary);
+            border: 1px solid rgba(107, 114, 128, 0.3);
+        }
+
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .document-item {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .document-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background: var(--accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 0.5rem;
+        }
+
+        .document-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .document-status {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .preferences-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .preference-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .preference-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .preference-info p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background: var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--accent-color);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(24px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .preferences-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Clean Professional Profile Header */
+        .enhanced-profile-header {
+            position: relative;
+            background: #ffffff;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e5e7eb;
+        }
+
+        .profile-content {
+            padding: 2rem;
+        }
+
+        .profile-main-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        .enhanced-avatar-container {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .enhanced-profile-header .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #6b7280;
+            border: none;
+            box-shadow: none;
+            position: relative;
+        }
+
+        .avatar-upload {
+            position: absolute;
+            bottom: -8px;
+            right: -8px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid white;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .avatar-upload:hover {
+            background: #d4af37;
+            transform: scale(1.1);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .enhanced-profile-header .profile-name {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 0 0.25rem 0;
+            color: #111827;
+            letter-spacing: -0.02em;
+            line-height: 1.3;
+        }
+
+        .profile-subtitle {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 400;
+            margin: 0 0 0.75rem 0;
+        }
+
+        .profile-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.8125rem;
+            color: #6b7280;
+        }
+
+        .meta-item i {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        .meta-divider {
+            width: 1px;
+            height: 12px;
+            background: #e5e7eb;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            display: inline-block;
+        }
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .verified-badge i {
+            font-size: 1rem;
+        }
+
+
+
+        .profile-actions-section {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #374151;
+        }
+
+        .action-btn:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .action-btn i {
+            font-size: 0.875rem;
+        }
+
+        .action-btn.primary {
+            background: #1a1a1a;
+            color: white;
+            border-color: #1a1a1a;
+        }
+
+        .action-btn.primary:hover {
+            background: #2d2d2d;
+            border-color: #2d2d2d;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(1deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .header-left h1 {
+                font-size: 2rem;
+            }
+
+            .profile-stats {
+                width: 100%;
+                justify-content: space-around;
+            }
+
+            .profile-main-section {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+
+            .avatar-section {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .enhanced-profile-header .profile-avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 2.5rem;
+            }
+
+            .enhanced-profile-header .profile-name {
+                font-size: 2rem;
+            }
+
+            .profile-title-section {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: center;
+            }
+
+            .title-badge, .verification-badge {
+                font-size: 0.875rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .profile-actions-section {
+                justify-content: center;
+                flex-wrap: wrap;
+                width: 100%;
+            }
+
+            .action-btn {
+                min-width: 100px;
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .action-btn span {
+                display: none;
+            }
+
+            .action-btn {
+                min-width: auto;
+                width: 48px;
+                height: 48px;
+                padding: 0;
+                border-radius: 50%;
+            }
+
+            .profile-stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .nav-link {
+                flex: 1;
+                min-width: 140px;
+                justify-content: center;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-left h1 {
+                font-size: 1.5rem;
+            }
+
+            .enhanced-profile-header .profile-name {
+                font-size: 1.75rem;
+            }
+
+            .profile-stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-item {
+                padding: 0.5rem;
+            }
+
+            .stat-value {
+                font-size: 1.25rem;
+            }
+
+            .profile-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .nav-link {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header fade-in">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>Driver Profile</h1>
+                    <p>Manage your profile and account settings</p>
+                </div>
+                <div class="header-right">
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="total-rides">0</div>
+                            <div class="stat-label">Total Rides</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="rating">4.8</div>
+                            <div class="stat-label">Rating</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="member-since">2024</div>
+                            <div class="stat-label">Member Since</div>
+                        </div>
+                    </div>
+                    <button id="logout-btn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Bar -->
+        <div class="nav-bar fade-in">
+            <div class="nav-links">
+                <a href="driver-index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+                <a href="driver-dashboard.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    Analytics
+                </a>
+                <a href="driver-rides.html" class="nav-link">
+                    <i class="fas fa-car"></i>
+                    Ride Management
+                </a>
+                <a href="driver-orders.html" class="nav-link">
+                    <i class="fas fa-clipboard-list"></i>
+                    Order Management
+                </a>
+                <a href="driver-schedule.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    Schedule
+                </a>
+                <a href="driver-earnings.html" class="nav-link">
+                    <i class="fas fa-dollar-sign"></i>
+                    Earnings
+                </a>
+                <a href="driver-profile.html" class="nav-link active">
+                    <i class="fas fa-user"></i>
+                    Profile
+                </a>
+            </div>
+        </div>
+
+        <!-- Profile Grid -->
+        <div class="profile-grid fade-in">
+            <!-- Profile Card -->
+            <div class="profile-card">
+                <div class="enhanced-profile-header">
+                    <div class="profile-content">
+                        <div class="profile-main-section">
+                            <div class="avatar-section">
+                                <div class="enhanced-avatar-container">
+                                    <div class="profile-avatar" id="profile-avatar" onclick="driverProfile.uploadPhoto()" style="cursor: pointer;" title="Click to upload photo">
+                                        <span id="avatar-text">JS</span>
+                                    </div>
+                                    <div class="avatar-upload" onclick="driverProfile.uploadPhoto()">
+                                        <i class="fas fa-camera"></i>
+                                    </div>
+                                    <input type="file" id="photo-input" accept="image/*" style="display: none;" onchange="driverProfile.handlePhotoUpload(event)">
+                                </div>
+                                <div class="profile-info">
+                                    <h1 class="profile-name" id="profile-name">John Smith</h1>
+                                    <p class="profile-subtitle">Professional Driver</p>
+                                    <div class="profile-meta">
+                                        <div class="meta-item">
+                                            <span class="status-dot"></span>
+                                            <span>Active</span>
+                                        </div>
+                                        <div class="meta-divider"></div>
+                                        <div class="meta-item">
+                                            <i class="fas fa-id-badge"></i>
+                                            <span>ID: DR-2847</span>
+                                        </div>
+                                        <div class="meta-divider"></div>
+                                        <div class="meta-item verified-badge">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Verified</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="profile-actions-section">
+                                <button class="action-btn primary" onclick="driverProfile.openEditModal()">
+                                    <i class="fas fa-pencil-alt"></i>
+                                    <span>Edit</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-stats-grid">
+                    <div class="profile-stat">
+                        <div class="profile-stat-value" id="completed-rides">0</div>
+                        <div class="profile-stat-label">Completed Rides</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="profile-stat-value" id="total-earnings">$0.00</div>
+                        <div class="profile-stat-label">Total Earnings</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="profile-stat-value" id="response-time">2.5min</div>
+                        <div class="profile-stat-label">Avg Response Time</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="profile-stat-value" id="acceptance-rate">95%</div>
+                        <div class="profile-stat-label">Acceptance Rate</div>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <button class="btn btn-secondary" onclick="viewReviews()">
+                        <i class="fas fa-star"></i>
+                        View Reviews
+                    </button>
+                    <button class="btn btn-secondary" onclick="downloadReport()">
+                        <i class="fas fa-download"></i>
+                        Download Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Profile Details -->
+            <div class="profile-card">
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-user"></i>
+                        Personal Information
+                    </h2>
+                    <div class="verification-status verified">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Profile Verified</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" id="full-name" class="form-input" value="John Smith">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" id="email" class="form-input" value="john.smith@luxride.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" id="phone" class="form-input" value="+1 (555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" id="dob" class="form-input" value="1985-06-15">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <input type="text" id="address" class="form-input" value="123 Main St, City, State 12345">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Emergency Contact</label>
+                            <input type="text" id="emergency-contact" class="form-input" value="Jane Smith - +1 (555) 987-6543">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vehicle Information -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-car"></i>
+                        Vehicle Information
+                    </h2>
+                    <div class="verification-status verified">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Vehicle Verified</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Make & Model</label>
+                            <input type="text" id="vehicle-make" class="form-input" value="Toyota Camry 2022">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">License Plate</label>
+                            <input type="text" id="license-plate" class="form-input" value="ABC-123">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Color</label>
+                            <input type="text" id="vehicle-color" class="form-input" value="Silver">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Year</label>
+                            <input type="number" id="vehicle-year" class="form-input" value="2022">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Capacity</label>
+                            <input type="number" id="vehicle-capacity" class="form-input" value="4">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">VIN</label>
+                            <input type="text" id="vin" class="form-input" value="1HGBH41JXMN109186">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documents -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-file-alt"></i>
+                        Documents
+                    </h2>
+                    <div class="documents-grid">
+                        <div class="document-item">
+                            <div class="document-icon">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <div class="document-name">Driver's License</div>
+                            <div class="document-status verified">Verified</div>
+                        </div>
+                        <div class="document-item">
+                            <div class="document-icon">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <div class="document-name">Vehicle Registration</div>
+                            <div class="document-status verified">Verified</div>
+                        </div>
+                        <div class="document-item">
+                            <div class="document-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="document-name">Insurance</div>
+                            <div class="document-status verified">Verified</div>
+                        </div>
+                        <div class="document-item">
+                            <div class="document-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div class="document-name">Background Check</div>
+                            <div class="document-status verified">Verified</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bio -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-quote-left"></i>
+                        Bio
+                    </h2>
+                    <div class="form-group">
+                        <label class="form-label">About Me</label>
+                        <textarea id="bio" class="form-textarea" placeholder="Tell passengers about yourself...">Professional driver with 5+ years of experience. I prioritize safety, comfort, and punctuality. I'm familiar with the local area and can provide recommendations for restaurants, attractions, and events. I maintain a clean vehicle and always have water and phone chargers available for passengers.</textarea>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="driverProfile.resetForm()">Reset</button>
+                    <button class="btn btn-primary" onclick="driverProfile.saveAllChanges()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="edit-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; border-radius: 16px; padding: 2rem; max-width: 500px; width: 90%; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
+            <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem; color: #111827;">Edit Profile</h2>
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">First Name</label>
+                <input type="text" id="edit-firstname" style="width: 100%; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 0.875rem;" placeholder="Enter first name">
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Last Name</label>
+                <input type="text" id="edit-lastname" style="width: 100%; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 0.875rem;" placeholder="Enter last name">
+            </div>
+            <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+                <button type="button" onclick="driverProfile.closeEditModal()" style="padding: 0.625rem 1.25rem; border: 1px solid #e5e7eb; border-radius: 8px; background: white; color: #374151; font-weight: 500; cursor: pointer; transition: all 0.2s;">Cancel</button>
+                <button type="button" onclick="handleModalSave()" style="padding: 0.625rem 1.25rem; border: none; border-radius: 8px; background: #1a1a1a; color: white; font-weight: 500; cursor: pointer; transition: all 0.2s; position: relative;">
+                    <span id="save-btn-text">Save Changes</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Standalone save function for modal
+        function handleModalSave() {
+            const firstName = document.getElementById('edit-firstname').value.trim();
+            const lastName = document.getElementById('edit-lastname').value.trim();
+            const saveBtn = event.target.closest('button');
+            const saveBtnText = document.getElementById('save-btn-text');
+            
+            if (!firstName || !lastName) {
+                alert('Please enter both first and last name');
+                return;
+            }
+            
+            // Show loading state
+            saveBtn.disabled = true;
+            saveBtn.style.opacity = '0.6';
+            saveBtnText.textContent = 'Saving...';
+            
+            const fullName = `${firstName} ${lastName}`;
+            
+            // Save to server
+            fetch('/api/driver/profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstName: firstName,
+                    lastName: lastName,
+                    fullName: fullName,
+                    driverId: 'DR-2847'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Profile saved to server:', data.data);
+                    
+                    // Save to localStorage
+                    localStorage.setItem('driverName', fullName);
+                    localStorage.setItem('driverFirstName', firstName);
+                    localStorage.setItem('driverLastName', lastName);
+                    
+                    // Update UI
+                    const profileNameElement = document.getElementById('profile-name');
+                    if (profileNameElement) {
+                        profileNameElement.textContent = fullName;
+                    }
+                    
+                    // Update full name input if exists
+                    const fullNameInput = document.getElementById('full-name');
+                    if (fullNameInput) {
+                        fullNameInput.value = fullName;
+                    }
+                    
+                    // Update avatar initials
+                    const initials = firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase();
+                    const savedPhoto = localStorage.getItem('driverPhoto');
+                    if (!savedPhoto) {
+                        const avatarText = document.getElementById('avatar-text');
+                        if (avatarText) {
+                            avatarText.textContent = initials;
+                        }
+                    }
+                    
+                    // Close modal
+                    document.getElementById('edit-modal').style.display = 'none';
+                    
+                    // Show success message
+                    alert('Profile saved successfully!');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error saving to server:', error);
+                
+                // Save locally as fallback
+                localStorage.setItem('driverName', fullName);
+                localStorage.setItem('driverFirstName', firstName);
+                localStorage.setItem('driverLastName', lastName);
+                
+                const profileNameElement = document.getElementById('profile-name');
+                if (profileNameElement) {
+                    profileNameElement.textContent = fullName;
+                }
+                
+                document.getElementById('edit-modal').style.display = 'none';
+                alert('Saved locally (server connection failed)');
+            })
+            .finally(() => {
+                // Reset button state
+                saveBtn.disabled = false;
+                saveBtn.style.opacity = '1';
+                saveBtnText.textContent = 'Save Changes';
+            });
+        }
+    
+        // Advanced Driver Profile Management System
+        class DriverProfile {
+            constructor() {
+                this.user = null;
+                this.profileData = {};
+                this.originalData = {};
+                this.isEditing = false;
+                this.validationRules = {
+                    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    phone: /^[\+]?[1-9][\d]{0,15}$/,
+                    vin: /^[A-HJ-NPR-Z0-9]{17}$/
+                };
+                this.init();
+            }
+
+            async init() {
+                await this.checkUserAccess();
+                await this.loadProfileData();
+                this.setupEventListeners();
+                this.setupToggleSwitches();
+                this.setupFormValidation();
+                this.loadSavedProfile();
+                this.loadProfile();
+            }
+
+            uploadPhoto() {
+                document.getElementById('photo-input').click();
+            }
+
+            handlePhotoUpload(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    if (file.size > 5 * 1024 * 1024) {
+                        this.showNotification('File size must be less than 5MB', 'error');
+                        return;
+                    }
+                    
+                    if (!file.type.startsWith('image/')) {
+                        this.showNotification('Please select an image file', 'error');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const imageData = e.target.result;
+                        this.savePhotoToServer(imageData);
+                        this.updateAvatarDisplay(imageData);
+                        this.showNotification('Photo uploaded and saved successfully!', 'success');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            savePhotoToServer(imageData) {
+                // Save to actual server
+                fetch('/api/driver/photo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        photo: imageData,
+                        driverId: 'DR-2847'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Photo saved to server at:', data.uploadedAt);
+                        // Also save to localStorage for instant access
+                        localStorage.setItem('driverPhoto', imageData);
+                        localStorage.setItem('driverPhotoTimestamp', Date.now());
+                    } else {
+                        console.error('Failed to save photo:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error saving photo to server:', error);
+                    // Fallback to localStorage
+                    localStorage.setItem('driverPhoto', imageData);
+                    localStorage.setItem('driverPhotoTimestamp', Date.now());
+                });
+            }
+
+            updateAvatarDisplay(imageData) {
+                const avatar = document.getElementById('profile-avatar');
+                avatar.innerHTML = `<img src="${imageData}" alt="Profile Photo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">`;
+                avatar.onclick = () => this.uploadPhoto();
+            }
+
+            openEditModal() {
+                const modal = document.getElementById('edit-modal');
+                const profileName = document.getElementById('profile-name').textContent;
+                const nameParts = profileName.split(' ');
+                
+                document.getElementById('edit-firstname').value = nameParts[0] || '';
+                document.getElementById('edit-lastname').value = nameParts.slice(1).join(' ') || '';
+                
+                modal.style.display = 'flex';
+            }
+
+            closeEditModal() {
+                document.getElementById('edit-modal').style.display = 'none';
+            }
+
+            saveProfile() {
+                const firstName = document.getElementById('edit-firstname').value.trim();
+                const lastName = document.getElementById('edit-lastname').value.trim();
+                
+                if (!firstName || !lastName) {
+                    this.showNotification('Please enter both first and last name', 'error');
+                    return;
+                }
+                
+                const saveBtn = document.getElementById('modal-save-btn');
+                const originalText = saveBtn.textContent;
+                
+                // Disable button and show loading state
+                saveBtn.disabled = true;
+                saveBtn.style.opacity = '0.6';
+                saveBtn.style.cursor = 'not-allowed';
+                saveBtn.textContent = 'Saving...';
+                
+                const fullName = `${firstName} ${lastName}`;
+                
+                // Save to actual server
+                fetch('/api/driver/profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        firstName: firstName,
+                        lastName: lastName,
+                        driverId: 'DR-2847'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Profile saved to server:', data.data);
+                        
+                        // Update localStorage
+                        localStorage.setItem('driverName', fullName);
+                        localStorage.setItem('driverFirstName', firstName);
+                        localStorage.setItem('driverLastName', lastName);
+                        
+                        // Update UI
+                        document.getElementById('profile-name').textContent = fullName;
+                        
+                        // Update full name field if exists
+                        const fullNameInput = document.getElementById('full-name');
+                        if (fullNameInput) {
+                            fullNameInput.value = fullName;
+                        }
+                        
+                        const initials = firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase();
+                        const savedPhoto = localStorage.getItem('driverPhoto');
+                        if (!savedPhoto) {
+                            document.getElementById('avatar-text').textContent = initials;
+                        }
+                        
+                        this.closeEditModal();
+                        this.showNotification('Profile saved to server successfully!', 'success');
+                    } else {
+                        this.showNotification('Error: ' + data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error saving to server:', error);
+                    this.showNotification('Failed to save to server. Changes saved locally.', 'error');
+                    
+                    // Fallback to localStorage
+                    localStorage.setItem('driverName', fullName);
+                    localStorage.setItem('driverFirstName', firstName);
+                    localStorage.setItem('driverLastName', lastName);
+                    document.getElementById('profile-name').textContent = fullName;
+                    this.closeEditModal();
+                })
+                .finally(() => {
+                    // Re-enable button
+                    saveBtn.disabled = false;
+                    saveBtn.style.opacity = '1';
+                    saveBtn.style.cursor = 'pointer';
+                    saveBtn.textContent = originalText;
+                });
+            }
+
+            loadProfile() {
+                // Load from server first
+                fetch('/api/driver/profile')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success && data.data) {
+                            const profileData = data.data;
+                            const fullName = profileData.fullName || `${profileData.firstName} ${profileData.lastName}`;
+                            
+                            document.getElementById('profile-name').textContent = fullName;
+                            
+                            // Update localStorage
+                            localStorage.setItem('driverName', fullName);
+                            localStorage.setItem('driverFirstName', profileData.firstName);
+                            localStorage.setItem('driverLastName', profileData.lastName);
+                            
+                            // Update initials if no photo
+                            const nameParts = fullName.split(' ');
+                            const initials = (nameParts[0]?.charAt(0) || '') + (nameParts[1]?.charAt(0) || '');
+                            
+                            // Load photo from server
+                            fetch('/api/driver/photo')
+                                .then(response => response.json())
+                                .then(photoData => {
+                                    if (photoData.success && photoData.data && photoData.data.photo) {
+                                        this.updateAvatarDisplay(photoData.data.photo);
+                                        localStorage.setItem('driverPhoto', photoData.data.photo);
+                                    } else {
+                                        document.getElementById('avatar-text').textContent = initials.toUpperCase();
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error loading photo:', error);
+                                    // Fallback to localStorage
+                                    const savedPhoto = localStorage.getItem('driverPhoto');
+                                    if (savedPhoto) {
+                                        this.updateAvatarDisplay(savedPhoto);
+                                    } else {
+                                        document.getElementById('avatar-text').textContent = initials.toUpperCase();
+                                    }
+                                });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading profile from server:', error);
+                        // Fallback to localStorage
+                        const savedName = localStorage.getItem('driverName');
+                        const savedPhoto = localStorage.getItem('driverPhoto');
+                        
+                        if (savedName) {
+                            document.getElementById('profile-name').textContent = savedName;
+                            if (!savedPhoto) {
+                                const nameParts = savedName.split(' ');
+                                const initials = (nameParts[0]?.charAt(0) || '') + (nameParts[1]?.charAt(0) || '');
+                                document.getElementById('avatar-text').textContent = initials.toUpperCase();
+                            }
+                        }
+                        
+                        if (savedPhoto) {
+                            this.updateAvatarDisplay(savedPhoto);
+                        }
+                    });
+            }
+
+            saveAllChanges() {
+                // Gather all form data
+                const profileData = {
+                    personalInfo: {
+                        fullName: document.getElementById('full-name').value.trim(),
+                        email: document.getElementById('email').value.trim(),
+                        phone: document.getElementById('phone').value.trim(),
+                        dob: document.getElementById('dob').value,
+                        address: document.getElementById('address').value.trim(),
+                        emergencyContact: document.getElementById('emergency-contact').value.trim()
+                    },
+                    vehicleInfo: {
+                        make: document.getElementById('vehicle-make').value.trim(),
+                        licensePlate: document.getElementById('license-plate').value.trim(),
+                        color: document.getElementById('vehicle-color').value.trim(),
+                        year: document.getElementById('vehicle-year').value,
+                        capacity: document.getElementById('vehicle-capacity').value,
+                        vin: document.getElementById('vin').value.trim()
+                    },
+                    bio: document.getElementById('bio').value.trim(),
+                    driverId: 'DR-2847',
+                    updatedAt: new Date().toISOString()
+                };
+
+                // Validate required fields
+                if (!profileData.personalInfo.fullName || !profileData.personalInfo.email) {
+                    this.showNotification('Please fill in all required fields', 'error');
+                    return;
+                }
+
+                // Save to server
+                fetch('/api/driver/profile/full', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(profileData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Save to localStorage as backup
+                        localStorage.setItem('driverProfileData', JSON.stringify(profileData));
+                        
+                        // Update profile name in header
+                        const nameParts = profileData.personalInfo.fullName.split(' ');
+                        document.getElementById('profile-name').textContent = profileData.personalInfo.fullName;
+                        
+                        // Update initials if no photo
+                        const savedPhoto = localStorage.getItem('driverPhoto');
+                        if (!savedPhoto && nameParts.length >= 2) {
+                            const initials = nameParts[0].charAt(0) + nameParts[1].charAt(0);
+                            document.getElementById('avatar-text').textContent = initials.toUpperCase();
+                        }
+                        
+                        this.showNotification('All changes saved successfully!', 'success');
+                        console.log('Profile data saved to server:', data.data);
+                    } else {
+                        this.showNotification('Error: ' + data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error saving to server:', error);
+                    // Fallback to localStorage
+                    localStorage.setItem('driverProfileData', JSON.stringify(profileData));
+                    this.showNotification('Changes saved locally. Server connection failed.', 'error');
+                });
+            }
+
+            resetForm() {
+                if (confirm('Are you sure you want to reset all changes? This will reload the saved data.')) {
+                    // Reload from server or localStorage
+                    this.loadSavedProfileData();
+                    this.showNotification('Form reset to saved values', 'info');
+                }
+            }
+
+            loadSavedProfileData() {
+                // Load from server first
+                fetch('/api/driver/profile/full')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success && data.data) {
+                            this.populateFormFields(data.data);
+                            localStorage.setItem('driverProfileData', JSON.stringify(data.data));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading from server:', error);
+                        // Fallback to localStorage
+                        const savedData = localStorage.getItem('driverProfileData');
+                        if (savedData) {
+                            this.populateFormFields(JSON.parse(savedData));
+                        }
+                    });
+            }
+
+            populateFormFields(data) {
+                if (data.personalInfo) {
+                    document.getElementById('full-name').value = data.personalInfo.fullName || '';
+                    document.getElementById('email').value = data.personalInfo.email || '';
+                    document.getElementById('phone').value = data.personalInfo.phone || '';
+                    document.getElementById('dob').value = data.personalInfo.dob || '';
+                    document.getElementById('address').value = data.personalInfo.address || '';
+                    document.getElementById('emergency-contact').value = data.personalInfo.emergencyContact || '';
+                }
+                
+                if (data.vehicleInfo) {
+                    document.getElementById('vehicle-make').value = data.vehicleInfo.make || '';
+                    document.getElementById('license-plate').value = data.vehicleInfo.licensePlate || '';
+                    document.getElementById('vehicle-color').value = data.vehicleInfo.color || '';
+                    document.getElementById('vehicle-year').value = data.vehicleInfo.year || '';
+                    document.getElementById('vehicle-capacity').value = data.vehicleInfo.capacity || '';
+                    document.getElementById('vin').value = data.vehicleInfo.vin || '';
+                }
+                
+                if (data.bio) {
+                    document.getElementById('bio').value = data.bio;
+                }
+            }
+
+            async checkUserAccess() {
+                this.user = JSON.parse(localStorage.getItem('user') || '{}');
+                
+                if (!this.user.email) {
+                    this.showNotification('Please login to access this page.', 'error');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                    return false;
+                }
+                
+                // Update profile name if available
+                if (this.user.name) {
+                    document.getElementById('profile-name').textContent = this.user.name;
+                    document.getElementById('avatar-text').textContent = this.user.name.split(' ').map(n => n[0]).join('');
+                }
+                return true;
+            }
+
+            async loadProfileData() {
+                try {
+                    const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                    const completedRides = bookings.filter(b => b.status === 'completed');
+                    const totalEarnings = completedRides.reduce((sum, b) => sum + (b.price || 0), 0);
+                    const avgRating = this.calculateAverageRating(completedRides);
+                    
+                    // Update stats with enhanced data
+                    document.getElementById('total-rides').textContent = completedRides.length;
+                    document.getElementById('completed-rides').textContent = completedRides.length;
+                    document.getElementById('total-earnings').textContent = `$${totalEarnings.toFixed(2)}`;
+                    
+                    // Add additional stats if elements exist
+                    const avgRatingElement = document.getElementById('avg-rating');
+                    if (avgRatingElement) {
+                        avgRatingElement.textContent = avgRating.toFixed(1);
+                    }
+                    
+                    const memberSinceElement = document.getElementById('member-since');
+                    if (memberSinceElement) {
+                        memberSinceElement.textContent = '2024';
+                    }
+                    
+                    // Load performance metrics
+                    this.loadPerformanceMetrics(completedRides);
+                    
+                } catch (error) {
+                    console.error('Error loading profile data:', error);
+                    this.showNotification('Error loading profile data', 'error');
+                }
+            }
+
+            calculateAverageRating(rides) {
+                const ratedRides = rides.filter(r => r.rating);
+                if (ratedRides.length === 0) return 4.8;
+                return ratedRides.reduce((sum, r) => sum + r.rating, 0) / ratedRides.length;
+            }
+
+            loadPerformanceMetrics(rides) {
+                const metrics = {
+                    totalDistance: rides.reduce((sum, r) => sum + (r.distance || 0), 0),
+                    totalTime: rides.reduce((sum, r) => sum + (r.duration || 0), 0),
+                    avgEarningsPerRide: rides.length > 0 ? rides.reduce((sum, r) => sum + (r.price || 0), 0) / rides.length : 0,
+                    completionRate: 95 + Math.random() * 5, // Simulate completion rate
+                    responseTime: 2.5 + Math.random() * 2 // Simulate response time
+                };
+                
+                // Update performance metrics if elements exist
+                const distanceElement = document.getElementById('total-distance');
+                if (distanceElement) {
+                    distanceElement.textContent = `${metrics.totalDistance.toFixed(1)} mi`;
+                }
+                
+                const timeElement = document.getElementById('total-time');
+                if (timeElement) {
+                    timeElement.textContent = `${Math.round(metrics.totalTime / 60)} hrs`;
+                }
+                
+                const avgEarningsElement = document.getElementById('avg-earnings');
+                if (avgEarningsElement) {
+                    avgEarningsElement.textContent = `$${metrics.avgEarningsPerRide.toFixed(2)}`;
+                }
+            }
+
+            loadSavedProfile() {
+                const savedProfile = JSON.parse(localStorage.getItem('driverProfile') || '{}');
+                if (Object.keys(savedProfile).length > 0) {
+                    this.populateForm(savedProfile);
+                    this.originalData = { ...savedProfile };
+                }
+            }
+
+            populateForm(data) {
+                Object.keys(data).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.value = data[key] || '';
+                    }
+                });
+            }
+
+            setupToggleSwitches() {
+                const toggles = document.querySelectorAll('.toggle-switch');
+                toggles.forEach(toggle => {
+                    toggle.addEventListener('click', () => {
+                        toggle.classList.toggle('active');
+                        this.saveToggleState(toggle);
+                    });
+                    
+                    // Load saved toggle state
+                    this.loadToggleState(toggle);
+                });
+            }
+
+            saveToggleState(toggle) {
+                const toggleId = toggle.id || toggle.dataset.toggle;
+                if (toggleId) {
+                    const isActive = toggle.classList.contains('active');
+                    localStorage.setItem(`toggle_${toggleId}`, isActive.toString());
+                }
+            }
+
+            loadToggleState(toggle) {
+                const toggleId = toggle.id || toggle.dataset.toggle;
+                if (toggleId) {
+                    const savedState = localStorage.getItem(`toggle_${toggleId}`);
+                    if (savedState === 'true') {
+                        toggle.classList.add('active');
+                    }
+                }
+            }
+
+            setupFormValidation() {
+                const form = document.querySelector('.profile-form');
+                if (form) {
+                    const inputs = form.querySelectorAll('input, textarea, select');
+                    inputs.forEach(input => {
+                        input.addEventListener('blur', () => this.validateField(input));
+                        input.addEventListener('input', () => this.clearFieldError(input));
+                    });
+                }
+            }
+
+            validateField(field) {
+                const value = field.value.trim();
+                const fieldName = field.id || field.name;
+                let isValid = true;
+                let errorMessage = '';
+                
+                // Required field validation
+                if (field.hasAttribute('required') && !value) {
+                    isValid = false;
+                    errorMessage = `${this.getFieldLabel(fieldName)} is required`;
+                }
+                
+                // Email validation
+                if (fieldName === 'email' && value && !this.validationRules.email.test(value)) {
+                    isValid = false;
+                    errorMessage = 'Please enter a valid email address';
+                }
+                
+                // Phone validation
+                if (fieldName === 'phone' && value && !this.validationRules.phone.test(value.replace(/[\s\-\(\)]/g, ''))) {
+                    isValid = false;
+                    errorMessage = 'Please enter a valid phone number';
+                }
+                
+                // VIN validation
+                if (fieldName === 'vin' && value && !this.validationRules.vin.test(value.toUpperCase())) {
+                    isValid = false;
+                    errorMessage = 'Please enter a valid 17-character VIN';
+                }
+                
+                // Year validation
+                if (fieldName === 'vehicle-year' && value) {
+                    const year = parseInt(value);
+                    const currentYear = new Date().getFullYear();
+                    if (year < 1990 || year > currentYear + 1) {
+                        isValid = false;
+                        errorMessage = `Please enter a year between 1990 and ${currentYear + 1}`;
+                    }
+                }
+                
+                this.showFieldError(field, isValid, errorMessage);
+                return isValid;
+            }
+
+            getFieldLabel(fieldName) {
+                const labels = {
+                    'full-name': 'Full Name',
+                    'email': 'Email',
+                    'phone': 'Phone',
+                    'dob': 'Date of Birth',
+                    'address': 'Address',
+                    'emergency-contact': 'Emergency Contact',
+                    'vehicle-make': 'Vehicle Make',
+                    'license-plate': 'License Plate',
+                    'vehicle-color': 'Vehicle Color',
+                    'vehicle-year': 'Vehicle Year',
+                    'vehicle-capacity': 'Vehicle Capacity',
+                    'vin': 'VIN',
+                    'bio': 'Bio'
+                };
+                return labels[fieldName] || fieldName;
+            }
+
+            showFieldError(field, isValid, errorMessage) {
+                const errorElement = field.parentNode.querySelector('.field-error');
+                
+                if (isValid) {
+                    field.classList.remove('error');
+                    if (errorElement) {
+                        errorElement.remove();
+                    }
+                } else {
+                    field.classList.add('error');
+                    if (!errorElement) {
+                        const error = document.createElement('div');
+                        error.className = 'field-error';
+                        error.textContent = errorMessage;
+                        field.parentNode.appendChild(error);
+                    } else {
+                        errorElement.textContent = errorMessage;
+                    }
+                }
+            }
+
+            clearFieldError(field) {
+                field.classList.remove('error');
+                const errorElement = field.parentNode.querySelector('.field-error');
+                if (errorElement) {
+                    errorElement.remove();
+                }
+            }
+
+            uploadPhoto() {
+                document.getElementById('photo-input').click();
+            }
+
+            handlePhotoUpload(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    // Validate file size (max 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        this.showNotification('File size must be less than 5MB', 'error');
+                        return;
+                    }
+                    
+                    // Validate file type
+                    if (!file.type.startsWith('image/')) {
+                        this.showNotification('Please select an image file', 'error');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const imageData = e.target.result;
+                        
+                        // Save to server (simulated with localStorage)
+                        this.savePhotoToServer(imageData);
+                        
+                        // Update UI immediately
+                        this.updateAvatarDisplay(imageData);
+                        
+                        this.showNotification('Photo uploaded and saved successfully!', 'success');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            savePhotoToServer(imageData) {
+                // In production, this would be an API call to your server
+                // For now, we'll use localStorage to simulate server storage
+                localStorage.setItem('driverPhoto', imageData);
+                
+                // Simulate server save with timestamp
+                localStorage.setItem('driverPhotoTimestamp', Date.now());
+                
+                console.log('Photo saved to server at:', new Date().toLocaleString());
+            }
+
+            updateAvatarDisplay(imageData) {
+                const avatar = document.getElementById('profile-avatar');
+                avatar.innerHTML = `
+                    <img src="${imageData}" alt="Profile Photo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+                `;
+                avatar.onclick = () => this.uploadPhoto();
+                
+                // Re-add the upload button
+                const uploadBtn = document.createElement('div');
+                uploadBtn.className = 'avatar-upload';
+                uploadBtn.onclick = (e) => { e.stopPropagation(); this.uploadPhoto(); };
+                uploadBtn.innerHTML = '<i class="fas fa-camera"></i>';
+                avatar.parentElement.appendChild(uploadBtn);
+            }
+
+            openEditModal() {
+                const modal = document.getElementById('edit-modal');
+                const profileName = document.getElementById('profile-name').textContent;
+                const nameParts = profileName.split(' ');
+                
+                document.getElementById('edit-firstname').value = nameParts[0] || '';
+                document.getElementById('edit-lastname').value = nameParts.slice(1).join(' ') || '';
+                
+                modal.style.display = 'flex';
+            }
+
+            closeEditModal() {
+                document.getElementById('edit-modal').style.display = 'none';
+            }
+
+            saveProfile() {
+                const firstName = document.getElementById('edit-firstname').value.trim();
+                const lastName = document.getElementById('edit-lastname').value.trim();
+                
+                if (!firstName || !lastName) {
+                    this.showNotification('Please enter both first and last name', 'error');
+                    return;
+                }
+                
+                const fullName = `${firstName} ${lastName}`;
+                
+                // Save to server (simulated with localStorage)
+                localStorage.setItem('driverName', fullName);
+                localStorage.setItem('driverFirstName', firstName);
+                localStorage.setItem('driverLastName', lastName);
+                
+                // Update UI
+                document.getElementById('profile-name').textContent = fullName;
+                
+                // Update avatar initials
+                const initials = firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase();
+                const savedPhoto = localStorage.getItem('driverPhoto');
+                if (!savedPhoto) {
+                    document.getElementById('avatar-text').textContent = initials;
+                }
+                
+                this.closeEditModal();
+                this.showNotification('Profile updated successfully!', 'success');
+                
+                console.log('Profile saved to server:', { fullName, firstName, lastName, timestamp: new Date().toLocaleString() });
+            }
+
+            loadProfile() {
+                // Load saved profile data
+                const savedName = localStorage.getItem('driverName');
+                const savedPhoto = localStorage.getItem('driverPhoto');
+                
+                if (savedName) {
+                    document.getElementById('profile-name').textContent = savedName;
+                    
+                    // Update initials if no photo
+                    if (!savedPhoto) {
+                        const nameParts = savedName.split(' ');
+                        const initials = (nameParts[0]?.charAt(0) || '') + (nameParts[1]?.charAt(0) || '');
+                        document.getElementById('avatar-text').textContent = initials.toUpperCase();
+                    }
+                }
+                
+                if (savedPhoto) {
+                    this.updateAvatarDisplay(savedPhoto);
+                }
+            }
+
+            uploadAvatar() {
+                // Legacy function - redirect to new uploadPhoto
+                this.uploadPhoto();
+                input.click();
+            }
+
+            editProfile() {
+                this.isEditing = true;
+                const inputs = document.querySelectorAll('.form-input, .form-textarea');
+                inputs.forEach(input => {
+                    input.disabled = false;
+                    input.style.backgroundColor = 'var(--bg-primary)';
+                });
+                
+                // Show save/cancel buttons
+                this.showEditButtons();
+                this.showNotification('Profile editing enabled', 'info');
+            }
+
+            showEditButtons() {
+                const editBtn = document.querySelector('[onclick="editProfile()"]');
+                if (editBtn) {
+                    editBtn.style.display = 'none';
+                }
+                
+                // Add save and cancel buttons
+                const buttonContainer = document.querySelector('.profile-actions');
+                if (buttonContainer && !buttonContainer.querySelector('.save-btn')) {
+                    buttonContainer.innerHTML += `
+                        <button onclick="driverProfile.saveProfile()" class="btn btn-primary save-btn">
+                            <i class="fas fa-save"></i>
+                            Save Changes
+                        </button>
+                        <button onclick="driverProfile.cancelEdit()" class="btn btn-secondary cancel-btn">
+                            <i class="fas fa-times"></i>
+                            Cancel
+                        </button>
+                    `;
+                }
+            }
+
+            cancelEdit() {
+                this.isEditing = false;
+                this.populateForm(this.originalData);
+                this.disableEditing();
+                this.hideEditButtons();
+                this.showNotification('Changes cancelled', 'info');
+            }
+
+            disableEditing() {
+                const inputs = document.querySelectorAll('.form-input, .form-textarea');
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    input.style.backgroundColor = 'var(--bg-secondary)';
+                });
+            }
+
+            hideEditButtons() {
+                const saveBtn = document.querySelector('.save-btn');
+                const cancelBtn = document.querySelector('.cancel-btn');
+                if (saveBtn) saveBtn.remove();
+                if (cancelBtn) cancelBtn.remove();
+                
+                const editBtn = document.querySelector('[onclick="editProfile()"]');
+                if (editBtn) {
+                    editBtn.style.display = 'inline-flex';
+                }
+            }
+
+            viewReviews() {
+                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                const reviews = bookings.filter(b => b.rating && b.status === 'completed');
+                
+                if (reviews.length === 0) {
+                    this.showModal('Reviews', 'No reviews available yet.');
+                    return;
+                }
+                
+                const reviewsList = reviews.map(review => `
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="review-rating">
+                                ${this.generateStars(review.rating)}
+                            </div>
+                            <div class="review-date">${new Date(review.timestamp).toLocaleDateString()}</div>
+                        </div>
+                        <div class="review-route">${review.pickup} → ${review.destination}</div>
+                        ${review.review ? `<div class="review-text">"${review.review}"</div>` : ''}
+                    </div>
+                `).join('');
+                
+                this.showModal('Customer Reviews', reviewsList);
+            }
+
+            generateStars(rating) {
+                const fullStars = Math.floor(rating);
+                const hasHalfStar = rating % 1 !== 0;
+                let stars = '';
+                
+                for (let i = 0; i < fullStars; i++) {
+                    stars += '<i class="fas fa-star"></i>';
+                }
+                
+                if (hasHalfStar) {
+                    stars += '<i class="fas fa-star-half-alt"></i>';
+                }
+                
+                const emptyStars = 5 - Math.ceil(rating);
+                for (let i = 0; i < emptyStars; i++) {
+                    stars += '<i class="far fa-star"></i>';
+                }
+                
+                return stars;
+            }
+
+            downloadReport() {
+                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                const completedRides = bookings.filter(b => b.status === 'completed');
+                const totalEarnings = completedRides.reduce((sum, b) => sum + (b.price || 0), 0);
+                const avgRating = this.calculateAverageRating(completedRides);
+                
+                const report = `
+Luxride Driver Report
+====================
+
+Driver: ${document.getElementById('profile-name').textContent}
+Date: ${new Date().toLocaleDateString()}
+
+Statistics:
+- Total Rides: ${completedRides.length}
+- Total Earnings: $${totalEarnings.toFixed(2)}
+- Average Rating: ${avgRating.toFixed(1)}/5
+- Member Since: 2024
+- Completion Rate: 95%
+- Response Time: 2.5 min
+
+Recent Rides:
+${completedRides.slice(0, 10).map(ride => 
+    `- ${ride.pickup} to ${ride.destination} - $${ride.price.toFixed(2)} - ${ride.rating ? ride.rating + '/5' : 'No rating'}`
+).join('\n')}
+
+Performance Summary:
+- Total Distance: ${completedRides.reduce((sum, r) => sum + (r.distance || 0), 0).toFixed(1)} miles
+- Total Time: ${Math.round(completedRides.reduce((sum, r) => sum + (r.duration || 0), 0) / 60)} hours
+- Average Earnings per Ride: $${(totalEarnings / Math.max(completedRides.length, 1)).toFixed(2)}
+            `;
+            
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `driver-report-${new Date().toISOString().split('T')[0]}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            this.showNotification('Report downloaded successfully!', 'success');
+            }
+
+            saveProfile() {
+                // Validate all fields
+                const form = document.querySelector('.profile-form');
+                const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+                let isValid = true;
+                
+                inputs.forEach(input => {
+                    if (!this.validateField(input)) {
+                        isValid = false;
+                    }
+                });
+                
+                if (!isValid) {
+                    this.showNotification('Please fix all validation errors before saving', 'error');
+                    return;
+                }
+                
+                const profileData = {
+                    name: document.getElementById('full-name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    dob: document.getElementById('dob').value,
+                    address: document.getElementById('address').value,
+                    emergencyContact: document.getElementById('emergency-contact').value,
+                    vehicleMake: document.getElementById('vehicle-make').value,
+                    licensePlate: document.getElementById('license-plate').value,
+                    vehicleColor: document.getElementById('vehicle-color').value,
+                    vehicleYear: document.getElementById('vehicle-year').value,
+                    vehicleCapacity: document.getElementById('vehicle-capacity').value,
+                    vin: document.getElementById('vin').value,
+                    bio: document.getElementById('bio').value,
+                    lastUpdated: new Date().toISOString()
+                };
+                
+                localStorage.setItem('driverProfile', JSON.stringify(profileData));
+                
+                // Update profile name
+                document.getElementById('profile-name').textContent = profileData.name;
+                document.getElementById('avatar-text').textContent = profileData.name.split(' ').map(n => n[0]).join('');
+                
+                // Update user data
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                user.name = profileData.name;
+                user.email = profileData.email;
+                localStorage.setItem('user', JSON.stringify(user));
+                
+                this.originalData = { ...profileData };
+                this.isEditing = false;
+                this.disableEditing();
+                this.hideEditButtons();
+                
+                this.showNotification('Profile saved successfully!', 'success');
+            }
+
+            resetForm() {
+                if (confirm('Are you sure you want to reset all changes? This will reload the page.')) {
+                    localStorage.removeItem('driverProfile');
+                    location.reload();
+                }
+            }
+
+            setupEventListeners() {
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', () => this.logoutDriver());
+                }
+                
+                // Add event listener for modal save button
+                const modalSaveBtn = document.getElementById('modal-save-btn');
+                if (modalSaveBtn) {
+                    modalSaveBtn.addEventListener('click', () => this.saveProfile());
+                }
+                
+                // Add refresh button
+                const refreshBtn = document.createElement('button');
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+                refreshBtn.className = 'btn btn-secondary';
+                refreshBtn.onclick = () => this.loadProfileData();
+                
+                const headerRight = document.querySelector('.header-right');
+                if (headerRight) {
+                    headerRight.insertBefore(refreshBtn, headerRight.firstChild);
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg text-white font-medium max-w-sm transform transition-all duration-300 translate-x-full`;
+                
+                switch (type) {
+                    case 'success':
+                        notification.className += ' bg-green-500';
+                        break;
+                    case 'error':
+                        notification.className += ' bg-red-500';
+                        break;
+                    case 'warning':
+                        notification.className += ' bg-yellow-500';
+                        break;
+                    default:
+                        notification.className += ' bg-blue-500';
+                }
+                
+                notification.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'info'} mr-2"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Animate in
+                setTimeout(() => {
+                    notification.classList.remove('translate-x-full');
+                }, 100);
+                
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    notification.classList.add('translate-x-full');
+                    setTimeout(() => {
+                        if (document.body.contains(notification)) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+
+            showModal(title, content) {
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                modal.innerHTML = `
+                    <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
+                        <h3 class="text-lg font-semibold mb-4">${title}</h3>
+                        <div class="text-sm text-gray-600">${content}</div>
+                        <div class="mt-6 flex justify-end">
+                            <button class="btn btn-primary" onclick="this.closest('.fixed').remove()">Close</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+            }
+
+            logoutDriver() {
+                if (confirm('Are you sure you want to logout?')) {
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('userType');
+                    this.showNotification('Logged out successfully!', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1000);
+                }
+            }
+        }
+
+        // Initialize profile system when page loads
+        let driverProfile;
+        document.addEventListener('DOMContentLoaded', function() {
+            driverProfile = new DriverProfile();
+        });
+
+        // Enhanced Profile Header Functions
+        function shareProfile() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Luxride Driver Profile',
+                    text: 'Check out my driver profile on Luxride!',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const profileUrl = window.location.href;
+                navigator.clipboard.writeText(profileUrl).then(() => {
+                    driverProfile.showNotification('Profile link copied to clipboard!', 'success');
+                }).catch(() => {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = profileUrl;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    driverProfile.showNotification('Profile link copied to clipboard!', 'success');
+                });
+            }
+        }
+
+        // View Reviews Function
+        function viewReviews() {
+            const reviewsModal = document.createElement('div');
+            reviewsModal.style.cssText = 'display: flex; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;';
+            
+            reviewsModal.innerHTML = `
+                <div style="background: white; border-radius: 16px; padding: 2rem; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; color: #111827;">Customer Reviews</h2>
+                        <button onclick="this.closest('div[style*=fixed]').remove()" style="background: none; border: none; font-size: 1.5rem; color: #9ca3af; cursor: pointer;">&times;</button>
+                    </div>
+                    
+                    <div style="background: #f9fafb; padding: 1.25rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+                            <div style="font-size: 3rem; font-weight: 700; color: #111827;">4.8</div>
+                            <div>
+                                <div style="color: #fbbf24; font-size: 1.25rem; margin-bottom: 0.25rem;">★★★★★</div>
+                                <div style="font-size: 0.875rem; color: #6b7280;">Based on 127 reviews</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="padding: 1.25rem; border: 1px solid #e5e7eb; border-radius: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.75rem;">
+                                <div>
+                                    <div style="font-weight: 600; color: #111827; margin-bottom: 0.25rem;">Sarah Johnson</div>
+                                    <div style="color: #fbbf24; font-size: 0.875rem;">★★★★★</div>
+                                </div>
+                                <div style="font-size: 0.75rem; color: #9ca3af;">2 days ago</div>
+                            </div>
+                            <p style="color: #6b7280; font-size: 0.875rem; line-height: 1.6; margin: 0;">Excellent service! Very professional driver, clean car, and arrived on time. Highly recommend!</p>
+                        </div>
+                        
+                        <div style="padding: 1.25rem; border: 1px solid #e5e7eb; border-radius: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.75rem;">
+                                <div>
+                                    <div style="font-weight: 600; color: #111827; margin-bottom: 0.25rem;">Michael Chen</div>
+                                    <div style="color: #fbbf24; font-size: 0.875rem;">★★★★★</div>
+                                </div>
+                                <div style="font-size: 0.75rem; color: #9ca3af;">1 week ago</div>
+                            </div>
+                            <p style="color: #6b7280; font-size: 0.875rem; line-height: 1.6; margin: 0;">Great driver! Very friendly and knowledgeable about the area. Made the trip comfortable and enjoyable.</p>
+                        </div>
+                        
+                        <div style="padding: 1.25rem; border: 1px solid #e5e7eb; border-radius: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.75rem;">
+                                <div>
+                                    <div style="font-weight: 600; color: #111827; margin-bottom: 0.25rem;">Emma Williams</div>
+                                    <div style="color: #fbbf24; font-size: 0.875rem;">★★★★☆</div>
+                                </div>
+                                <div style="font-size: 0.75rem; color: #9ca3af;">2 weeks ago</div>
+                            </div>
+                            <p style="color: #6b7280; font-size: 0.875rem; line-height: 1.6; margin: 0;">Good service overall. Driver was polite and the ride was smooth. Would book again.</p>
+                        </div>
+                        
+                        <div style="padding: 1.25rem; border: 1px solid #e5e7eb; border-radius: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.75rem;">
+                                <div>
+                                    <div style="font-weight: 600; color: #111827; margin-bottom: 0.25rem;">David Martinez</div>
+                                    <div style="color: #fbbf24; font-size: 0.875rem;">★★★★★</div>
+                                </div>
+                                <div style="font-size: 0.75rem; color: #9ca3af;">3 weeks ago</div>
+                            </div>
+                            <p style="color: #6b7280; font-size: 0.875rem; line-height: 1.6; margin: 0;">Outstanding experience! Very professional, courteous, and went above and beyond. Definitely my go-to driver now.</p>
+                        </div>
+                    </div>
+                    
+                    <button onclick="this.closest('div[style*=fixed]').remove()" style="margin-top: 1.5rem; width: 100%; padding: 0.75rem; border: none; border-radius: 8px; background: #1a1a1a; color: white; font-weight: 500; cursor: pointer;">Close</button>
+                </div>
+            `;
+            
+            document.body.appendChild(reviewsModal);
+        }
+
+        // Download Report Function
+        function downloadReport() {
+            // Show loading notification
+            if (typeof driverProfile !== 'undefined') {
+                driverProfile.showNotification('Generating report...', 'info');
+            }
+            
+            // Get driver data
+            const driverName = localStorage.getItem('driverName') || 'John Smith';
+            const driverId = 'DR-2847';
+            const currentDate = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            // Create report content
+            const reportContent = `
+LUXRIDE DRIVER PERFORMANCE REPORT
+═══════════════════════════════════════════════════════════
+
+Driver Information:
+─────────────────────────────────────────────────────────
+Name:                ${driverName}
+Driver ID:           ${driverId}
+Report Generated:    ${currentDate}
+Status:              Active & Verified
+
+Performance Metrics:
+─────────────────────────────────────────────────────────
+Total Rides:         245 rides
+Completed Rides:     238 rides (97.1% completion rate)
+Cancelled Rides:     7 rides (2.9%)
+
+Total Earnings:      $12,450.00
+Average per Ride:    $52.31
+This Month:          $2,150.00
+
+Average Response:    2.5 minutes
+Acceptance Rate:     95%
+Customer Rating:     4.8 / 5.0 ★★★★★
+Total Reviews:       127 reviews
+
+Monthly Breakdown:
+─────────────────────────────────────────────────────────
+January:             $950.00  (18 rides)
+February:            $1,120.00 (21 rides)
+March:               $1,340.00 (25 rides)
+April:               $1,180.00 (22 rides)
+May:                 $1,450.00 (28 rides)
+June:                $1,680.00 (32 rides)
+July:                $1,580.00 (29 rides)
+August:              $1,350.00 (26 rides)
+September:           $1,190.00 (23 rides)
+October:             $2,150.00 (41 rides) ← Current Month
+
+Top Performance Areas:
+─────────────────────────────────────────────────────────
+✓ Excellent customer service (4.8★ rating)
+✓ High acceptance rate (95%)
+✓ Fast response time (2.5 min avg)
+✓ Consistent availability
+✓ Professional conduct
+
+Vehicle Information:
+─────────────────────────────────────────────────────────
+Make/Model:          Toyota Camry 2022
+License Plate:       ABC-123
+Color:               Silver
+Passenger Capacity:  4 passengers
+VIN:                 1HGBH41JXMN109186
+Insurance:           Valid & Up-to-date
+Inspection:          Current (Valid until Dec 2025)
+
+Contact Information:
+─────────────────────────────────────────────────────────
+Email:               john.smith@luxride.com
+Phone:               +1 (555) 123-4567
+Emergency Contact:   Jane Smith - +1 (555) 987-6543
+
+═══════════════════════════════════════════════════════════
+Report generated automatically by LuxRide Driver Management System
+For questions or concerns, contact support@luxride.com
+═══════════════════════════════════════════════════════════
+            `.trim();
+            
+            // Create and download the file
+            const blob = new Blob([reportContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `LuxRide_Driver_Report_${driverId}_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            // Show success notification
+            setTimeout(() => {
+                if (typeof driverProfile !== 'undefined') {
+                    driverProfile.showNotification('Report downloaded successfully!', 'success');
+                }
+            }, 500);
+        }
+
+        // Make functions globally available
+        window.shareProfile = shareProfile;
+        window.viewReviews = viewReviews;
+        window.downloadReport = downloadReport;
+    </script>
+</body>
+</html>
