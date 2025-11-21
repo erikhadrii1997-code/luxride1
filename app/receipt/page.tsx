@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Printer, Download, MapPin, Calendar, Car, DollarSign, Star, Check } from 'lucide-react'
 import Navbar from '@/components/layout/Navbar'
@@ -15,7 +15,7 @@ const MapComponent = dynamic(() => import('@/components/map/BookingMap'), {
   ssr: false,
 })
 
-export default function ReceiptPage() {
+function ReceiptContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [booking, setBooking] = useState<Booking | null>(null)
@@ -284,6 +284,27 @@ Thank you for choosing Luxride!
 
       <Footer />
     </div>
+  )
+}
+
+export default function ReceiptPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+        <Navbar />
+        <main className="pt-20 pb-12">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Card className="text-center py-12">
+              <h1 className="text-2xl font-bold mb-4">Loading Receipt...</h1>
+              <p className="text-gray-600">Please wait while we load your receipt.</p>
+            </Card>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    }>
+      <ReceiptContent />
+    </Suspense>
   )
 }
 
