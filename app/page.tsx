@@ -643,7 +643,7 @@ export default function HomePage() {
               </div>
 
               {/* Vehicle Grid with Smart Sorting */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-4 mb-6">
                 {vehicles
                   .sort((a, b) => {
                     // Show recommended first
@@ -657,7 +657,7 @@ export default function HomePage() {
                     key={vehicle.type}
                     onClick={() => handleVehicleSelect(vehicle.type)}
                     className={`
-                      relative p-4 rounded-2xl transition-all duration-300 overflow-hidden group
+                      relative p-4 md:p-4 rounded-2xl transition-all duration-300 overflow-hidden group w-full
                       ${selectedVehicle === vehicle.type
                         ? 'bg-primary/10 border-2 border-primary shadow-lg transform scale-105 ring-2 ring-primary/50'
                         : recommendedVehicle === vehicle.type && !selectedVehicle
@@ -675,7 +675,7 @@ export default function HomePage() {
                     )}
 
                     {/* Vehicle Image */}
-                    <div className="relative h-32 rounded-xl overflow-hidden mb-3">
+                    <div className="relative h-40 md:h-32 rounded-xl overflow-hidden mb-3">
                       <img
                         src={vehicle.image}
                         alt={vehicle.name}
@@ -1033,32 +1033,53 @@ export default function HomePage() {
 
               {/* Driver Information Section */}
               {(pickup && destination && selectedVehicle) && (
-                <Card className="mt-6 text-center animate-fade-in">
-                  <h3 className="text-xl font-bold mb-4 font-serif">Your Driver</h3>
-                  <div className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-4 border-4 border-primary shadow-lg relative">
-                    <img
-                      src="https://img.freepik.com/premium-photo/photo-middle-aged-driver-man-sitting-yellow-taxi-driving-city-street-with-smile-holding-hands-steering-wheel_726520-4334.jpg"
-                      alt="Driver"
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600'
-                      }}
-                    />
-                    <div className="absolute bottom-0 right-0 w-8 h-8 bg-green-500 rounded-full border-2 border-white"></div>
+                <Card className="mt-6 animate-fade-in">
+                  <div className="text-center mb-6">
+                    <h3 className="text-2xl font-bold mb-4 font-serif">Your Driver</h3>
+                  </div>
+                  
+                  <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-6">
+                    {/* Driver Photo - Bigger, Rounded Rectangle */}
+                    <div className="relative w-48 h-48 md:w-40 md:h-40 rounded-2xl overflow-hidden border-2 border-primary/30 shadow-xl">
+                      <img
+                        src="https://img.freepik.com/premium-photo/photo-middle-aged-driver-man-sitting-yellow-taxi-driving-city-street-with-smile-holding-hands-steering-wheel_726520-4334.jpg"
+                        alt="Driver"
+                        className="w-full h-full object-cover object-center"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600'
+                        }}
+                      />
+                      <div className="absolute bottom-2 right-2 w-6 h-6 bg-green-500 rounded-full border-2 border-white shadow-md"></div>
+                    </div>
+
+                    {/* Driver Info */}
+                    <div className="flex-1 text-center md:text-left">
+                      <h4 className="text-2xl font-bold font-serif mb-2">{driverInfo.name}</h4>
+                      <div className="flex items-center justify-center md:justify-start gap-2 mb-4">
+                        <div className="flex items-center gap-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star key={star} className="w-4 h-4 fill-primary text-primary" />
+                          ))}
+                        </div>
+                        <span className="text-primary font-semibold text-lg">4.8</span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="space-y-2 mb-4">
-                    <a
-                      href="tel:+1-800-555-1234"
-                      className="block w-full py-3 font-medium btn-primary text-base flex items-center justify-center gap-2 hover:scale-105 transition-transform"
+                  <div className="grid grid-cols-2 gap-3 mb-6">
+                    <Button
+                      variant="primary"
+                      size="md"
+                      className="flex items-center justify-center gap-2"
+                      onClick={() => window.location.href = 'tel:+1-800-555-1234'}
                     >
-                      <Phone className="w-5 h-5" />
+                      <Phone className="w-4 h-4" />
                       Call Driver
-                    </a>
+                    </Button>
                     <Button
                       variant="danger"
-                      size="lg"
-                      className="w-full"
+                      size="md"
+                      className="flex items-center justify-center gap-2"
                       onClick={() => {
                         setPickup('')
                         setDestination('')
@@ -1067,18 +1088,9 @@ export default function HomePage() {
                         toast.success('Ride cancelled')
                       }}
                     >
-                      <X className="w-5 h-5 mr-2" />
+                      <X className="w-4 h-4" />
                       Cancel Ride
                     </Button>
-                  </div>
-
-                  <div>
-                    <h4 className="text-lg font-bold font-serif mb-2">{driverInfo.name}</h4>
-                    <p className="text-gray-600 text-sm mb-1">
-                      Rating: <span className="text-primary font-semibold">★★★★★ 4.8</span>
-                    </p>
-                    <p className="text-gray-600 text-sm mb-1">Vehicle: {driverInfo.vehicle}</p>
-                    <p className="text-gray-600 text-sm">License Plate: {driverInfo.licensePlate}</p>
                   </div>
 
                   {/* Rating Section */}
